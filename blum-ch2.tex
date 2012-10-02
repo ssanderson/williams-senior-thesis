@@ -8,16 +8,13 @@
 \setlength{\parindent}{0 in}
 \setlength{\parskip}{0.1 in}
 
+\setcounter{secnumdepth}{2}
+
 %
 % ADD PACKAGES here:
 %
 \usepackage{amsmath,amsfonts,graphicx}
 
-%
-% The following commands set up the lecnum (lecture number)
-% counter and make various numbering schemes work relative
-% to the lecture number.
-%
 \renewcommand{\thepage}{\arabic{page}}
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\theequation}{\arabic{equation}}
@@ -50,6 +47,37 @@
 
 % Thesis Commands
 
+% If-then function with two cases. 
+% #1 = function symbol, 
+% #2 = line 1, 
+% #3 = line 1 condition, 
+% #4 = line 2 
+% #5 = line2 condition
+
+\newcommand{\todo}[1]{
+  \LARGE
+  \textbf{TODO: #1}
+  \normalsize
+}
+
+\newcommand{\twopartdef}[4]
+{
+  \left\{
+    \begin{array}{ll}
+      #1 & \mid #2 \\
+      #3 & \mid #4
+    \end{array}
+  \right.
+}
+
+% General purpose math
+\newcommand{\reals}[0]{\mathbb{R}}
+\newcommand{\complexes}[0]{\mathbb{C}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\functype}[3]{$#1:#2 \rightarrow #3$} 
+\newcommand{\mfunctype}[3]{#1:#2 \rightarrow #3} 
+
+% Machine descriptors.
 \newcommand{\inspace}[0]{\mathcal{I}}
 \newcommand{\outspace}[0]{\mathcal{O}}
 \newcommand{\statespace}[0]{\mathcal{S}}
@@ -58,19 +86,18 @@
 \newcommand{\nodein}[0]{\nodes_{in}}
 \newcommand{\nodeout}[0]{\nodes_{out}}
 
-\newcommand{\reals}[0]{\mathbb{R}}
-\newcommand{\complexes}[0]{\mathbb{C}}
-\newcommand{\set}[1]{\{#1\}}
-
-\newcommand{\functype}[3]{$#1:#2 \rightarrow #3$} 
-\newcommand{\mfunctype}[3]{#1:#2 \rightarrow #3} 
+% Machine properties
 \newcommand{\computefn}[0]{\Phi}
 \newcommand{\note}[1]{{\textbf{Note:} #1}}
 \newcommand{\compute}[0]{\phi}
-\newcommand{\computeout}[0]{\phi_{out}}
+\newcommand{\computeout}[1]{\phi_{#1}^{out}}
+\newcommand{\halting}[0]{\Omega}
+\newcommand{\allpaths}[0]{\Gamma}
+\newcommand{\haltpaths}[1]{\Gamma_{#1}}
 \newcommand{\computepath}[0]{\gamma}
 \newcommand{\pathprojection}[0]{\pi_\nodes}
 \newcommand{\stateprojection}[0]{\pi_\statespace}
+\newcommand{\coincidence}[1]{\mathcal{V}_{#1}}
 
 %
 % Convention for citations is authors' initials followed by the year.
@@ -95,27 +122,24 @@
 			\end{center}
 	}
 % Use these for theorems, lemmas, proofs, etc.
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{claim}[theorem]{Claim}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}[theorem]{Definition}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{definition}{Definition}[section]
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofsketch}{{\bf Proof Sketch:}}{\hfill\rule{2mm}{2mm}}
 
 \begin{document}
 %FILL IN THE RIGHT INFO.
 %\head{**Title**}{**Date**}
 \head{B98}{Chap 2 - Definitions and First Properties of Computation}
-%\footnotetext{These notes are partially based on those of Nigel Mansell.}
 
 % **** YOUR NOTES GO HERE:
 
 % Some general latex examples and examples making use of the
 % macros follow.  
-%**** IN GENERAL, BE BRIEF. LONG SCRIBE NOTES, NO MATTER HOW WELL WRITTEN,
-%**** ARE NEVER READ BY ANYBODY.
-
 
 \section{A Finite Dimensional Model of Computation}
 
@@ -126,22 +150,22 @@ the ring.  The canonical motivating example is Newton's Method over
 $\reals^2$, which approximates the zeros of an arbitrary polynomial by
 repeatedly calculating an associated polynomial function on a start
 value until the resulting value is less than some $\epsilon$ (and thus
-presumably close to a zero of the polynomial).  The core elements of
+presumably close to a zero of the polynomial).  The key elements of
 such an algorithm are:
 
 \begin{enumerate}
-  \item A set of inputs over which the algorithm is defined.
-
-  \item A set of values that can be stored by the algorithm for
-    future computations.
-
-  \item A function or set of functions to perform calculations on the
-    stored values.
-
-  \item A decision function or set of decision functions to determine
-    which calculation to perform at a given time
-
-  \item A set of values for the algorithm to output.
+\item A set of inputs over which the algorithm is defined.
+  
+\item A set of values that can be stored by the algorithm for
+  future computations.
+  
+\item A function (or set of functions) to perform calculations on the
+  stored values.
+  
+\item A decision function (or set of decision functions) to determine
+  which calculation to perform at a given step.
+  
+\item A set of values for the algorithm to output.
 \end{enumerate}
 
 We present two equivalent definitions of a Finite Dimensional Machine.
@@ -161,62 +185,70 @@ by $R^k$.
 
 \begin{definition}{\textbf{Finite Dimensional Machine} over a ring
     \textbf{R} (as defined in \cite{B98})}
-
+  
   A \textbf{Finite Dimensional Machine} (FDM), $M$ over $R$ is a
   finite, directed, connected graph with four types of nodes:
   \emph{input, computation, branch} and \emph{output}.  An FDM has one
-  input and one output node, and can have any number of branch and
+  input and one output node, but can have any number of branch and
   computation nodes. The input node has indegree 0.  All other nodes
   have indegree $\geq$ 1. The input node and computation nodes have
   outdegree 1; branch nodes have outdegree 2, and the output node has
-  outdegree 0.  We will use the expression ``next node'' of a node
-  $\beta$ to refer to the nodes to which $\beta$ has outgoing edges.\\
-
+  outdegree 0.  We will use the expression ``next node(s)'' of a node
+  $\beta$ to refer to the node(s) to which $\beta$ has outgoing edges.\\
+  
   \emph{\note{Blum et al. allow a machine to have multiple
-    output nodes, but it is relatively easy to show that any machine
-    with multiple output nodes can be trivially reduced to a machine
-    with a single output node, so for ease of notation we
-    prefer the single output notation here.}}\\
-
+      output nodes, but it is relatively easy to show that any machine
+      with multiple output nodes can be trivially reduced to a machine
+      with a single output node, so for ease of notation we
+      prefer the single output notation here.}}\\
+  
   An FDM also has three associated spaces: an input space $\inspace_M
   \subseteq R^n$, a state space $\statespace_M \subseteq R^m$, and an
   output space $\outspace_M \subseteq R^l$.  (Recall that $R^k$
   denotes the ring of polynomials over $R$ with degree at most $k$).\\
-
+  
   Each node has an associated map, which varies in structure in
   accordance with its type.
   \begin{enumerate}
   \item Associated with the input node is a linear map
     \functype{I}{\inspace_M}{\statespace_M}. We denote the next node
     of the input node by $\beta_1$.
-
+    
   \item Associated with each computation node, $\eta$, is a polynomial
     map \functype{g_\eta}{\statespace_M}{\statespace_M}. We denote the
     next node of $\eta$ by $\beta_\eta$.
-
+    
   \item Associated with each branch node, $b$ is a nonzero polynomial
     function \functype{g_b}{\statespace_M}{R}.  We associate the
     condition $g_b(p) \geq 0$ with one of the next nodes of $b$,
-    called the \textbf{Yes Node} of $b$.  We symbolically denote the Yes Node by $\beta_b^+$. We
-    associate the condition $g_b(p) < 0$ with the remaining next node of $b$, which we call the 
-    \textbf{No Node} and denote $\beta_b^-$. 
-
+    called the \textbf{Yes Node} of $b$.  We symbolically denote the
+    Yes Node by $\beta_b^+$. We associate the condition $g_b(p) < 0$
+    with the remaining next node of $b$, which we call the \textbf{No
+      Node} and denote $\beta_b^-$.
+    
   \item Associated with the output node is a linear map
     \functype{O}{\statespace_M}{\outspace_M}.
-
+    
   \end{enumerate}
 \end{definition}
 
-Blum et al's definition is meant to capture a intuition that a real
-algorithm corresponds to a kind of flowchart, in which we follow the
-flowchart and perform specific computations depending on what we've
-already computed.  
+Blum et al's definition is meant to capture an intuition that a real
+algorithm can essentially be described by a flowchart.  On this model,
+computation consists in following the arrows of the flowchart from
+node to node, performing computations and storing their values.  One
+drawback of their formulation is that it does not easily generalize to
+a non-deterministic formulation.  In particular, because their
+definition of a machine is explicitly associated with a particular
+graph, it is awkward to abstract a notion of being in multiple
+locations simultaneously.  The following definition is meant to be
+equivalent in computational power to that of Blum et al., while also
+allowing a more natural generalization to incorporating nondeterminism.
 
 \begin{definition}{\textbf{Finite Dimensional Machine} over a ring \textbf{R}}
-
+  
   A \textbf{Finite Dimensional Machine} (FDM) over $R$ is a tuple,
   $(\inspace, \statespace, \outspace, \nodes, H, H_{in}, H_{out})$, where:
-
+  
   \begin{enumerate}
 
   \item $\inspace \subseteq R^l$ is the \textbf{Input Space} of M.
@@ -238,85 +270,228 @@ already computed.
 
   \item \functype{H}{\nodes \times \statespace}{\nodes \times
       \statespace} is the \textbf{Computing Endomorphism} of $M$.
-
+    
   \item \functype{H_{out}}{\nodeout \times \statespace}{\outspace} is
     a linear map called the \textbf{Output Map} of $M$.
-
+    
   \end{enumerate}
-
+  
 \end{definition}
 
-  \note{By convention, we will use the symbol $\beta$ to refer to a node
-    when we do not wish to distinguish between types.}
+\note{By convention, we use the symbol $\beta$ to refer to a node when
+  we do not wish to distinguish between types.}
 
-  \subsubsection{Properties of the computing endomorphism, $H$}
+\subsubsection{Properties of the computing endomorphism $H$}
 
-  The computing endomorphism abstracts the process of either
-  performing a computation on our currently stored information or
-  making a decision about which computation to perform next.  Each
-  computation node in $\nodes$ represents a state of our algorithm in
-  which we want to perform a specific computation.  Each branching
-  node represents a state in which we need to decide which computation
-  to perform next.  Since each computation node represents a specific computation and
-  each branching node represents a specific decision procedure, we add the following 
-  restrictions to $H$.
+The computing endomorphism abstracts the process of either
+performing a computation on our currently stored information or
+making a decision about which computation to perform next.  Each
+computation node in $\nodes$ represents a state of our algorithm in
+which we want to perform a specific computation.  Each branching
+node represents a state in which we need to decide which computation
+to perform next.  Since each computation node represents a specific
+computation and each branching node represents a specific decision
+procedure, we add the following restrictions to $H$:
 
-  \begin{enumerate}
+\begin{enumerate}
+  
+\item For each computation node, $\eta$, there exists a unique node,
+  $\beta_\eta$ and a polynomial map
+  \functype{g_\eta}{\statespace}{\statespace}, such that $H(\eta, p)
+  = (\beta_\eta, g_\eta(p)) \mid \forall p \in \statespace$.  We
+  refer to $g_\eta$ as the \textbf{Computation Map} of $\eta$.
+  
+\item For each branch node, $b$, there exists a pair of nodes,
+  $\beta_b^+$ and $\beta_b^-$, and a non-zero polynomial map,
+  \functype{g_b}{\statespace}{R}, such that $H(b, p) = (\beta_b^+,
+  p)$ if $g_b \geq 0$ and $H(b,p) = (\beta_b^-, p)$ if $g_b < 0$.
+  We refer to $g_b$ as the \textbf{Branching Function} of $b$, and
+  we refer to $\beta_b^+$ and $\beta_b^-$ respectively as the
+  \textbf{Yes Node} and \textbf{No Node} of $b$.
+  
+\end{enumerate}
 
-  \item For each computation node, $\eta$, there exists a unique node,
-    $\beta_\eta$ and a polynomial map
-    \functype{g_\eta}{\statespace}{\statespace}, such that $H(\eta, p)
-    = (\beta_\eta, g_\eta(p)) \mid \forall p \in \statespace$.  We
-    refer to $g_\eta$ as the \textbf{Computation Map} of $\eta$.
+We are now in a position to define what it means for a machine $M$
+to perform a computation on some input, $p$.  The basic idea is that a 
+computation is a path through $\nodes \times \statespace$, that begins
+with $I_M(p)$ and follows the computing endomorphism of $M$, halting upon
+reaching the output node of $M$.  The ``run time'' of a computation becomes
+the length of this path, and the halting set of a $M$ becomes the set of input
+values with computations of finite length.
 
-  \item For each branch node, $b$, there exist a pair of nodes,
-    $\beta_b^+$ and $\beta_b^-$, and a non-zero polynomial map,
-    \functype{g_b}{\statespace}{R}, such that $H(b, p) = (\beta_b^+,
-    p)$ if $g_b \geq 0$ and $H(b,p) = (\beta_b^-, p)$ if $g_b < 0$.
-    We refer to $g_b$ as the \textbf{Branching Function} of $b$, and
-    we refer to $\beta_b^+$ and $\beta_b^-$ respectively as the
-    \textbf{Yes Node} and \textbf{No Node} of $b$.
+\begin{definition}{\textbf{Computation, Halting Set, and Computation Map}}\\
+  
+  The \textbf{Computation}, $\compute_p$, performed by an FDM, $M$,
+  on input $p \in \inspace$ is the sequence: 
+  $$z^0, z^1, z^2, \ldots z^k, \ldots$$ 
+  where\\ 
+  \centerline{$z^0 = (H_{in}(p))$, $z^1$ = $H(z^0)$, $z^2 = H(z^1) \ldots$, $z^k = H(z^{k-1})$}\\
 
-  \end{enumerate}
+  A computation is said to \textbf{halt} if there exists an integer
+  $T$ such that $z^T = (\nodeout, s)$ for some $s \in \statespace$.
+  In such a case, the finite sequence $\compute_p = z^0, z^1, \ldots
+  z^T$ is said to be a \textbf{halting computation} with
+  \textbf{halting time} $T_M(p) = T$, and we define the \textbf{output
+    value} of $\compute_p$ to be $\computeout{p} = H_{out}(z^T)$.  If
+  $\compute_p$ is not a halting computation, $\computeout{p}$ is
+  undefined, and we say that $T_M(p) = \infty$.\\
+  
+  \todo{I find a lot of the time-T notation confusing and/or
+    ambiguous. Maybe standardize to always use T as a function
+    argument?}
 
-  \begin{definition}{\textbf{Computation of an FDM on input $p$}}\\
+  The \textbf{Halting Set}, $\halting_M \subseteq \inspace$ of an FDM,
+  $M$ is the set: 
+  $$\set{p \in \inspace \mid \compute_p \text{ is a halting computation}}$$.\\
+  \noindent The \textbf{time-T Halting Set} of $M$, $\halting_T$ is given by:
+  $$p \mid p \in \halting_M, T_M(p) \leq T$$.
+  
+  The \textbf{Computation Function} or \textbf{Input/Output Map} of
+  $M$ \functype{\computefn}{\halting_M}{\outspace_M} is given by:
+  $$\computefn(p) = \computeout{p}$$.
+\end{definition}
+\begin{definition}{\textbf{Computation Path} and \textbf{State Trajectory}}\\
+  
+  The \textbf{Computation Path}, $\computepath_p$, of $M$ on
+  input $p$ is the projection of $\compute_p$ under the map:
+  $$\mfunctype{\pathprojection}{\fullstate}{\nodes} \mid \pathprojection(\beta, p) = \beta$$
+  
+  The \textbf{State Trajectory} of an FDM $M$ on input $p$ is the
+  projection of $\compute_p$ under the map:
+  $$\mfunctype{\stateprojection}{\fullstate}{\nodes} \mid \stateprojection(\beta, p) = p$$
+\end{definition}
+
+\begin{definition}{\textbf{Finite-Dimensionally Computable Function}}
+  
+  A function \functype{\varphi}{X}{R^l}, $X \subset R^n$ is
+  \textbf{f.d. computable} over $R$ if there exists a
+  finite-dimensional machine, $M$ such that $\varphi$ is the
+  input/output map of $M$.
+  
+\end{definition}
+
+\begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets}}
+  
+  A set $S \subset R^n$ is \textbf{(f.d) decidable} over $R$ if its
+  characteristic function \functype{\chi_S}{R^n}{R} is (f.d)
+  computable over $R$, where:
+  
+  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0}{x \notin S}$$
+  
+  A set $S \subset R^n$ is \textbf{(f.d) recognizable} or
+  \textbf{(f.d) semi-decidable} over $R$ if its characteristic
+  function \functype{\chi_S}{R^n}{R} is (f.d) computable over $R$,
+  where:
+  
+  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0 \text{\emph{ or undefined}}}{x \notin S}$$
+  
+  A set $S \subset R^n$ is \textbf{(f.d) co-recognizable} over $R$
+  if its co-characteristic function \functype{\chi'_S}{R^n}{R} is (f.d)
+  computable over $R$, where:
+  
+  $$\chi'_S(x) =  \twopartdef{1}{x \notin S}{0 \text{\emph{ or undefined}}}{x \in S}$$
+  
+\end{definition}
+
+  It should be fairly straightforward to see from the
+  definitions that the recognizable sets over $R$ are precisely the
+  halting sets over R and the co-recognizable sets are those whose
+  complements are recognizable. Less obviously, the decidable sets
+  are precisely those that are both recognizable and co-recognizable.
+
+\begin{proposition}{A set $S \subset R^n$ is decidable if and only if it is
+  both recognizable and co-recognizable}
+\end{proposition}
+\begin{proofsketch}
+  
+  Given semidecision machines, $M$ and $M'$ for both $S$ and $R^n -
+  S$, we can contruct a decision machine for $S$ by simulating $M$ and
+  $M'$ in parallel, outputting 1 if $M$ halts and 0 if $M'$ halts.  
+
+  \todo{Is it worth giving the parallelization construction?}
+
+\end{proofsketch}
+
+
+\section{Characterization of Decidable Sets}
+
+  We are now in a position to sketch out some results that
+  characterize the computable sets over $R$.  Our first such result
+  shows that any computable set can be constructed from a finite number
+  of well-behaved algebraic objects.
+  
+  \begin{definition}{\textbf{Semi-algebraic} and \textbf{Quasi-algebraic Sets}}
     
-    The \textbf{Computation}, $\compute_p$, of an FDM, $M$, on input
-    $p \in \inspace$ is the sequence $z^0, z^1, z^2, \ldots, \computeout$,
-    where $z^0$ = $(\nodein, p)$, $z^1$ = $H(\nodein, p)$, $z^2 =
-    H(z^1) \ldots$, and $\computeout$ is the first value in $\outspace$
-    obtained by successive iterates of $H$.
-
-    \emph{\note{Successive iterations of $H$ on input $p$ need
-        not ever take on a value in $\outspace$.  In particular, $M$
-        may enter an infinite loop.  In such a case, we say that the
-        computation of of $M$ on $p$ is undefined.}}\\
-
-    The \textbf{Computation Function} or \textbf{I/O Map},
-    \functype{\computefn}{\inspace}{\outspace} of $M$ is
-    given by: $\computefn(p) = \compute_p \mid  p \in \inspace$
+    A set $S \subset R$ is \textbf{basic semi-algebraic} over an
+    ordered ring, $R$, if $S$ is the set of elements in $R$ satisfying
+    a finite system of polynomial equalities and inequalities. A set
+    is \textbf{semi-algebraic} over $R$ if it is a finite union of basic
+    semi-algebraic sets.
+    
+    A set $S \subset R$ is \textbf{basic quasi-algebraic} over an
+    unordered ring, $R$, if $S$ is the set of elements in $R$ satisfying
+    a finite system of polynomial equalities and inequalities. A set
+    is \textbf{quasi-algebraic} over $R$ if it is a finite union of basic
+    quasi-algebraic sets.
+    
   \end{definition}
 
-  \begin{definition}{\textbf{Computation Path} and \textbf{State Trajectory}}\\
-    
-    The \textbf{Computation Path}, $\computepath_p$, of $M$ on
-    input $p$ is the projection of $\compute_p$ under the map:
-    $$\mfunctype{\pathprojection}{\fullstate}{\nodes} \mid \pathprojection(\beta, p) = \beta$$
-    
-    The \textbf{State Trajectory} of an FDM $M$ on input $p$ is the
-    projection of $\compute_p$ under the map:
-    $$\mfunctype{\stateprojection}{\fullstate}{\nodes} \mid \stateprojection(\beta, p) = p$$
+  We define the initial computation path of length $k$ for a machine
+  $M$ on input $p$ as the first $k$ nodes traversed by $M$ while computing
+  on $p$.  We define the set of time-T halting paths to be the computations
+  performed by $M$ that halt in the first $T$ steps.
+
+  \begin{definition}{\textbf{Initial computation path} and \textbf{time-T halting path set}}
+
+    Let $M$ be a machine over $R$, and let $p$ be an element of
+    $\inspace_M$ with $\compute_p = z^0, z^1, \ldots, z^k, \ldots$ \\
+    Let $\computepath_p = \beta_0, \beta_1, \ldots, \beta_k, \ldots$.  
+    The \textbf{initial computation path} on $\computepath_p$ of
+    length $k$ is given by: 
+    $$\computepath_p(k) = (\beta_0, \beta_1, \ldots,\beta_k)$$
+
+    The \textbf{time-T path set}, $\haltpaths{T}$, of $M$ is given by:
+    $$\haltpaths{T} = \set{\computepath_p(T) \mid T(p) \leq T, p \in \inspace_M}$$
+
+  \end{definition}
+  
+  \begin{definition}{\textbf{Coincidence set}}
+
+    Let $M$ be a machine over a ring $R$, and let $\computepath = \computepath_{p}(k)$ be
+    the initial computation path of length $k$ for some $p \in
+    \inspace_M$. The \textbf{coincidence set} of $M$ with respect to $\computepath$, is the
+    set of elements in $\inspace_M$ sharing the same initial computation path of length k.
+    $\coincidence{\computepath}$, is given by:
+    $$\coincidence{\computepath} = 
+    \set{p' \in \inspace_M \mid \computepath_{p'}(k) = \computepath}$$
+
   \end{definition}
 
   \begin{definition}
     
   \end{definition}
 
+  \begin{theorem}{\textbf{Path Decomposition Theorem}}
+    For any machine $M$ over $R$, we have the following:
+
+    \begin{enumerate}
+    \item For any $T > 0$, $\halting_T$ is a disjoint union of basic
+      semi-algebraic (quasi-algebraic in the unordered case) sets.
+
+    \item $\halting_M$ is a countable union of disjoint basic
+      semi-algebraic sets.
+
+    \item For $\computepath \in \haltpaths{T}$,
+      $\computefn_M|\coincidence{\computepath}$ is a polynomial map.
+    \end{enumerate}
+  \end{theorem}
+
+  \begin{proofsketch}
+  \end{proofsketch}
+
 
 \section*{References}
 \beginrefs
-
-% Sample citation, to be cited at by calling \cite{CW87}
 
 % \bibentry{CW87}{\sc D.~Coppersmith} and {\sc S.~Winograd}, 
 % ``Matrix multiplication via arithmetic progressions,''
@@ -327,11 +502,7 @@ already computed.
 ``Complexity and Real Computation,''
 {\it Springer-Verlag New York, Inc.}
 1998, pp. 37-69
-
-
 \endrefs
-
-% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 
 \end{document}
 
