@@ -1,0 +1,167 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+\setcounter{secnumdepth}{2}
+
+%
+% ADD PACKAGES here:
+%
+\usepackage{amsmath,amsfonts,graphicx}
+
+\renewcommand{\thepage}{\arabic{page}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theequation}{\arabic{equation}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\thetable}{\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\head}[2]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf Scott Sanderson
+		\hfill Source: \cite{#1} }}
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill #2 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { { \hfill Date: \today} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   
+   \vspace*{4mm}
+}
+
+% Thesis Commands
+
+% If-then function with two cases. 
+% #1 = function symbol, 
+% #2 = line 1, 
+% #3 = line 1 condition, 
+% #4 = line 2 
+% #5 = line2 condition
+
+\newcommand{\todo}[1]{
+  \LARGE
+  \textbf{TODO: #1}
+  \normalsize
+}
+
+\newcommand{\twopartdef}[4]
+{
+  \left\{
+    \begin{array}{ll}
+      #1 & \mid #2 \\
+      #3 & \mid #4
+    \end{array}
+  \right.
+}
+
+% General purpose math
+\newcommand{\reals}[0]{\mathbb{R}}
+\newcommand{\complexes}[0]{\mathbb{C}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\functype}[3]{$#1:#2 \rightarrow #3$} 
+\newcommand{\mfunctype}[3]{#1:#2 \rightarrow #3} 
+
+% Machine descriptors.
+\newcommand{\inspace}[0]{\mathcal{I}}
+\newcommand{\outspace}[0]{\mathcal{O}}
+\newcommand{\statespace}[0]{\mathcal{S}}
+\newcommand{\nodes}[0]{\mathcal{N}}
+\newcommand{\fullstate}[0]{\nodes \times \statespace}
+\newcommand{\nodein}[0]{\nodes_{in}}
+\newcommand{\nodeout}[0]{\nodes_{out}}
+
+% Machine properties
+\newcommand{\computefn}[0]{\Phi}
+\newcommand{\note}[1]{{\textbf{Note:} #1}}
+\newcommand{\compute}[0]{\phi}
+\newcommand{\computeout}[1]{\phi_{#1}^{out}}
+\newcommand{\halting}[0]{\Omega}
+\newcommand{\allpaths}[0]{\Gamma}
+\newcommand{\haltpaths}[1]{\Gamma_{#1}}
+\newcommand{\computepath}[0]{\gamma}
+\newcommand{\pathprojection}[0]{\pi_\nodes}
+\newcommand{\stateprojection}[0]{\pi_\statespace}
+\newcommand{\coincidence}[1]{\mathcal{V}_{#1}}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{definition}{Definition}[section]
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofsketch}{{\bf Proof Sketch:}}{\hfill\rule{2mm}{2mm}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\head{**Title**}{**Date**}
+%\head{Blum et al.}{Chap 2 - Definitions and First Properties of Computation}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:
+
+% Some general latex examples and examples making use of the
+% macros follow.  
+%**** IN GENERAL, BE BRIEF. LONG SCRIBE NOTES, NO MATTER HOW WELL WRITTEN,
+%**** ARE NEVER READ BY ANYBODY.
+
+\section*{References}
+\beginrefs
+
+% Sample citation, to be cited at by calling \cite{CW87}
+
+\bibentry{CW87}{\sc D.~Coppersmith} and {\sc S.~Winograd}, 
+``Matrix multiplication via arithmetic progressions,''
+{\it Proceedings of the 19th ACM Symposium on Theory of Computing},
+1987, pp.~1--6.
+
+\endrefs
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}
+
+
+
+
+
