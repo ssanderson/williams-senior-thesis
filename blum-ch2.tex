@@ -47,13 +47,6 @@
 
 % Thesis Commands
 
-% If-then function with two cases. 
-% #1 = function symbol, 
-% #2 = line 1, 
-% #3 = line 1 condition, 
-% #4 = line 2 
-% #5 = line2 condition
-
 \newcommand{\todo}[1]{
   \LARGE
   \textbf{TODO: #1}
@@ -113,6 +106,7 @@
 \def\endrefs{\end{list}}
 \def\bibentry#1{\item[\hbox{[#1]}]}
 
+
 %Use this command for a figure; it puts a figure in wherever you want it.
 %usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
 \newcommand{\fig}[3]{
@@ -135,11 +129,6 @@
 %FILL IN THE RIGHT INFO.
 %\head{**Title**}{**Date**}
 \head{B98}{Chap 2 - Definitions and First Properties of Computation}
-
-% **** YOUR NOTES GO HERE:
-
-% Some general latex examples and examples making use of the
-% macros follow.  
 
 \section{A Finite Dimensional Model of Computation}
 
@@ -408,10 +397,10 @@ values with computations of finite length.
   S$, we can contruct a decision machine for $S$ by simulating $M$ and
   $M'$ in parallel, outputting 1 if $M$ halts and 0 if $M'$ halts.  
 
-  \todo{Is it worth giving the parallelization construction?}
+  \note{The parallelization construction generalized nicely to any
+    integral number of machines.}
 
 \end{proofsketch}
-
 
 \section{Characterization of Decidable Sets}
 
@@ -464,11 +453,9 @@ values with computations of finite length.
     $\coincidence{\computepath}$, is given by:
     $$\coincidence{\computepath} = 
     \set{p' \in \inspace_M \mid \computepath_{p'}(k) = \computepath}$$
-
-  \end{definition}
-
-  \begin{definition}
     
+    \emph{\note{Coincidence sets are equivalence classes of $\inspace_M$.}}
+
   \end{definition}
 
   \begin{theorem}{\textbf{Path Decomposition Theorem}}
@@ -487,16 +474,30 @@ values with computations of finite length.
   \end{theorem}
 
   \begin{proofsketch}
+    \begin{itemize}
+    \item \textbf{(1)} follows from the fact that there are finitely
+      many computation paths of length T.  Each computation path
+      corresponds to a sequence of branch nodes that corresponds to a
+      sequence of polynomial equalities and inequalities, so all the
+      coincidence set of a computation path is basic
+      semi(quasi)-algebraic. Since we can partition $\halting_T$ into
+      coincidence sets, each of which corresponds to a basic
+      semi(quasi)-algebraic, $\halting_T$ is a union of basic
+      semi/quasi-algebraics.
+    \item \textbf{(2)} Follows from the fact that $\halting_M$ is just
+      the union over all $T$ of $\halting_M$, and each $\halting_M$ is
+      an equivalence class. on $\inspace_M$.
+    \item \textbf{(3)} Follows from the fact that $\computepath$
+      corresponds to exactly one sequence of computation nodes, so
+      $\compute_M|\coincidence{\computepath}$ computes the composition of
+      $g_{\eta}$ for $\eta \in \computepath$.
+    \end{itemize}
   \end{proofsketch}
 
+\todo{Register Equations}
 
 \section*{References}
 \beginrefs
-
-% \bibentry{CW87}{\sc D.~Coppersmith} and {\sc S.~Winograd}, 
-% ``Matrix multiplication via arithmetic progressions,''
-% {\it Proceedings of the 19th ACM Symposium on Theory of Computing},
-% 1987, pp.~1--6.
 
 \bibentry{B98}{\sc Blum et al.},
 ``Complexity and Real Computation,''
@@ -505,8 +506,3 @@ values with computations of finite length.
 \endrefs
 
 \end{document}
-
-
-
-
-
