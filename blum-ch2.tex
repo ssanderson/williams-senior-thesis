@@ -397,8 +397,8 @@ values with computations of finite length.
   S$, we can contruct a decision machine for $S$ by simulating $M$ and
   $M'$ in parallel, outputting 1 if $M$ halts and 0 if $M'$ halts.  
 
-  \note{The parallelization construction generalized nicely to any
-    integral number of machines.}
+  \note{The parallelization construction generalizes nicely to any
+    integral number of machines. cf \cite{B98} for concrete details}
 
 \end{proofsketch}
 
@@ -474,26 +474,36 @@ values with computations of finite length.
   \end{theorem}
 
   \begin{proofsketch}
+    
+    The main idea is that the coincidence sets of a given computation
+    path form basic semi(quasi)-algebraic sets.  We can partition
+    each time-halting set into finitely many coincidence sets, and
+    there are countably many time-halting sets.
+
     \begin{itemize}
     \item \textbf{(1)} follows from the fact that there are finitely
       many computation paths of length T.  Each computation path
       corresponds to a sequence of branch nodes that corresponds to a
-      sequence of polynomial equalities and inequalities, so all the
+      sequence of polynomial equalities and inequalities, so the
       coincidence set of a computation path is basic
       semi(quasi)-algebraic. Since we can partition $\halting_T$ into
       coincidence sets, each of which corresponds to a basic
       semi(quasi)-algebraic, $\halting_T$ is a union of basic
       semi/quasi-algebraics.
-    \item \textbf{(2)} Follows from the fact that $\halting_M$ is just
+    \item \textbf{(2)} follows from the fact that $\halting_M$ is just
       the union over all $T$ of $\halting_M$, and each $\halting_M$ is
-      an equivalence class. on $\inspace_M$.
-    \item \textbf{(3)} Follows from the fact that $\computepath$
+      an equivalence class on $\inspace_M$.
+    \item \textbf{(3)} follows from the fact that $\computepath$
       corresponds to exactly one sequence of computation nodes, so
       $\compute_M|\coincidence{\computepath}$ computes the composition of
       $g_{\eta}$ for $\eta \in \computepath$.
     \end{itemize}
   \end{proofsketch}
 
+  \begin{corollary}
+    Any computable set is a countable union of disjoin basic
+    semi(quasi)-algebraic sets.
+  \end{corollary}
 \todo{Register Equations}
 
 \section*{References}
