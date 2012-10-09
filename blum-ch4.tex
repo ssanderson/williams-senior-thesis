@@ -46,53 +46,8 @@
 }
 
 % Thesis Commands
+\usepackage{thesiscommands}
 
-\newcommand{\todo}[1]{
-  \LARGE
-  \textbf{TODO: #1}
-  \normalsize
-}
-
-\newcommand{\twopartdef}[4]
-{
-  \left\{
-    \begin{array}{ll}
-      #1 & \mid #2 \\
-      #3 & \mid #4
-    \end{array}
-  \right.
-}
-
-% General purpose math
-\newcommand{\reals}[0]{\mathbb{R}}
-\newcommand{\complexes}[0]{\mathbb{C}}
-\newcommand{\set}[1]{\{#1\}}
-\newcommand{\functype}[3]{$#1:#2 \rightarrow #3$} 
-\newcommand{\mfunctype}[3]{#1:#2 \rightarrow #3} 
-
-% Machine descriptors.
-\newcommand{\inspace}[0]{\mathcal{I}}
-\newcommand{\outspace}[0]{\mathcal{O}}
-\newcommand{\statespace}[0]{\mathcal{S}}
-\newcommand{\nodes}[0]{\mathcal{N}}
-\newcommand{\fullstate}[0]{\nodes \times \statespace}
-\newcommand{\nodein}[0]{\nodes_{in}}
-\newcommand{\nodeout}[0]{\nodes_{out}}
-
-% Machine properties
-\newcommand{\computefn}[0]{\Phi}
-\newcommand{\note}[1]{{\textbf{Note:} #1}}
-\newcommand{\compute}[0]{\phi}
-\newcommand{\computeout}[1]{\phi_{#1}^{out}}
-\newcommand{\halting}[0]{\Omega}
-\newcommand{\allpaths}[0]{\Gamma}
-\newcommand{\haltpaths}[1]{\Gamma_{#1}}
-\newcommand{\computepath}[0]{\gamma}
-\newcommand{\pathprojection}[0]{\pi_\nodes}
-\newcommand{\stateprojection}[0]{\pi_\statespace}
-\newcommand{\coincidence}[1]{\mathcal{V}_{#1}}
-
-%
 % Convention for citations is authors' initials followed by the year.
 % For example, to cite a paper by Leighton and Maggs you would type
 % \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
@@ -129,6 +84,72 @@
 %FILL IN THE RIGHT INFO.
 %\head{**Title**}{**Date**}
 \head{Blum et al.}{Chap 4 - Decision Problems and Complexity over a Ring}
+
+\begin{section}{Decision Problems} 
+
+  The treatment of complexity questions in our model is much the same
+  as in classical complexity theory.  We frame problems as languages,
+  ie, as subsets of our input domain.  In the classical theory, this
+  means binary encodings of strings -- for us, it means subsets of
+  $R^\infty$.  The complexity/decidability of a problem then becomes a
+  question about the complexity/decidability of testing an input for
+  membership in a language.
+
+  \subsection{Definitions}
+  
+  \begin{definition}{\textbf{Decision Problem}}
+      
+    A \textbf{Decision Problem} over a ring $R$ is a set, $S \subseteq
+    R^\infty$.  A \textbf{Structured Decision Problem} is a set $S$,
+    partitioned into subsets, $S_{yes}$ and $S_{no}$, respectively
+    called the \textbf{Yes Instances} and \textbf{No Instances} of 
+    $S$.
+ 
+  \end{definition}
+
+  \begin{definition}{\textbf{Characteristic Function}}
+
+    Let $S = S_{yes} \cup S_{no} \subseteq R^{\infty}$.  The
+    characteristic function,
+    \functype{\charfunc_S}{S}{\set{0,1}}, is given by:
+
+    $$\charfunc_S(x) = \twopartdef{1}{x \in S_{yes}}{0}{x \in S_{no}}$$
+  \end{definition}
+
+  \subsection{Notable Decision Problems}
+
+  \begin{itemize}
+    \subsubsection{Decision Problems over Arbitrary Rings}
+    \bolditem{HN} - Are there solutions to a finite system of polynomial equations?
+    \bolditem{QUAD} - Does a finite system of quadratic equations have a solution?
+    \bolditem{4-FEAS} - Does a finite system of degree-4 polynomials have a solution?
+    \bolditem{QA-FEAS} - Does a set of quasi-algebraic equations describe the empty set?  
+    \bolditem{KP} - Knapsack Problem
+    
+    \subsubsection{Decision Problems over Ordered Rings}
+    \bolditem{SA-FEAS} - Does a set of semi-algebraic equations describe the empty set?
+    \bolditem{LPF} - Feasibility of Linear Programming Problems
+    \bolditem{TSP} - Travelling Salesman Problem
+    
+    \subsubsection{Decision Problems over $\integers$}
+    \bolditem{IPF} - Feasibility of Integer Programming Problems
+
+    \subsubsection{Decision Problems over $\integers_2$}
+    \bolditem{SAT} - Boolean formula satisfiability
+  \end{itemize}
+
+  \subsection{Known Decidability Results}
+
+  All of the above are known to be decidable (when well-defined) over
+  $\complexes$, $\reals$, and $\integers_2$.  
+
+  Over $\integers$, \textbf{IPF}, \textbf{TSP}, and \textbf{KP} are
+  decidable, but \textbf{4-FEAS}, \textbf{QUAD}, \textbf{HN},
+  \textbf{QA-FEAS}, and \textbf{SA-FEAS} are not.  Over $\rationals$
+
+\end{section}
+
+
 
 \section*{References}
 \beginrefs

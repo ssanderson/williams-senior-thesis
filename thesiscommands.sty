@@ -1,0 +1,49 @@
+\newcommand{\bolditem}[1]{\item{\textbf{#1}}}
+
+\newcommand{\todo}[1]{
+  \LARGE
+  \textbf{TODO: #1}
+  \normalsize
+}
+
+\newcommand{\twopartdef}[4]
+{
+  \left\{
+    \begin{array}{ll}
+      #1 & \mid #2 \\
+      #3 & \mid #4
+    \end{array}
+  \right.
+}
+
+% General purpose math
+\newcommand{\reals}[0]{\mathbb{R}}
+\newcommand{\complexes}[0]{\mathbb{C}}
+\newcommand{\integers}[0]{\mathbb{Z}}
+\newcommand{\rationals}[0]{\mathbb{Q}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\functype}[3]{$#1:#2 \rightarrow #3$} 
+\newcommand{\mfunctype}[3]{#1:#2 \rightarrow #3} 
+
+% Machine descriptors.
+\newcommand{\inspace}[0]{\mathcal{I}}
+\newcommand{\outspace}[0]{\mathcal{O}}
+\newcommand{\statespace}[0]{\mathcal{S}}
+\newcommand{\nodes}[0]{\mathcal{N}}
+\newcommand{\fullstate}[0]{\nodes \times \statespace}
+\newcommand{\nodein}[0]{\nodes_{in}}
+\newcommand{\nodeout}[0]{\nodes_{out}}
+
+% Machine properties
+\newcommand{\computefn}[0]{\Phi}
+\newcommand{\note}[1]{{\textbf{Note:} #1}}
+\newcommand{\compute}[0]{\phi}
+\newcommand{\computeout}[1]{\phi_{#1}^{out}}
+\newcommand{\halting}[0]{\Omega}
+\newcommand{\allpaths}[0]{\Gamma}
+\newcommand{\haltpaths}[1]{\Gamma_{#1}}
+\newcommand{\computepath}[0]{\gamma}
+\newcommand{\pathprojection}[0]{\pi_\nodes}
+\newcommand{\stateprojection}[0]{\pi_\statespace}
+\newcommand{\coincidence}[1]{\mathcal{V}_{#1}}
+\newcommand{\charfunc}[0]{\chi}
