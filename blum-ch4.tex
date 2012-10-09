@@ -85,7 +85,7 @@
 %\head{**Title**}{**Date**}
 \head{Blum et al.}{Chap 4 - Decision Problems and Complexity over a Ring}
 
-\begin{section}{Decision Problems} 
+\section{Decision Problems} 
 
   The treatment of complexity questions in our model is much the same
   as in classical complexity theory.  We frame problems as languages,
@@ -141,15 +141,115 @@
   \subsection{Known Decidability Results}
 
   All of the above are known to be decidable (when well-defined) over
-  $\complexes$, $\reals$, and $\integers_2$.  
+  $\complexes$, $\reals$, and $\integers_2$.  Over $\integers$,
+  \textbf{IPF}, \textbf{TSP}, and \textbf{KP} are decidable, but
+  \textbf{4-FEAS}, \textbf{QUAD}, \textbf{HN}, \textbf{QA-FEAS}, and
+  \textbf{SA-FEAS} are not.  Over $\rationals$, \textbf{LPF},
+  \textbf{TSP}, and \textbf{KP} are decidable.  It is an open problem
+  whether \textbf{QUAD} and \textbf{HN} are decidable over $\rationals$.
 
-  Over $\integers$, \textbf{IPF}, \textbf{TSP}, and \textbf{KP} are
-  decidable, but \textbf{4-FEAS}, \textbf{QUAD}, \textbf{HN},
-  \textbf{QA-FEAS}, and \textbf{SA-FEAS} are not.  Over $\rationals$
+\section{The Class P}
 
-\end{section}
+The complexity class $P$ is intended to abstract a notion of problems
+that are computationally tractable.  In general the class $P$ refers
+to those decision problems which can be computable in some number of
+steps that is polynomial in some relevant measure of the size of the
+problem's input.  Depending on context and interpretation of inputs,
+the relevant measure of size varies. In the classical theory of
+computation, size refers to the length of the machine's binary input.
+Since the binary representation length of an integer is logarithmic in
+its magnitude, this definition is equivalent to the set of problems
+that can be computed in time polylogarithmic in the magnitude of the
+machine's input interpreted as an integer.  In other cases, we find it
+more appropriate to interpret the input to an algorithm as a set of
+distinct inputs, each of which is bounded in size, rather than a
+single input.  (This is how we generally concepualize the inputs to
+sorting algorithms, for example).  In such a case, the relevant
+measure of cost is taken to be the number of inputs, rather than the
+magnitude of any single input.  In more rare cases, we may care about
+both magnitude and number of inputs, in which case our relevant measure
+of size may involve some product of the two measures.\\
 
+We extend these intuitions to arbitrary rings by defining two
+different measures of the magnitude of an input to a machine: the
+\emph{length} (corresponding to the number of distinct inputs to a
+machine) and the \emph{height} corresponding to the magnitude of each
+input.  The overall size of an input is then taken to be product of
+the length of an input with the maximum height of any element of the
+input.  This naturally abstracts the case where we interpret our input
+as a single value with unbounded magnitude ($length = 1$, $height =
+n$) as well as the case where we regard the input as an array of
+bounded values ($length = n$, $height = 1$).
 
+\subsection{Definitions}
+
+\begin{definition}{\textbf{Height Function} over $R$}
+
+  We define a \textbf{Height Function} on a ring $R$ to be a map:
+  $$\mfunctype{ht_R}{R^\infty}{\reals}$$
+\end{definition}
+
+\note{As we shall see, the height function on a ring effectively
+  defines what we consider to the the cost of performing a computation
+  on an element of the ring.  Of particular note are the \emph{unit
+    height} function, $ht_R(x) = 1$, and the \emph{bit height}
+  function, $ht_R(x) = \log(|x| + 1)$.  We use the unit height
+  function in cases where we are concerned with the algebraic
+  complexity of an algorithm (ie, the number of algebraic operations
+  required to compute the algorithm, independent of the values on
+  which the operations are performed).  We use the bit height function
+  when we want to capture the classical theory of computation over
+  $\integers$.  Over $\rationals$, we give an alternative definition
+  of bit height, $ht_\rationals(x) = (max(ht_\integers(p),
+  ht_\integers(q))$, where $x = \frac{p}{q}$, $p$ and $q$ relatively
+  prime.  This captures the bit cost of representing a rational $x$ as
+  a pair of integers.  Unless noted otherwise, we generally use bit
+  cost for computation over $\integers$ and $\rationals$, and unit
+  cost otherwise.}
+
+\begin{definition}{\textbf{Input Length}}
+  
+  The \textbf{length} of an input $x \in R^n$ to a machine over $R$ is given by:
+  $$length(x) = n$$
+\end{definition}
+
+\begin{definition}{\textbf{Input Size}}
+
+  The \textbf{size} of an input $x = (x_1, x_2, \ldots, x_n)$ to a
+  machine over a ring, $R$ with height function $ht_R$ is given by:
+  $$length(x) * max(ht_R(x_i))$$.
+\end{definition}
+\note{It should be clear from the above that, in the case that $ht_R$
+  is the unit height function, the size of the input to a machine
+  reduces to just the length of the input.}
+
+Now that we have a definition of input size, we want also to consider
+the cost of performing a computation on a given machine, which we
+define as the halting time of
+
+\begin{definition}{\textbf{Computation Cost}}
+  
+  Let $x \in R^n$ be an input to a machine $M$ over $R$ with height
+  function $ht_R$ defined.  The \textbf{cost}, $cost_M$ for $M$ to
+  compute $\computefn_M(x)$ is given by:
+  $$cost_M(x) = T(x) * ht_{max}(x)$$ where $ht_{max}(x)$ is given by \todo{Decipher page 87 of Blum et al}.
+  
+\end{definition}
+
+\begin{definition}{\textbf{Polynomial Time Machine}}
+  A machine $M$ over $R$ is a \textbf{polynomial time} machine on $X
+  \subset \inspace_M$ if there exist positive integers $c$ and $q$
+  such that:
+  $$cost_M(x) \leq c(size(x))^q \mid \forall x \in X$$
+\end{definition}
+\begin{definition}{The Complexity Class $P$ over $R$}
+  
+  A decision problem $S \subseteq R^\infty$ is said to be in the class
+  $P$ if there exists a polynmial-time machine $M$ that computes the
+  characteristic function of S, $\charfunc_S$.
+\end{definition}
+
+\todo{Poly-time reductions}
 
 \section*{References}
 \beginrefs
