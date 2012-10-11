@@ -247,9 +247,41 @@ define as the halting time of
   A decision problem $S \subseteq R^\infty$ is said to be in the class
   $P$ if there exists a polynmial-time machine $M$ that computes the
   characteristic function of S, $\charfunc_S$.
+
 \end{definition}
 
-\todo{Poly-time reductions}
+\begin{definition}{\textbf{p-morphism}}
+  
+  A function, \functype{\varphi}{X}{Y \cup R^\infty} is called
+  \textbf{polynomial-time computable} over $R$, or a
+  \textbf{p-morphism} over $R$ if there exists a polynomial time
+  machine over $R$ that computes $\varphi$.
+
+\end{definition}
+
+\begin{definition}{Membership in $P$}
+  A decision problem $S \subseteq R^\infty$ is said to be in class $P$
+  if its characteristic function, $\charfunc_S$ is a p-morphism.
+\end{definition}
+ 
+\section{Polynomial Time Reductions}
+
+\begin{definition}{\textbf{p-reducibility}}
+
+  A decision problem $S$ is \textbf{p-reducible} to a decision problem
+  $S'$ if there exists a p-morphism,
+  \functype{\varphi}{R^\infty}{R^\infty} such that $\varphi(S_{yes})
+  \subseteq S'_{yes}$ and $\varphi(S_{no}) \subseteq S'_{no}$.  The
+  map $\varphi$ is called a \textbf{polynomial-time reduction} from
+  $S$ to $S'$.
+  \end{definition}
+
+  \note{ From the above definition it follows immediately that if
+    $\varphi$ is a polynomial-time reduction from $S$ to $S'$, then $x
+    \in S_{yes}$ if and only if $\varphi(x) \in S'_{yes}$.  Moreover,
+    since compositions of polynomials are still polynomials, it should
+    be clear that if a decision problem $S$ is p-reducible to a
+    decision problem $S' \in P$, then $S \in P$ as well.}
 
 \section*{References}
 \beginrefs
