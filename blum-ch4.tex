@@ -274,6 +274,10 @@ define as the halting time of
   \subseteq S'_{yes}$ and $\varphi(S_{no}) \subseteq S'_{no}$.  The
   map $\varphi$ is called a \textbf{polynomial-time reduction} from
   $S$ to $S'$.
+
+  We denote the sentence $S$ is p-reducible to $S'$ by writing:
+
+  $$S \preduce S'$$
   \end{definition}
 
   \note{ From the above definition it follows immediately that if
@@ -283,18 +287,21 @@ define as the halting time of
     be clear that if a decision problem $S$ is p-reducible to a
     decision problem $S' \in P$, then $S \in P$ as well.}
 
-\section*{References}
-\beginrefs
+\section{Notable Results}
 
-% Sample citation, to be cited at by calling \cite{CW87}
+\begin{theorem}
+  \begin{enumerate}
+  \item Over any ring or field $R$, $HN \preduce QUAD$.
+  \item Over any ordered ring or field $R$, $HN \preduce 4-FEAS$.
+  \item Over $(\integers, >)$, 
+    \begin{enumerate}
+    \item $BHN \preduce BQUAD \preduce B4FEAS$
+    \item $BQUAD \preduce BIP \preduce IPF$
+    \end{enumerate}
+  \end{enumerate}
+\end{theorem}
 
-\bibentry{B98}{\sc Blum et al.},
-``Complexity and Real Computation,''
-{\it Springer-Verlag New York, Inc.}
-1998, pp. 37-69
-\endrefs
-
-% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\input{references.tex}
 
 \end{document}
 
