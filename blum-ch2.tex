@@ -152,7 +152,7 @@ by $R^k$.
   \subseteq R^n$, a state space $\statespace_M \subseteq R^m$, and an
   output space $\outspace_M \subseteq R^l$.  (Recall that $R^k$
   denotes the ring of polynomials over $R$ with degree at most $k$).\\
-  
+
   Each node has an associated map, which varies in structure in
   accordance with its type.
   \begin{enumerate}
@@ -188,7 +188,8 @@ definition of a machine is explicitly associated with a particular
 graph, it is awkward to abstract a notion of being in multiple
 locations simultaneously.  The following definition is meant to be
 equivalent in computational power to that of Blum et al., while also
-allowing a more natural generalization to incorporating nondeterminism.
+allowing a more natural generalization to incorporating
+nondeterminism.
 
 \begin{definition}{\textbf{Finite Dimensional Machine} over a ring \textbf{R}}
   
@@ -281,10 +282,6 @@ values with computations of finite length.
     value} of $\compute_p$ to be $\computeout{p} = H_{out}(z^T)$.  If
   $\compute_p$ is not a halting computation, $\computeout{p}$ is
   undefined, and we say that $T_M(p) = \infty$.\\
-  
-  \todo{I find a lot of the time-T notation confusing and/or
-    ambiguous. Maybe standardize to always use T as a function
-    argument?}
 
   The \textbf{Halting Set}, $\halting_M \subseteq \inspace$ of an FDM,
   $M$ is the set: 
@@ -358,6 +355,37 @@ values with computations of finite length.
     integral number of machines. cf \cite{B98} for concrete details}
 
 \end{proofsketch}
+
+\subsection{Notes and Further Properties of Machines}
+
+\begin{itemize}
+\item The theory developed above works equally well for both ordered
+  and unordered rings, with the only substantive change being that
+  branch nodes perform equality comparisons in the unordered case and
+  perform order comparisons $(<, \leq, >, \geq)$ in the ordered case.
+
+\item The theory developed above can also be extended to fields,
+  allowing the use of rational maps in addition to polynomial maps.
+  (Recall that a field is a commutative ring with unit in which every
+  nonzero element has a multiplicative inverse.)  The only possible
+  cause for concern is the possibility of division by zero, which can
+  be handled by inserting sequences of branch before each computation
+  node to check that all denominators in the node's map are nonzero.
+  In the case that a zero-division occurs, the machine can transition
+  to an additionally-defined exception state and halt.
+
+\item The behavior of a machine $M$ is completely determined by the
+  values of the coefficients in each map associated with the nodes,
+  $\nodes_M = \set{1, 2, \ldots N}$.  We refer to the collection of
+  these coefficients as the \textbf{machine constants} of $M$,
+  written: $\mathcal{C}_M = \set{c_{11}, c_{21}, \ldots, c_{Nk}
+    \subset R}$.  It is relatively straightforward to provide an
+  unambiguous coding of $\mathcal{C}_M$ that is linear in the size of
+  $\nodes_M$.
+
+\item Associated with a machine $M$ is its degree, $D_M$, the maximum
+  of the degrees of all maps associated with $M$.
+\end{itemize}
 
 \section{Characterization of Decidable Sets}
 
@@ -458,10 +486,15 @@ values with computations of finite length.
   \end{proofsketch}
 
   \begin{corollary}
-    Any computable set is a countable union of disjoin basic
+    Any computable set is a countable union of disjoint basic
     semi(quasi)-algebraic sets.
   \end{corollary}
-\todo{Register Equations}
+
+\section{The Register Equations}
+
+
+
+
 
 \input{references.tex}
 
