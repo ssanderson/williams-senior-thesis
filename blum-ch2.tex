@@ -48,22 +48,6 @@
 % Thesis Commands
 \usepackage{thesiscommands}
 
-% Convention for citations is authors' initials followed by the year.
-% For example, to cite a paper by Leighton and Maggs you would type
-% \cite{LM89}, and to cite a paper by Strassen you would type
-% \cite{S69}.  (To avoid bibliography problems, for now we redefine
-% the \cite command.)  Also commands that create a suitable format for
-% the reference list.
-
-\renewcommand{\cite}[1]{[#1]}
-\def\beginrefs{\begin{list}%
-        {[\arabic{equation}]}{\usecounter{equation}
-         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
-         \setlength{\labelwidth}{1.6truecm}}}
-\def\endrefs{\end{list}}
-\def\bibentry#1{\item[\hbox{[#1]}]}
-
-
 %Use this command for a figure; it puts a figure in wherever you want it.
 %usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
 \newcommand{\fig}[3]{
@@ -84,7 +68,6 @@
 
 \begin{document}
 %FILL IN THE RIGHT INFO.
-%\head{**Title**}{**Date**}
 \head{B98}{Chap 2 - Definitions and First Properties of Computation}
 
 \section{A Finite Dimensional Model of Computation}
@@ -112,6 +95,7 @@ such an algorithm are:
   which calculation to perform at a given step.
   
 \item A set of values for the algorithm to output.
+
 \end{enumerate}
 
 We present two equivalent definitions of a Finite Dimensional Machine.
@@ -135,17 +119,17 @@ by $R^k$.
   A \textbf{Finite Dimensional Machine} (FDM), $M$ over $R$ is a
   finite, directed, connected graph with four types of nodes:
   \emph{input, computation, branch} and \emph{output}.  An FDM has one
-  input and one output node, but can have any number of branch and
+  input and one output node but can have any number of branch and
   computation nodes. The input node has indegree 0.  All other nodes
   have indegree $\geq$ 1. The input node and computation nodes have
   outdegree 1; branch nodes have outdegree 2, and the output node has
   outdegree 0.  We will use the expression ``next node(s)'' of a node
-  $\beta$ to refer to the node(s) to which $\beta$ has outgoing edges.\\
+  $\eta$ to refer to the node(s) to which $\eta$ has outgoing edges.\\
   
-  \emph{\note{Blum et al. allow a machine to have multiple
-      output nodes, but it is relatively easy to show that any machine
-      with multiple output nodes can be trivially reduced to a machine
-      with a single output node, so for ease of notation we
+  \emph{\note{Blum et al. allow a machine to have multiple output
+      nodes, but it is relatively easy to show that any machine with
+      multiple output nodes can be trivially reduced to a machine with
+      a single output node, so for ease of notation we
       prefer the single output notation here.}}\\
   
   An FDM also has three associated spaces: an input space $\inspace_M
@@ -157,39 +141,36 @@ by $R^k$.
   accordance with its type.
   \begin{enumerate}
   \item Associated with the input node is a linear map
-    \functype{I}{\inspace_M}{\statespace_M}. We denote the next node
-    of the input node by $\beta_1$.
+    \functype{I}{\inspace_M}{\statespace_M}. We often denote the input
+    node by $\eta_1$, or just 1. We denote the next node of the input
+    node by $\beta_1$.
     
   \item Associated with each computation node, $\eta$, is a polynomial
     map \functype{g_\eta}{\statespace_M}{\statespace_M}. We denote the
     next node of $\eta$ by $\beta_\eta$.
     
-  \item Associated with each branch node, $b$ is a nonzero polynomial
-    function \functype{g_b}{\statespace_M}{R}.  We associate the
-    condition $g_b(p) \geq 0$ with one of the next nodes of $b$,
-    called the \textbf{Yes Node} of $b$.  We symbolically denote the
-    Yes Node by $\beta_b^+$. We associate the condition $g_b(p) < 0$
-    with the remaining next node of $b$, which we call the \textbf{No
-      Node} and denote $\beta_b^-$.
+  \item Associated with each branch node, $\eta$ is a nonzero
+    polynomial function \functype{g_\eta}{\statespace_M}{R}.  We
+    associate the condition $g_\eta(p) \geq 0$ with one of the next
+    nodes of $\eta$, called the \textbf{Yes Node} of $\eta$.  We
+    symbolically denote the Yes Node by $\beta_\eta^+$. We associate
+    the condition $g_\eta(p) < 0$ with the remaining next node of $b$,
+    which we call the \textbf{No Node} and denote $\beta_\eta^-$.
     
   \item Associated with the output node is a linear map
     \functype{O}{\statespace_M}{\outspace_M}.
-    
   \end{enumerate}
 \end{definition}
 
-Blum et al's definition is meant to capture an intuition that a real
-algorithm can essentially be described by a flowchart.  On this model,
-computation consists in following the arrows of the flowchart from
-node to node, performing computations and storing their values.  One
-drawback of their formulation is that it does not easily generalize to
-a non-deterministic formulation.  In particular, because their
-definition of a machine is explicitly associated with a particular
-graph, it is awkward to abstract a notion of being in multiple
-locations simultaneously.  The following definition is meant to be
-equivalent in computational power to that of Blum et al., while also
-allowing a more natural generalization to incorporating
-nondeterminism.
+In the Blum model, computation consists in following the arrows of the
+flowchart from node to node, performing computations and storing their
+values.  The output of a machine on this model is a value in
+$\outspace_M$ which is calculated when computation enters the output
+node. One drawback of their formulation is that it does not easily
+generalize to a non-deterministic formulation.  The following
+definition is meant to be equivalent in computational power to that of
+Blum et al., while also allowing a more natural generalization to
+incorporating nondeterminism.
 
 \begin{definition}{\textbf{Finite Dimensional Machine} over a ring \textbf{R}}
   
@@ -484,18 +465,10 @@ values with computations of finite length.
       $g_{\eta}$ for $\eta \in \computepath$.
     \end{itemize}
   \end{proofsketch}
-
+  
   \begin{corollary}
     Any computable set is a countable union of disjoint basic
     semi(quasi)-algebraic sets.
   \end{corollary}
-
-\section{The Register Equations}
-
-
-
-
-
-\input{references.tex}
 
 \end{document}

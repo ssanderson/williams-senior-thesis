@@ -44,11 +44,11 @@
 
 % In case you need to adjust margins:
 \topmargin=-0.45in      %
-\evensidemargin=0in     %
-\oddsidemargin=0in      %
+\evensidemargin=0.0in   %
+\oddsidemargin=0.0in    %
 \textwidth=6.5in        %
 \textheight=9.0in       %
-\headsep=0.25in         %
+\headsep=.2in          %
 
 % Homework Specific Information
 \newcommand{\hmwkTitle}{}
@@ -151,23 +151,24 @@
 %\maketitle
 % Uncomment the \tableofcontents line to get a Contents on front page
 % \tableofcontents
-  \newpage
   
-  \fontsize{12pt}{12pt}\selectfont
+  \hfill \today
 
-  \hspace{3pt} Classical Theory of Computation provides a
-  framework in which we can pose and answer mathematically rigorous
-  questions about the possibility and cost of solving problems by way
-  of algorithmic procedures.  Central to this theory has been the
-  Turing Machine model of computation, in which the memory of of an
-  ideal computing machine is represented by an infinitely long tape
-  containing finitely many symbols at any given point in time.  One
-  shortcoming of this computing model is that it does not naturally
-  allow us to analyze computational problems that are naturally
-  defined over uncountable sets such $\mathbb{R}$ or $\mathbb{C}$.
-  Examples of such problems include the expected runtime of Newton's
-  Method, determining membership in the Mandelbrot Set, and the
-  Hilbert Nullstellensatz, which asks whether a finite set of
+  \vspace{.15in}
+  
+  \hspace{3pt} Classical Theory of Computation provides a framework in
+  which we can pose mathematically rigorous questions about the
+  possibility and cost of solving problems via algorithmic procedures.
+  Central to this theory has been the Turing Machine model of
+  computation, in which the memory of of an ideal computing machine is
+  represented by an infinitely long tape containing finitely many
+  symbols at any given point in time.  One shortcoming of this
+  computing model is that it does not allow us to describe
+  computational problems that are naturally defined over uncountable
+  sets such $\mathbb{R}$ or $\mathbb{C}$.  Examples of such problems
+  include analyzing the expected runtime of Newton's Method,
+  determining membership in the Mandelbrot Set, and the Hilbert
+  Nullstellensatz, which asks whether a finite set of
   polynomials in $n$ variables share a common root.  \\
 
   In their 1989 paper, \emph{On a Theory of Computation and Complexity
@@ -176,14 +177,14 @@
   computation defined over arbitrary rings.  Along with Felipe Cucker,
   the same authors further develop their theory in their 1998 book,
   \textit{Complexity and Real Computation}.  An important feature of
-  the model due to Blum et al. is a characterization of the complexity
-  classes P and NP \emph{relative to a ring $R$}.  Their definition
-  serves as a natural generalization of the characterization of NP in
-  the classical theory as the set of problems for which there exist
-  efficient (ie, polynomial time) verifiers for candidate solutions.
-  There exist, however, a great variety of alternative definitions of
-  NP in the classical theory.  For many of these definitions, it is
-  not immediately apparent that they define the same class of
+  the model is a characterization of the complexity classes P and NP
+  \emph{relative to a ring $R$}.  Their definition serves as a natural
+  generalization of the characterization of NP in the classical theory
+  as the set of problems for which there exist efficient (ie,
+  polynomial time) verifiers for candidate solutions.  There exist,
+  however, a great variety of alternative definitions of NP in the
+  classical theory.  For many of these definitions, it is not
+  immediately apparent that they define the same class of
   problems. For example, in the classical theory of computation, the
   class of efficiently verifiable problems is precisely the class of
   problems that can be efficiently computed by a nondeterministic
@@ -191,17 +192,36 @@
   to the arbitrary algebraic case. \\
 
   For my thesis, I intend to investigate the relationships between
-  alternative characterizations of NP over arbitrary rings, using the
-  model developed by Blum et al. as a jumping off point.  In
+  alternative characterizations nondeterminism over arbitrary rings,
+  using the model developed by Blum et al. as a starting point.  In
   particular, I will consider the class of problems efficiently
   solvable by Blum machines altered to allow for nondeterministic
   computation in a manner analogous to the standard definition of a
-  nondeterministic Turing machine.  This problem will require either
-  demonstrating the existence of problems which fall in one class and
-  not the other, or a novel equivalence proof; the proof of
-  equivalence of the analogous classes defined over standard Turing
-  machines relies on an upper bound on the number of possible
-  solutions that no longer holds for uncountably infinite inputs.
+  nondeterministic Turing machine.  An important first goal is to
+  determine whether this characterization coincides with the
+  verifiability definition of NP.  Solving this problem will require
+  either demonstrating the existence of problems which fall in one
+  class and not the other or developing a novel equivalence proof; the
+  proof of equivalence in the classical theory relies on an upper
+  bound on the number of possible solutions that no longer holds for
+  uncountably infinite inputs. Other topics of interest may include:
+
+  \begin{itemize}
+  \item Determining the existence of Complete problems for alternative
+    nondeterministic complexity classes.
+  \item Investigating the possibility of efficient approximation in
+    the Blum model and its extensions.
+  \item Characterizing problems which become easier or harder relative
+    to different classes of algebraic structures.  For example, there
+    is some evidence that Subset Sum, a classical NP-Complete problem,
+    cannot be solved efficiently with a nondeterministic machine over
+    real inputs, suggesting that the problem in some sense gets harder
+    in the real case.  By contrast, it is known that Linear
+    Programming is in P over the reals but is NP-Complete over the
+    integers. This suggests that the structure of Linear Programming
+    allows us to exploit the continuity of the reals in a way that
+    Subset Sum does not.
+  \end{itemize}
 
 \end{spacing}
 \end{document}
