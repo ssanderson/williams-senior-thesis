@@ -74,10 +74,62 @@
 
 \section{Definition}
 
-\begin{definition} NDET-Machine
+Here we present a model of nondeterministic computation that naturally
+generalizes from the Turing Machine model to the Blum model of
+computation.  The basic idea is that each branch node is allowed to
+have multiple \textbf{Yes} and \textbf{No} nodes, and an accepting
+computation is any computational path through the machine that
+respects the branching functions.
 
-  foo
-  
+\begin{definition} NDET-Machine over R
+
+  An NDET-Machine over a ring R is a finite, directed, connected graph
+  with two types of nodes: \emph{computation} and \emph{branch}, along
+  with distinguished \emph{input} and \emph{accept} nodes.
+
+  Associated with each computation node, $\eta$, is a
+  \emph{next-node}, $\beta_{\eta}$, and a computation map,
+  \functype{g_\eta}{R^\infty}{R^\infty}
+
+  Associated with each branch node, $\eta$, is a nonzero polynomial
+  function \functype{g_\eta}{R^\infty}{R}, and a set $\set{\beta^+_1,
+    \beta^+_2, \ldots \beta^+_i}$ of \emph{Yes Nodes} and a set
+  $\set{\beta^-_1, \beta^-_2, \ldots \beta^-_j}$ of \emph{No Nodes}.
+  We refer to the max of $i$ and $j$ as the \textbf{degree} of $\eta$.
 \end{definition}
+
+The computation of an NDET-machine is defined analogously to that of a
+Blum machine, with the caveat that we now accept any input for which
+there exists some accepting path through the machine.  More formally,
+for each configuration pair $z = (\eta, x)$, we define the
+\textbf{successor set} $H(z)$, to be the set of all pairs,
+$\set{(\eta', x')}$, such that:
+
+\begin{enumerate}
+\item If $\eta$ is a computation node, then $\eta' = \beta_\eta$, and
+  $x' = g(x)$.
+\item If $\eta$ is a branch node, $x' = x$ and if $g(x) > 0)$, $\eta'$
+  is a yes-node of $\eta$.  If $g(x) < 0$, $\eta'$ is a no-node of
+  $\eta$.
+\end{enumerate}
+
+We say that an NDET-machine $M$ accepts an input $w$ if there exists a
+sequence of configurations, $z_1 = (\eta_1, w), z_2 = (\eta_2, x_2),
+\ldots z_k = (\eta_k, x_k)$, such that $z_1$ is the input node of $M$,
+$\eta_k$ is the accept node of $M$, and $z_{i+1} \in H(z_i) \forall 1
+\leq i \leq k$.  We say that $M$ accepts $w$ in time $T$ if there
+exists such a sequence with $k \leq T$.
+
+\begin{definition} $\ndetp$
+  A language, $S$ is in $\ndetp$ if there exists a machine $M$ and a
+  constant $p$ such that, $\forall w \in S$, $M$ accepts w in time
+  $O(size(w)^p)$.
+\end{definition}
+
+It should be immediately clear that NDETP$_{\integers_2}$ is the
+classical NP when taken with unit cost, much in the same way that Blum
+et al's verifiability definition of NP collapses to the classical case
+over $\integers_2$.  As we shall see, however, it is less clear
+whether the equivalence of $\ndetp$ and NP holds for arbitrary rings.
 
 \end{document}

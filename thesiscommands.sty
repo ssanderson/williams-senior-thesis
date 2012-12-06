@@ -21,6 +21,7 @@
 \newcommand{\reals}[0]{\mathbb{R}}
 \newcommand{\complexes}[0]{\mathbb{C}}
 \newcommand{\integers}[0]{\mathbb{Z}}
+\newcommand{\Z}[1]{\mathbb{Z}_{#1}}
 \newcommand{\rationals}[0]{\mathbb{Q}}
 \newcommand{\set}[1]{\{#1\}}
 \newcommand{\functype}[3]{$#1:#2 \rightarrow #3$} 
@@ -32,8 +33,10 @@
 \newcommand{\statespace}[0]{\mathcal{S}}
 \newcommand{\nodes}[0]{\mathcal{N}}
 \newcommand{\fullstate}[0]{\nodes \times \statespace}
-\newcommand{\nodein}[0]{\nodes_{in}}
-\newcommand{\nodeout}[0]{\nodes_{out}}
+\newcommand{\nodein}[0]{\eta_{in}}
+\newcommand{\nodeout}[0]{\eta_{out}}
+\newcommand{\accept}[0]{\eta_{accept}}
+\newcommand{\reject}[0]{\eta_{reject}}
 
 % Machine properties
 \newcommand{\computefn}[0]{\Phi}
@@ -51,3 +54,9 @@
 
 % Complexity results
 \newcommand{\preduce}[0]{\hookrightarrow_p}
+
+% Complexity classes
+\newcommand{\ndetp}[0]{\mathbf{NDETP_R}}
+
+% Problems
+\newcommand{\subsum}[2]{$\mathbf{SUBSETSUM}_{(#1, #2)}$}
