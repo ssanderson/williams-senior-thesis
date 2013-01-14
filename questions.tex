@@ -48,7 +48,6 @@
 % Thesis Commands
 \usepackage{thesiscommands}
 
-%
 % Convention for citations is authors' initials followed by the year.
 % For example, to cite a paper by Leighton and Maggs you would type
 % \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
@@ -84,70 +83,16 @@
 \begin{document}
 %FILL IN THE RIGHT INFO.
 %\head{**Title**}{**Date**}
-\head{Blum et al.}{Chap 5 - Class NP and NP-Complete Problems}
+\head{Blum et al.}{Decision Problems and Restricted Solution Spaces}
 
-\section{The Class NP}
+\section{Decision Problems}
 
-\section{Definitions}
+\subsection{\subsum{R}{S}}
 
-The definition of NP over R given by Blum et al is a generalization of
-the verifiability definition of NP given in classical complexity theory.
-
-\begin{definition}{\textbf{Class NP} over $R$}
-
-  A decision problem $S \subseteq R^\infty$ is in the class NP over a
-  ring $R$ if there exist positive integers $c$ and $q$ and a a
-  machine $M$ over R with $\inspace_M = R^\infty \times R^\infty$ such
-  that:
-
-  \begin{enumerate}
-  \item if $x \in S$ then there exists a \emph{witness}, $w
-      \in R^\infty$, such that $\computefn_M(x,w) = 1$ and
-      $cost_M(x,w) \leq c(size(x))^q$.
-  \item if $x \notin S$, then there is no such $w$.
-  \end{enumerate}
-\end{definition}
-
-The classical theory admits a number of different characterizations of
-NP.  Though the verifiability definition is often the simplest to
-conceptualize and work with, another important definition is given in
-terms of the power of \emph{non-determinism}, which in this context
-means allowing a machine to be in multiple states simulataneously.  In
-the classical theory, it turns out that the problems solvable in
-polynomial time by a non-deterministic Turing Machine are precisely
-the problems verifiable in polynomial time by a standard TM.  \\
-
-Recall our earlier definition of a machine, $M$ as a tuple:
-
-\todo{incorporate shift nodes from ch. 3}
-
-$$M = (\inspace, \statespace, \outspace, \nodes, H, H_{in}, H_{out})$$
-where 
-$$\nodes = \set{\nodein, \nodeout} \cup \set{\eta_1, \eta_2, \ldots \eta_i} \cup
-\set{b_1, b_2, \ldots b_j}$$
-
-We defined the computing endomorphism $H$ as a function from
-$\fullstate \rightarrow \fullstate$, representing our intuition that
-at each computation step the machine transitions to a new node and
-(possibly) mutates its currently stored state.  What we want to do now
-is modify this model in order to abstract a notion of being able to
-``simultaneously'' take multiple computational paths.  We do so as
-follows:
-
-\begin{definition}{\textbf{Non-deterministic machine} over a ring $R$}
-  
-  
-
-\end{definition}
-
+Let $R$ be a ring, and let $S$ be a subring of R.  An instance of
+\subsum{R}{S} is a set $\set{c_1, c_2, \ldots c_k$ of coefficients,
+  and a target $T$.  An instance is a yes instance if there exists}
 
 \input{references.tex}
 
-% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
-
 \end{document}
-
-
-
-
-

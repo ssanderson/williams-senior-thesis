@@ -9,10 +9,9 @@
 \setlength{\parskip}{0.1 in}
 
 \setcounter{secnumdepth}{2}
-
-%
+% 
 % ADD PACKAGES here:
-%
+% 
 \usepackage{amsmath,amsfonts,graphicx}
 
 \renewcommand{\thepage}{\arabic{page}}
@@ -20,6 +19,14 @@
 \renewcommand{\theequation}{\arabic{equation}}
 \renewcommand{\thefigure}{\arabic{figure}}
 \renewcommand{\thetable}{\arabic{table}}
+
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+          \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+          \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
 
 %
 % The following macro is used to generate the header.
@@ -33,7 +40,7 @@
    \framebox{
       \vbox{\vspace{2mm}
     \hbox to 6.28in { {\bf Scott Sanderson
-		\hfill Source: \cite{#1} }}
+        \hfill Source: \cite{#1} }}
        \vspace{4mm}
        \hbox to 6.28in { {\Large \hfill #2 \hfill} }
        \vspace{2mm}
@@ -89,11 +96,14 @@ share a common root. \\
 
 To address the above problems and others, Blum et al. develop a theory
 of computation that generalizes the Turing Machine model to
-computation over arbitrary rings and fields.  We present a basic
-development of their model as well as a number of their results, the
-most important of which is the Path Decomposition Theorem, which
-provides a necessary condition for decidability of a set in terms of
-its topological complexity. \todo{More on own work here?}
+computation over arbitrary rings and fields.  In this chapter, we
+present a basic development of their model as well as a small sample
+of their major results, the most important of which is the Path
+Decomposition Theorem, which provides a necessary condition for
+decidability of a set in terms of its topological complexity. We
+conclude by presenting a few preliminary results related to an
+extension to the Blum model which generalizes classical
+nondeterministic Turing Machines to the algebraic model.
 
 \section{Finite Dimensional Machines}
 
@@ -113,7 +123,7 @@ a \emph{Finite Dimensional Machine}, which corresponds in the
 classical theory to a Turing Machine with a tape of finite length.
 Having built some intuition with the finite dimensional model, we then
 show how we can generalize to the infinite dimensional case, allowing
-us to fully capture the classical model. \todo{last sentence feels clunky}
+us to fully capture the classical model. 
 
 \subsection*{Definitions}
 
@@ -207,14 +217,14 @@ next configuration $z' = (\beta, x')$ as follows:
   \centerline{$z_0 = (\eta_1, I(x)$, $z_t = (\nodeout, x_t)$, and $z_i
     = z_{i-1}'$ for $0 < i \leq k$} \\
 
-  The \textbf{output}, $\computefn_M(x)$ of a halting computation
-  is the value given by $O(x_t)$.  If such a halting computation
-  exists for an input $x$, we say that x is in the \textbf{time-t
+  The \textbf{output}, $\computefn_M(x)$ of a halting computation is
+  the value given by $O(x_t)$.  If such a halting computation exists
+  for an input $x$, we say that x is in the \textbf{time-t
     Halting Set} of M and we write $x \in \halting_t$.  \\
 
-  The \textbf{Halting Set} of a machine $M$ is the union over all
-  time-t halting sets, ie, the set of values for which $M$ eventually
-  halts.
+  The \textbf{Halting Set}, $\halting_M$ of a machine $M$ is the union
+  over all time-t halting sets, ie, the set of values for which $M$
+  eventually halts.
 \end{definition}
 
 \note{If a halting computation exists for an input x, it is unique.
@@ -343,7 +353,8 @@ co-recognizable.
 
 We are now in a position to sketch out some results that characterize
 the computable sets over $R$.  Our first such result shows that any
-computable set can be constructed from a countable set of basic semi/quasi algebraic sets.
+computable set can be constructed from a countable set of basic
+semi/quasi algebraic sets.
 
   \begin{definition}{\textbf{Semi-algebraic} and \textbf{Quasi-algebraic Sets}}
     
@@ -453,7 +464,11 @@ computable set can be constructed from a countable set of basic semi/quasi algeb
   which move all values stored in the state space to the left
   or right.
 
-  \todo{section on $R^\infty$ and $R_\infty$?}
+  We denote by $R^\infty$ the disjoint union, $\bigcup_{n \geq 0} R^n$.\\
+
+  We denote by $R_\infty$ the \emph{bi-infinite direct sum} space over
+  $R$, which consists of elements of the form $(\ldots x_{-2}, x_{-1}, x_0,
+  x_1, x_2, \ldots)$.
   
   \begin{definition}{\textbf{Machine over R}}
 
@@ -471,7 +486,41 @@ computable set can be constructed from a countable set of basic semi/quasi algeb
     $$\sigma_l(x)_i = x_{i+1}$$ and $$\sigma_l(x)_i = x_{i+1}$$
   \end{definition}
   
-  \todo{fill in path decomposition theorem for infinite case}
+  \begin{theorem}{\textbf{Path Decomposition Theorem (Infinite Dimensional Case)}}
+    
+    For any machine M and positive integers n and T, we have the
+    following:
+
+    \begin{enumerate}
+    \item $\halting_T^n = \bigcup_{\computepath \in \haltpaths{T}}
+      \coincidence{\computepath}^n.$ That is, the n-dimensional
+      component of the time-T halting set M of is a finite disjoint union
+      of basic semi-algebraic sets.
+    \item $\halting_M^n = \bigcup_{\computepath \in \haltpaths{}}
+      \coincidence{\computepath}^n$.  That is, the n-dimensional
+      component of the halting of M is a countable disjoint union of
+      basic semi-algebraic sets.
+      \end{enumerate}
+  \end{theorem}
+
+  \begin{proofsketch}
+    
+    Most of the proof for the infinite dimensional case follows the
+    development for the finite case.  One cause for care is that the
+    shift node maps are not polynomial when considered as maps from
+    $R_\infty \rightarrow R_\infty$.  This difficulty is resolved by
+    noting that the shift maps can be reconstructed as polynomial maps
+    for any finite-dimensional subset, $R^n \subset R_\infty$, and by
+    noting that in time T the machine can only modify a finite number
+    of registers, since all the computation maps are injections of
+    finite polynomial maps from $R^m \rightarrow R^n$ into the state
+    space, $R_\infty \rightarrow R_\infty$, and we can traverse at
+    most T shift nodes in time T.  Thus for any particular size input
+    and any particular halting time, there exists a finite dimensional
+    machine that performs the same computations as M.
+    
+  \end{proofsketch}
+  
 
   \section{Decision Problems}
 
@@ -657,8 +706,8 @@ define as the halting time of
   \subseteq S'_{yes}$ and $\varphi(S_{no}) \subseteq S'_{no}$.  The
   map $\varphi$ is called a \textbf{polynomial-time reduction} from
   $S$ to $S'$.
-
-  We denote the sentence $S$ is p-reducible to $S'$ by writing:
+n
+  We denote the sentence \emph{$S$ is p-reducible to $S'$} by writing:
 
   $$S \preduce S'$$
   \end{definition}
@@ -672,7 +721,7 @@ define as the halting time of
 
 \section{Notable Prior Results in Reducibility}
 
-\begin{theorem}
+\begin{theorem}{\textbf{Known Reductions}}
   \begin{enumerate}
   \item Over any ring or field $R$, $HN \preduce QUAD$.
   \item Over any ordered ring or field $R$, $HN \preduce 4-FEAS$.
@@ -685,8 +734,6 @@ define as the halting time of
 \end{theorem}
 
 \section{The Class NP}
-
-\section{Definitions}
 
 The definition of NP over R given by Blum et al is a generalization of
 the verifiability definition of NP given in classical complexity theory.
@@ -732,9 +779,6 @@ exist in the generalized algebraic theory as well.
   is both NP Hard and in NP.
 \end{definition}
 
-\todo{Should new work from this term be in the same document or a different one?}
-
-
 \section{The Class NDET}
 
 Though efficient verifiability in terms of witness strings is arguably
@@ -750,8 +794,180 @@ nondeterministic TM accepts its input if there is \emph{any} valid
 path of configurations that accepts the input.  Somewhat surprisingly,
 the functions which can be computed in polynomial time by
 nondeterministic Turing Machines turn out to be precisely the same
-functions that can be efficiently verified via witness strings.
-However, since this We present here a novel generalization of nondeterminis
+functions that can be efficiently verified via witness strings.  To
+our knowledge, there has been little work done to investigate whether
+a similar relationship holds in the generalized theory we have been
+investigating.
 
-  
+Here we present a model of nondeterministic computation that naturally
+generalizes from the Turing Machine model to the Blum model of
+computation.  The basic idea is that each branch node is allowed to
+have multiple \textbf{Yes} and \textbf{No} nodes, and an accepting
+computation is any computational path through the machine that
+respects the branching functions.
+
+\begin{definition} NDET-Machine over R
+
+  An NDET-Machine over a ring R is a finite, directed, connected graph
+  with three types of nodes: \emph{computation}, \emph{shift} and
+  \emph{branch}, along with distinguished \emph{input} and
+  \emph{accept} nodes.
+
+  Associated with each computation node, $\eta$, is a next node,
+  $\beta_{\eta}$, and a computation map,
+  \functype{g_\eta}{R^\infty}{R^\infty}
+
+  Associated with each shift node, $\eta$ is a next node $\beta_\eta$
+  and a shift map, $\sigma_l$ or $\sigma_r$ : $R_\infty \rightarrow
+  R_\infty$.
+
+  Associated with each branch node, $\eta$, is a nonzero polynomial
+  function \functype{g_\eta}{R^\infty}{R}, and a set $\set{\beta^+_1,
+    \beta^+_2, \ldots \beta^+_i}$ of \emph{Yes Nodes} and a set
+  $\set{\beta^-_1, \beta^-_2, \ldots \beta^-_j}$ of \emph{No Nodes}.
+  We refer to the max of $i$ and $j$ as the \textbf{degree} of $\eta$.
+\end{definition}
+
+The computation of an NDET-machine is defined analogously to that of a
+Blum machine, with the caveat that we now accept any input for which
+there exists some accepting path through the machine.  More formally,
+for each configuration pair $z = (\eta, x)$, we define the
+\textbf{next configuration set} $H(z)$, to be the set of all pairs,
+$\set{(\eta', x')}$, such that:
+
+\begin{enumerate}
+\item If $\eta$ is a computation node, then $\eta' = \beta_\eta$, and
+  $x' = g(x)$.
+\item If $\eta$ is a shift node, then $\eta' = \beta_\eta$, and
+  $x' = sigma(x)$.
+\item If $\eta$ is a branch node, $x' = x$ and if $g(x) > 0)$, $\eta'$
+  is a yes-node of $\eta$.  If $g(x) < 0$, $\eta'$ is a no-node of
+  $\eta$.
+\end{enumerate}
+
+We say that an NDET-machine $M$ accepts an input $w$ if there exists a
+sequence of configurations, $z_1 = (\eta_1, w), z_2 = (\eta_2, x_2),
+\ldots z_k = (\eta_k, x_k)$, such that $z_1$ is the input node of $M$,
+$\eta_k$ is the accept node of $M$, and $z_{i+1} \in H(z_i) \forall 1
+\leq i \leq k$.  We say that $M$ accepts $w$ in time $T$ if there
+exists such a sequence with $k \leq T$.
+
+\begin{definition} $\ndetp$
+  A language, $S$ is in $\ndetp$ if there exists a machine $M$ and a
+  constant $p$ such that, $\forall w \in S$, $M$ accepts w in time
+  $O(size(w)^p)$.
+\end{definition}
+
+\subsection*{Open Questions Concerning $\ndetp$}
+
+What follows is an incomplete list of questions we hope to investigate
+in the course of this thesis.  
+
+\begin{enumerate}
+\item Under what conditions is it the case that $\ndetp = \np$? 
+\item If it is not the case that $\ndetp = \np$ for some underlying
+  rings, what is their relationship?  For example, is it always the
+  case that $\ndetp \subseteq \np$?
+\item Are there conditions for which it is the case that $\ndetp = \p$?
+\item Under what conditions do we have the existence of complete
+  problems for $\ndetp$?
+\end{enumerate}
+
+\note{The classical theory answers all of these questions for the
+  special case R = $\integers_n$ with unit cost and R = $\integers$
+  with bit cost.  We are interested in investigating how the classical
+  results generalize to the algebraic case.  An important
+  consideration in this work will be attending to elements of the
+  classical theory which depend either on the representation of inputs
+  (since the Blum model says nothing about representation), on the
+  countability/enumerability of the set of possible inputs to a Turing
+  Machine, or on the finite number of possible elements of a given
+  size in the classical model.  All of these assumptions may be
+  violated in the more generalized theory.}
+
+\section{Additional Work Pursued this Term}
+
+In the course of investigating some of the open problems outlined
+above, we have encountered results/question which are edifying in
+their own right and, as far as we can tell, previously unpublished.
+
+\subsection*{Decidability and Recognizability of $\integers$ and $\rationals$ over $\reals$}
+
+\begin{theorem}{$\integers$ is decidable over the ordered $\reals$.
+    However, for any machine $M$ that decides $\integers$ and any time
+    bound, $T$, there exists an integer $n$ such that $M$ does not
+    decide $n$ in time $T$.  Thus, while $\integers$ is decidable, it
+    is not decidable in any bounded amount of time.}
+\end{theorem}
+
+\begin{proof}
+  The decidability of $\integers$ can be shown constructively.  Given
+  an input $n$, we can initialize two cells in our state space to 0,
+  and then repeatedly add 1 to the first cell and subtract 1 from the
+  second cell.  After each round of addition and subtraction, we
+  perform an equality and an order comparison against our input.  If
+  we ever have equality, output 1.  If the order comparison ever fails
+  (indicating that we have checked all integers with absolute value
+  less than our input) output 0.
+
+  The unboundedness result follows from the path decomposition
+  theorem, which states that the time-T halting sets of any machine
+  consist of finite unions of finitely many distinct connected
+  components of $R^\infty$.  Since $\integers$ has infinitely many
+  distinct connected components, it follows that no finite number of
+  time-t halting sets contains all of $\integers$.
+\end{proof}
+
+\note{The above construction can also be used to show that $\integers$
+  is recognizable over $\reals$ without order comparisons.}
+
+\note{One salient feature of the above construction is that is takes
+  advantage of the fact that $\integers$ can be expressed as the set
+  of elements generated by the element 1 under addition and
+  subtraction.  We can generalize this feature of the construction to
+  construct a recognizer for any language which can be generated by
+  iterates of a finite set of computable functions on a finite set of
+  inputs.} 
+
+\subsection*{Recognizability of $\rationals$ over R}
+
+\begin{theorem}{$\rationals$ is recogizable over $R$}
+\end{theorem}
+\begin{proof}
+  We can enumerate values in the rationals using a Cantor
+  diagonalization scheme by maintaining counters for integer values
+  $p$ and $q$ to represent the rational $\frac{p}{q}$. We can then
+  simply iterate through the enumeration and check for equality
+  against our input, outputting 1 if the equality check ever succeeds.
+\end{proof}
+
+\subsubsection*{Open Questions}
+
+\begin{enumerate}
+\item Is $\integers$ decidable over the unordered reals?
+\item Is $\rationals$ deciable over the reals, ordered or unordered?
+\item Can every decidable (recognizable) set be described in terms of
+  iterates of a finite set of computable functions over a finite set
+  of inputs?
+\item Are there efficient $\epsilon$-approximation methods for $\integers$
+  or $\rationals$ over $\reals$?
+
+\end{enumerate}
+
+\newpage
+\section*{References}
+
+\beginrefs
+
+\bibentry{B98}{\sc Blum et al.},
+``Complexity and Real Computation,''
+{\it Springer-Verlag New York, Inc.}
+1998, pp. 37-69\\
+
+\bibentry{B89}{\sc Blum et al.}, 
+``On a Theory of Computation and Complexity over the Real Numbers: NP-Completeness, Recursive Functions and Universal Machines''
+{\it Bulletin of the American Mathematical Society.}
+Volume 21, Number 1, July 1989
+\endrefs
+
 \end{document}
