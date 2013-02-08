@@ -1,0 +1,379 @@
+%% Macros and packages used in my thesis.
+%% Include this file to typeset any portion...
+
+
+\usepackage{setspace}
+
+%% Special math fonts and symbols
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%% Rotate tables and figures
+\usepackage{rotating}
+%% Used for TODO items
+\usepackage{color}
+%% used for code listings.
+\usepackage{float}
+%% Used to replace LaTeX's ugly emptyset with diameter, which looks nicer.
+\usepackage{wasysym}
+%% Nicely formatted algorithms.
+\usepackage{algorithmicx}
+\usepackage[chapter]{algorithm}
+\usepackage{algpseudocode}
+%% Nicely formatted listings.
+\usepackage{listings}
+%% More kinds of arrow with stuff
+\usepackage{empheq}
+\usepackage{multicol}
+\usepackage{subfigure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Macros                  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% The name of the commandline tool.
+%%\newcommand{\HominyTool}{\texttt{hominy}}
+\newcommand{\HominyTool}{Hominy}
+\newcommand{\JG}{JG}
+
+
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
+%% Todo items.
+%\newcommand{\todo}[1]{\textcolor{red}{\textbf{\textsf{TODO:}}} \textsf{#1}}
+
+%% Paragraph shorthand
+% \newcommand{\p}[1]{\paragraph{#1}}
+
+%% Reference a figure
+\newcommand{\fig}[1]{Figure~\ref{#1}}
+
+%% Reference a table
+\newcommand{\tab}[1]{Table~\ref{#1}}
+
+%% Code listings, algorithms
+%% \floatstyle{ruled}
+%% \newfloat{listing}{htbp}{lop}[chapter]
+%% \floatname{listing}{Listing}
+%% %\newfloat{algorithm}{htbp}{lop}
+%% %\floatname{algorithm}{Algorithm}
+%% \newfloat{example}{htbp}{lop}[chapter]
+%% \floatname{example}{Example}
+
+
+%% Reference a code listing
+%% \newcommand{\code}[1]{Listing~\ref{#1}}
+
+%% Reference an algorithm
+\newcommand{\alg}[1]{Algorithm~\ref{#1}}
+
+%% Reference an algorithm
+%% \newcommand{\ex}[1]{Example~\ref{#1}}
+
+%% Reference a chapter
+\newcommand{\ch}[1]{Chapter~\ref{#1}}
+
+%% A better empty set
+%% \renewcommand{\emptyset}{\diameter
+\renewcommand{\emptyset}{\varnothing}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Theorem environments
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\theoremstyle{definition}
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{claim}{Claim}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\newtheorem{definition}{Definition}[section]
+\renewenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofsketch}{{\bf Proof Sketch:}}{\hfill\rule{2mm}{2mm}}
+
+%% #1 => label, #2 => caption
+\newenvironment{LFigure}[2]{
+\begin{figure}
+\hrule \smallskip
+\newcommand{\Caption}{\caption{#2}\label{#1}}
+\singlespacing
+}{
+\smallskip \hrule
+\Caption
+\end{figure}
+}
+\newenvironment{Figure}[2]{
+\begin{LFigure}{#1}{#2}
+\centering
+}{\end{LFigure}}
+
+\newenvironment{UFigure}[2]{
+\begin{figure}
+\newcommand{\Caption}{\caption{#2}\label{#1}}
+\singlespacing
+\centering
+}{
+\smallskip
+\Caption
+\end{figure}
+}
+\newenvironment{FigureHere}[2]{
+\begin{figure}[h]
+\hrule \smallskip
+\newcommand{\Caption}{\caption{#2}\label{#1}}
+\singlespacing
+\centering
+}{
+\smallskip \hrule
+\Caption
+\end{figure}
+}
+
+\newenvironment{PFigure}[2]{
+\begin{figure}[p]
+\hrule \smallskip
+\newcommand{\Caption}{\caption{#2}\label{#1}}
+\singlespacing
+\centering
+}{
+\smallskip \hrule
+\Caption
+\end{figure}
+}
+
+%% Lockset notation (for Eraser)
+\newcommand{\ls}[1]{\textit{ls}(#1)}
+
+%% happened before!
+\newcommand{\hb}{\textit{happened before} }
+
+%% Easier set notation
+% \newcommand{\set}[1]{\{#1\}}
+
+%% Vertical bar with space.
+\newcommand{\vbar}{\ |\ }
+
+\newcommand{\Vol}[1]{\hat{#1}}
+\newcommand{\Forker}[1]{\ddot{#1}}
+\newcommand{\Joiner}[1]{\mathring{#1}}
+
+%% Specs
+\newcommand{\Spec}[1]{\texttt{#1}}
+\newcommand{\SpecWithArg}[2]{\Spec{#1~\ensuremath{#2}}}
+
+\newcommand{\ThreadLocal}{\Spec{thread-local}}
+\newcommand{\ReadShared}{\Spec{read-shared}}
+\newcommand{\GuardedBy}[1]{\SpecWithArg{guarded-by}{#1}}
+\newcommand{\GuardedBySpec}{\SpecWithArg{guarded-by}{\textrm{\Lock}}}
+\newcommand{\InitTrans}{\Spec{init}}
+\newcommand{\ForkTrans}{\Spec{fork}}
+\newcommand{\JoinTrans}{\Spec{join}}
+\newcommand{\VolBarrier}[1]{\SpecWithArg{vol}{\Vol{#1}}}
+\newcommand{\VolBarrierSpec}{\SpecWithArg{vol}{\textrm{\VolVar}}}
+%% \newcommand{\LockBarrier}[1]{\SpecWithArg{barrier}{#1}}
+\newcommand{\MultiLock}[1]{\GuardedBy{\set{#1}}}
+\newcommand{\Transition}[1]{\texttt{;\ [} #1 \texttt{]\ }}
+
+
+%% #1: action name #2: action thread
+\newcommand{\SimpleAction}[2]{\textit{#1}_{#2}}
+
+\newcommand{\ReadOrWrite}{\textit{acc}}
+\newcommand{\OrderedAccessAction}[2]{#2 \rhd #1}
+\newcommand{\OrderedAction}[3]{\OrderedAccessAction{\SimpleAction{#1}{#2}}{#3}}
+%% #1: thread  #2: order-set
+\newcommand{\OrderedRead}[2]{\OrderedAction{rd}{#1}{#2}}
+\newcommand{\OrderedWrite}[2]{\OrderedAction{wr}{#1}{#2}}
+\newcommand{\OrderedAccess}[2]{\OrderedAction{\ReadOrWrite}{#1}{#2}}
+%% \newcommand{\OrderedReadOrWrite}[2]{\OrderedAction{$(\textit{rd}\cdot\textit{wr})$}{#1}{#2}}
+
+%% \newcommand{\OrderedReadBySet}[2]{\OrderedAction{rd}{#1}{#2}}
+%% \newcommand{\OrderedWriteBySet}[2]{\OrderedAction{wr}{#1}{#2}}
+%% \newcommand{\OrderedAccessBySet}[2]{\OrderedAction{$(\textit{rd}\cdot\textit{wr})$}{#1}{#2}}
+%% \newcommand{\OrderedReadOrWriteBySet}[2]{\OrderedAction{$(\textit{rd}\cdot\textit{wr})$}{#1}{#2}}
+
+%% #1: action name  #2: acting thread  #3: args
+\newcommand{\Act}[3]{\ensuremath{\SimpleAction{#1}{#2}(#3)}}
+
+%% #1: thread  #2: field
+\newcommand{\Rd}[2]{\Act{rd}{#1}{#2, v}} %% v!
+\newcommand{\Wr}[2]{\Act{wr}{#1}{#2, v}} %% v!
+\newcommand{\RdValue}[3]{\Act{rd}{#1}{#2,#3}}
+\newcommand{\WrValue}[3]{\Act{wr}{#1}{#2,#3}}
+\newcommand{\Rdv}[2]{\Act{rd}{#1}{\Vol{#2},v}}
+\newcommand{\Wrv}[2]{\Act{wr}{#1}{\Vol{#2},v}}
+\newcommand{\RdvValue}[3]{\Act{rd}{#1}{\Vol{#2},#3}}
+\newcommand{\WrvValue}[3]{\Act{wr}{#1}{\Vol{#2},#3}}
+
+%% #1: thread  #2: sync device
+\newcommand{\Acq}[2]{\Act{acq}{#1}{#2}}
+\newcommand{\Rel}[2]{\Act{rel}{#1}{#2}}
+\newcommand{\Wait}[2]{\Act{wait}{#1}{#2}}
+\newcommand{\Notify}[2]{\Act{notify}{#1}{#2}}
+\newcommand{\ForkThread}[2]{\Act{fork}{#1}{#2}}
+\newcommand{\JoinThread}[2]{\Act{join}{#1}{#2}}
+
+%% Standard program step
+\newcommand{\ProgStep}[1]{\xrightarrow{\ #1\ }}
+
+%% Instrumented step
+\newcommand{\SimpleInsStep}[1]{\xRightarrow{\ #1\ }}
+\newcommand{\InsStep}[1]{\xRightarrow{\makebox[8ex]{\scriptsize $#1$}}}
+
+%%Events
+\newcommand{\Ev}[3]{\langle #1 \gtrdot_{\textit{#2}} #3 \rangle}
+%% \AccessEvent{thread}
+\newcommand{\AccessEvent}[1]{\langle#1\gtrdot_{\ReadOrWrite}#1\rangle}
+%% \WildcardEvent
+\newcommand{\WildcardEvent}[1]{\Ev{?}{?}{#1}}
+%% \AcqEvent{thread}{lock}
+\newcommand{\AcqEvent}[2]{\Ev{#2}{acq}{#1}}
+%% \RelEvent{thread}{lock}
+\newcommand{\RelEvent}[2]{\Ev{#1}{rel}{#2}}
+%% \WaitEvent{thread}{lock}
+%% \newcommand{\WaitEvent}[2]{\Ev{#2}{wait}{#1}}
+%% \NotifyEvent{thread}{lock}
+%% \newcommand{\NotifyEvent}[2]{\Ev{#1}{notify}{#2}}
+%% \ForkEvent{thread}{thread_forked}
+\newcommand{\ForkEvent}[2]{\Ev{\Forker{#1}}{fork}{#2}}
+%% \JoinEvent{thread}{thread_joined}
+\newcommand{\JoinEvent}[2]{\Ev{\Joiner{#2}}{join}{#1}}
+%% \RdvEvent{thread}{lock}
+\newcommand{\RdvEvent}[2]{\Ev{\Vol{#2}}{rdv}{#1}}
+%% \WrvEvent{thread}{lock}
+\newcommand{\WrvEvent}[2]{\Ev{#1}{wrv}{\Vol{#2}}}
+%% \WrEvent{thread}
+\newcommand{\WrEvent}[1]{\Ev{#1}{wr}{#1}}
+%% \RdEvent{thread}
+\newcommand{\RdEvent}[1]{\Ev{#1}{rd}{#1}}
+
+
+\newcommand{\Keyword}[1]{\textsf{\ #1\ }}
+
+\newcommand{\SuchThat}{.\ }
+\newcommand{\Forall}[1]{ \forall #1 \SuchThat }
+
+
+\def\Fill{\ \ \hfill \ \ }
+\def\RewriteTo{\leadsto}
+\def\Union{\ \cup\ }
+\def\Intersect{\ensuremath{\ \cap\ }}
+\def\LocalTo{\mathtt{local\_to}\ }
+\def\SeparatedBy{\mathtt{separated\_by}\ }
+\def\Proves{\vdash}
+\newcommand{\ProvesFor}[1]{\Proves_{#1}}
+
+\newcommand{\FreeOf}[1]{\textsf{ is #1-free }}
+\newcommand{\SyncThread}[1]{\underline{#1}}
+
+\def\InsStore{\varphi}
+\newcommand{\LastWrite}{\varphi_{wr}}
+\newcommand{\LastReads}{\varphi_{rd}}
+
+\newcommand{\FunctionName}[1]{\textit{#1}}
+\newcommand{\Ancestors}{\FunctionName{ancestors}}
+\newcommand{\AllAncestors}{\FunctionName{ancestors}}
+\newcommand{\Choose}{\FunctionName{choose}}
+\newcommand{\TypeName}[1]{\textit{#1}}
+
+\newcommand{\ForkingTid}{\TypeName{ForkingTid}}
+\newcommand{\JoiningTid}{\TypeName{JoinedTid}}
+\def\Lock{\TypeName{Lock}}
+\def\Tid{\TypeName{Tid}}
+\def\Var{\TypeName{Variable}}
+\def\VolVar{\TypeName{VolatileVariable}}
+\def\GlobalStore{\TypeName{GlobalStore}}
+\def\Value{\TypeName{Value}}
+\def\LocalStore{\TypeName{LocalStore}}
+\def\LocalStores{\TypeName{LocalStores}}
+\def\Action{\TypeName{Action}}
+\def\Op{\TypeName{Operation}}
+\def\ProgramState{\TypeName{State}}
+%\def\GoldiSet{\TypeName{GoldiSet}}
+\def\EventSet{\TypeName{EventSet}}
+\def\SyncDevice{\TypeName{SyncDevice}}
+%\def\GoldiElem{\TypeName{GoldiElem}}
+\def\Event{\TypeName{Event}}
+\def\OrderSet{\TypeName{OrderSet}}
+\def\InsStoreName{\TypeName{InsStore}}
+\def\LastWriteName{\TypeName{LastWrite}}
+\def\LastReadsName{\TypeName{LastReads}}
+\def\ExtendedGoldiStore{\TypeName{ExtendedGoldiStore}}
+
+\newcommand{\Select}[1]{\ \big|_{#1}}
+
+\newcommand{\RuleName}[1]{\textsc{[#1]}}
+%% Type Rule. Use \\ and \hline to sep rows.
+\newenvironment{Rule}[1]
+	       {
+		 \noindent\RuleName{#1}\\[1ex]
+		 \begin{math}
+		   \begin{array}{c}
+	       }
+	       {
+		   \end{array}
+		 \end{math}\\[2ex]
+	       }
+
+
+\newcommand{\ExtendedUpdateRule}[5]
+{
+\begin{Rule}{#1}
+  a \in \set{#2}\\
+   \Forall{x} \LastWrite'(x) = \left\{\begin{array}{ll}
+       \LastWrite(x) \Union \set{\Ev{#4}{#5}{#3}} & \Keyword{if} \WildcardEvent{#4} \in x\\
+          \LastWrite(x) & \Keyword{otherwise}
+	  \end{array}\right. \\
+  \Forall{x, u} \LastReads'(x,u) = \left\{\begin{array}{ll}
+      \LastReads(x,u) \Union \set{\Ev{#4}{#5}{#3}} & \Keyword{if} \WildcardEvent{#4} \in x\\
+      \LastReads(x,u) & \Keyword{otherwise}
+      \end{array}\right. \\
+  \hline
+  (\LastWrite, \LastReads) \SimpleInsStep{a} (\LastWrite', \LastReads')
+\end{Rule}
+}
+
+\newcommand{\SingleExtendedUpdateRule}[5]
+{
+\begin{Rule}{#1}
+   \Forall{x} \LastWrite'(x) = \left\{\begin{array}{ll}
+       \LastWrite(x) \Union \set{\Ev{#4}{#5}{#3}} & \Keyword{if} \WildcardEvent{#4} \in x\\
+          \LastWrite(x) & \Keyword{otherwise}
+	  \end{array}\right. \\
+	    \Forall{x, u} \LastReads'(x,u) = \left\{\begin{array}{ll}
+	          \LastReads(x,u) \Union \set{\Ev{#4}{#5}{#3}} & \Keyword{if} \WildcardEvent{#4} \in x\\
+		        \LastReads(x,u) & \Keyword{otherwise}
+			      \end{array}\right. \\
+  \hline		      
+  (\LastWrite, \LastReads) \InsStep{#2} (\LastWrite', \LastReads')
+\end{Rule}
+}
+
+
+%% #1: rule name, #2: event type, #3: thread, #4: dev
+\newcommand{\SendUpdateRule}[4]{
+\begin{Rule}{#1}
+  \Forall{x} \InsStore'(x) = \begin{cases}
+	  \InsStore(x) \Union \set{\Ev{#3}{#2}{#4}} & \Keyword{if} \WildcardEvent{#3} \in \InsStore(x)\\
+	  \InsStore(x) & \Keyword{otherwise}
+	  	  \end{cases} \\
+  \hline
+  \InsStore \InsStep{\Act{#2}{#3}{#4}} \InsStore'
+\end{Rule}
+
+}
+
+%% #1: rule name, #2: event type, #3: thread, #4: dev, #5 link to...
+\newcommand{\ReceiveUpdateRule}[5]{
+\begin{Rule}{#1}
+  \Forall{x} \InsStore'(x) = \left\{\begin{array}{ll}
+	  \InsStore(x) \Union \set{\Ev{#4}{#2}{#3}} & \Keyword{if} \WildcardEvent{#4} \in \InsStore(x)\\ %%\Ev{?}{#5}{#4} \in x\\
+	  \InsStore(x) & \Keyword{otherwise}
+	  	  \end{array}\right. \\
+  \hline
+  \InsStore \InsStep{\Act{#2}{#3}{#4}} \InsStore'
+\end{Rule}
+
+}

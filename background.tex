@@ -1,0 +1,779 @@
+
+\chapter{Introduction}
+
+Classical Theory of Computation provides a framework in which we can
+pose mathematically rigorous questions about the possibility and cost
+of solving problems via algorithmic procedures.  Historically central
+to this theory has been the Turing Machine model of computation, in
+which the memory of of an ideal computing machine is represented by an
+``infinitely long'' tape containing finitely many symbols at any given
+point in time.  One shortcoming of this computing model is that it
+does not allow us to describe computational problems that are defined
+over uncountable sets such $\mathbb{R}$ or $\mathbb{C}$.  Examples of
+such problems include analyzing the expected runtime of Newton's
+Method, determining membership in the Mandelbrot Set, and the Hilbert
+Nullstellensatz, which asks whether a finite set of polynomials in $n$
+variables share a common root. \\
+
+To address the above issues and others, Blum et al. develop a theory
+of computation that generalizes the Turing Machine model to
+computation over arbitrary rings and fields.  In this thesis, we
+present a basic development of their model as well as a sample of
+their major results.  In particular, we show how Blum et al. define
+the relativized complexity classes, $\p$ and $\np$, which generalize
+the well-known classes $\mathbf{P}$ and $\mathbf{NP}$ to machines that
+compute with values from an arbitrary ring $R$.  We then develop a
+third complexity class, $\ndetp$, which we present as an alternative
+generalization of the $\mathbf{NP}$.  Our major results are that
+$\ndetp \subseteq \exp$ over any ring or field and that $\ndetp =
+\np$ for any finite ring or field (eg $\integers_p$).
+
+\chapter{Background}
+
+In this Chapter, we present a basic development of an algebraic model
+of computation due to Blum et al.  The material presented here draws
+heavily from \cite{B89} and \cite{B98}.  We begin with a brief review
+of the classical Turing Machine model.  For a more thorough reference
+see \cite{S06}.  For the original article introducing Turing Machines, 
+see \cite{T36}
+
+\section{Classical Turing Machines}
+
+A Turing Machine can be thought of as an infinitely long 1-way tape
+divided into cells, on each of which can be written a single symbol.
+Such a machine is outfitted with a tape head, which can move left and
+right as well as read and write symbols to and from the tape. The
+machine's program consists of a set of states along with a transition
+function, which provides instructions for how the tape head operates
+and how the machine transitions from state to state.  These ideas are
+made precise as follows:
+
+\begin{definition}{Turing Machine}
+
+   \todo{Is this the right level of detail?}
+
+  A Turing Machine is a 5-tuple, $(Q, \Sigma, \Gamma, \delta, q_0)$, where:
+
+  \begin{itemize}
+  \item $Q$ is a set of machine states.
+  \item $\Sigma$ is an alphabet of input characters. 
+  \item $\Gamma \subset \Sigma$ is the tape alphabet.
+  \item \functype{\delta}{Q \times \Sigma}{Q \times \Gamma \times
+      \set{\leftarrow, \rightarrow}} is a transition function.
+  \end{itemize}
+
+  The transition function $\delta$ determines how the machine passes
+  between \textbf{configurations}, which are triples in $\Sigma^*
+  \times Q \times$ encoding the symbols currently written on the tape,
+  the machine's current state, and the position of the tape head.  At
+  each computation step, the machine read the symbol, $\sigma$ on the
+  cell currently occupied by the tape head tape head rests.  If the
+  machine is in state $q$, it then calculates $\delta(q, \sigma)$ =
+  $(q', \sigma', d \in \set{\leftarrow, \rightarrow})$, transitions
+  into state $q'$, writes $\sigma'$ to the current cell, and move the
+  tape head to the left or right depending on the value of $d$.
+  
+\end{definition}
+
+\section{Finite Dimensional Machines}
+
+\subsection*{Intuition}
+
+A Blum Machine is in essence a Turing Machine with a number of key
+features abstracted to a more general setting. We replace the
+classical finite tape alphabet with elements of an arbitrary
+ring/field and we replace the classical actions of reading and writing
+to individual cells with order/equality comparisons and computations
+of componentwise polynomial/rational
+maps. \\
+
+In order to build intuition about how Blum machines operate and how we
+can analyze their properties, we first present Blum et al's definition of
+a \emph{Finite Dimensional Machine}, which corresponds in the
+classical theory to a Turing Machine with a tape of finite length.
+Having built some intuition with the finite dimensional model, we then
+show how we can generalize to the infinite dimensional case, allowing
+us to consider machines that can process arbitrarily large inputs.
+
+\subsection*{Definitions}
+
+Let $R$ be a commutative ring with unit, and let $l, m$, and $n$ be positive
+integers. By convention, we use the symbol $x$ to denote a polynomial
+over $R$, and we denote the ring of polynomials over $R$ of degree $k$
+by $R^k$.
+
+\begin{definition}{\textbf{Finite Dimensional Machine} over a ring
+    \textbf{R}}
+  
+  A \textbf{Finite Dimensional Machine} (FDM), $M$ over $R$ is a
+  finite, directed, connected graph with four types of nodes:
+  \emph{input, computation, branch} and \emph{output}.  An FDM has one
+  input and one output node but can have any number of branch and
+  computation nodes. The input node has indegree 0.  All other nodes
+  have indegree $\geq$ 1. The input node and computation nodes have
+  outdegree 1; branch nodes have outdegree 2, and the output node has
+  outdegree 0.  We use the expression ``next node(s)'' of a node
+  $\eta$ to refer to the node(s) to which $\eta$ has outgoing edges.\\
+  
+  \emph{\note{Blum et al. allow a machine to have multiple output
+      nodes, but it is relatively easy to show that any machine with
+      multiple output nodes can be trivially reduced to a machine with
+      a single output node, so for ease of notation we
+      prefer the single output definition.}}\\
+  
+  An FDM has three associated spaces: an input space $\inspace_M
+  \subseteq R^n$, a state space $\statespace_M \subseteq R^m$, and an
+  output space $\outspace_M \subseteq R^l$.  (Recall that $R^k$
+  denotes the ring of polynomials over $R$ with degree at most $k$).\\
+
+  Each node has an associated map and a set of next nodes, which vary
+  in structure in accordance with its type.
+
+  \begin{enumerate}
+  \item Associated with the input node is a linear map
+    \functype{I}{\inspace_M}{\statespace_M}. We denote the input node
+    by $\eta_1$, and we denote the unique next node of the $\eta_1$ by
+    $\beta_{\eta_1}$ or just $\beta_1$.
+    
+  \item Associated with each computation node, $\eta$, is a
+    componentwise polynomial map
+    \functype{g_\eta}{\statespace_M}{\statespace_M}. We denote the
+    unique next node of $\eta$ by $\beta_\eta$.
+    
+  \item Associated with each branch node, $\eta$ is a nonzero
+    polynomial function \functype{h_\eta}{\statespace_M}{R}.  We
+    associate the condition $h_\eta(x) \geq 0$ with one of the next
+    nodes of $\eta$, called the \textbf{Yes Node} of $\eta$.  We
+    symbolically denote the Yes Node by $\beta_\eta^+$. We associate
+    the condition $h_\eta(p) < 0$ with the other next node of $b$,
+    which we call the \textbf{No Node} and denote $\beta_\eta^-$.
+    
+  \item Associated with the output node is a linear map
+    \functype{O}{\statespace_M}{\outspace_M}.  We denote the output
+    node by $\nodeout$.  The output node has no next node.
+  \end{enumerate}
+\end{definition}
+
+We are now in a position to define what it means for a machine $M$ to
+perform a computation on some input, $x$.  The basic idea is that a
+computation is a path through $\nodes \times \statespace$, that begins
+with $(\eta_1, I_M(x)$ and follows the computing endomorphism of $M$, halting
+upon reaching the output node of $M$.  The ``run time'' of a
+computation becomes the length of this path, and the halting set of a
+$M$ becomes the set of input values with computations of finite
+length.
+
+\begin{definition}{\textbf{Configuration}}  
+
+  A \textbf{configuration} of an FDM, $M$ is a pair $(\eta, x) \in
+  \nodes \times \statespace_M$ where $\eta \neq \nodeout$.
+
+\end{definition}
+
+For each configuration $z = (\eta, x)$, a machine $M$ defines a unique
+next configuration $z' = (\beta, x')$ as follows:
+
+\begin{itemize}
+\item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
+\item If $\eta$ is a computation node, $z' = (\beta_{\eta}, g(x))$.
+\item If $\eta$ is a branch node, $z' = \twopartdef{(\beta_\eta^+,
+    x)}{h(x) \geq 0}{(\beta_\eta^-, x)}{h(x) < 0}$.
+\end{itemize}
+
+\begin{definition}{\textbf{Halting Computation and time-t Halting Set}}
+
+  A \textbf{halting computation} performed by an FDM $M$ on input $x$
+  is a sequence: $$\compute_x = (z_0, z_1, \ldots z_t)$$ \emph{s.t.}\\
+  \centerline{$z_0 = (\eta_1, I(x)$, $z_t = (\nodeout, x_t)$, and $z_i
+    = z_{i-1}'$ for $0 < i \leq k$} \\
+
+  The \textbf{output}, $\computefn_M(x)$ of a halting computation is
+  the value given by $O(x_t)$.  If such a halting computation exists
+  for an input $x$, we say that x is in the \textbf{time-t
+    Halting Set} of M and we write $x \in \halting_t$.  \\
+
+  The \textbf{Halting Set}, $\halting_M$ of a machine $M$ is the union
+  over all time-t halting sets, ie, the set of values for which $M$
+  eventually halts.
+\end{definition}
+
+\note{If a halting computation exists for an input x, it is unique.
+  However, not every input defines a halting computation.  It is easy
+  enough, for example, to construct machines which will enter infinite
+  loops without ever reaching the output node.  In such a case, we
+  define the computation of a machine $M$ to be the infinite sequence
+$$z_0, z_1, z_2, \ldots$$, s.t. \centerline{$z_0 = (\eta_1, I(x)$, and $z_i =
+z_{i-1}'$ for $0 < i$.}}\\
+
+Intuitively, we can think about the computation of an FDM, $M$ as the
+sequence defined by ``following the flow'' of the node graph.  Given
+an input $x$, $M$ starts in configuration $\eta_1, I(x)$. At each
+computation node $\eta$, it computes $g_\eta(x)$, where $x$ is the
+current value of stored in the machine's state space.  $g_\eta(x)$
+then becomes the new value of the state space, and the current node
+becomes $\beta_{\eta}$.  At each branch node $\eta$, $M$ computes
+$h_\eta(x)$, where again $x$ is the currently stored value.  If
+$h_\eta(x) \geq 0$, the new node is $\beta_\eta+$.  Otherwise it is
+$\beta_\eta^-$.  The machine halts when it eventually reaches the
+output node, at which point it applies the function $O(x)$ to
+its stored value, which is taken as the machine's output.
+
+\begin{definition}{\textbf{Computation Path} and \textbf{State Trajectory}}\\
+  
+  The \textbf{Computation Path}, $\computepath_x$, of $M$ on
+  input $x$ is the projection of $\compute_x$ under the map:
+  $$\mfunctype{\pathprojection}{\fullstate}{\nodes} \mid \pathprojection(\beta, x) = \beta$$
+  
+  The \textbf{State Trajectory} of an FDM $M$ on input $x$ is the
+  projection of $\compute_x$ under the map:
+  $$\mfunctype{\stateprojection}{\fullstate}{\nodes} \mid \stateprojection(\beta, x) = x$$
+\end{definition}
+
+\note{The computation path and state trajectory of a machine encode,
+  respectively, the sequence of nodes a machine traverses during a
+  computation, and the sequence of values stored in the machine's
+  state space during a computation.}
+
+\begin{definition}{\textbf{Finite-Dimensionally Computable Function}}
+  
+  A function \functype{\varphi}{X}{R^l}, $X \subset R^n$ is
+  \textbf{f.d. computable} over $R$ if there exists a
+  finite-dimensional machine, $M$ over $R$ such that $\varphi(x) =
+  \compute_M(x) \mid \forall x \in X$.
+  
+\end{definition}
+
+\begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets}}
+  
+  A set $S \subset R^n$ is \textbf{(f.d) decidable} over $R$ if its
+  characteristic function \functype{\chi_S}{R^n}{R} is (f.d)
+  computable over $R$, where:
+  
+  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0}{x \notin S}$$
+  
+  A set $S \subset R^n$ is \textbf{(f.d) recognizable} or
+  \textbf{(f.d) semi-decidable} over $R$ if its characteristic
+  function \functype{\chi_S}{R^n}{R} is (f.d) computable over $R$,
+  where:
+  
+  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0 \text{\emph{ or undefined}}}{x \notin S}$$
+  
+  A set $S \subset R^n$ is \textbf{(f.d) co-recognizable} over $R$
+  if its co-characteristic function \functype{\chi'_S}{R^n}{R} is (f.d)
+  computable over $R$, where:
+  
+  $$\chi'_S(x) =  \twopartdef{1}{x \notin S}{0 \text{\emph{ or undefined}}}{x \in S}$$
+  
+\end{definition}
+
+It is fairly straightforward to see that the recognizable sets over
+$R$ are precisely the halting sets over R and the co-recognizable sets
+are those whose complements are recognizable. Less obviously, the
+decidable sets are precisely those that are both recognizable and
+co-recognizable.
+
+\begin{proposition}{A set $S \subset R^n$ is decidable if and only if it is
+  both recognizable and co-recognizable}
+\end{proposition}
+\begin{proofsketch}
+  
+  Given semidecision machines, $M$ and $M'$ for both $S$ and $R^n -
+  S$, we can contruct a decision machine for $S$ by simulating $M$ and
+  $M'$ in parallel, outputting 1 if $M$ halts and 0 if $M'$ halts.
+  Since one of $M$ and $M'$ must halt eventually, we are guaranteed
+  that our constructed machine will halt for all inputs.
+
+  \note{The parallelization construction generalizes nicely to any
+    integral number of machines. cf \cite{B98} for concrete details}
+
+\end{proofsketch}
+
+\subsection{Notes and Further Properties of Machines}
+
+\begin{itemize}
+\item The theory developed here can be modified to accomodate for both
+  ordered and unordered rings, with the only substantive change in the
+  unordered case being that branch nodes perform equality comparisons
+  with 0 rather than inequality comparisons.
+
+\item The theory developed above can also be extended to fields,
+  allowing the use of rational maps in addition to polynomial maps.
+  (Recall that a field is a commutative ring with unit in which every
+  nonzero element has a multiplicative inverse.)  The only cause for
+  concern is the possibility of division by zero, which can be handled
+  by inserting sequences of branch nodes before each computation node
+  to check that all denominators in the node's map are nonzero.  In
+  the case that a zero-division occurs, the machine can transition to
+  an additionally-defined exception state and halt.
+
+\item The behavior of a machine $M$ is completely determined by the
+  values of the coefficients in each map associated with the nodes,
+  $\nodes_M = \set{1, 2, \ldots N}$.  We refer to the collection of
+  these coefficients as the \textbf{machine constants} of $M$,
+  written: $\mathcal{C}_M = \set{c_{11}, c_{21}, \ldots, c_{Nk}
+    \subset R}$.  It is relatively straightforward to provide an
+  unambiguous coding of $\mathcal{C}_M$ that is linear in the size of
+  $\nodes_M$.
+
+\item Associated with a machine $M$ is its degree, $D_M$, the maximum
+  of the degrees of all maps associated with $M$.
+\end{itemize}
+
+\section{Characterization of (f.d.) Decidable Sets}
+
+We are now in a position to sketch out some results that characterize
+the computable sets over $R$.  Our first such result shows that any
+computable set can be constructed from a countable set of basic
+semi/quasi algebraic sets.
+
+  \begin{definition}{\textbf{Semi-algebraic} and \textbf{Quasi-algebraic Sets}}
+    
+    A set $S \subset R$ is \textbf{basic semi-algebraic} over an
+    ordered ring, $R$, if $S$ is the set of elements in $R$ satisfying
+    a finite system of polynomial equalities and inequalities. A set
+    is \textbf{semi-algebraic} over $R$ if it is a finite union of basic
+    semi-algebraic sets.
+
+    A set $S \subset R$ is \textbf{basic quasi-algebraic} over an
+    unordered ring, $R$, if $S$ is the set of elements in $R$ satisfying
+    a finite system of polynomial equalities and inequalities. A set
+    is \textbf{quasi-algebraic} over $R$ if it is a finite union of basic
+    quasi-algebraic sets.
+    
+  \end{definition}
+
+  We define the initial computation path of length $k$ for a machine
+  $M$ on input $x$ as the first $k$ nodes traversed by $M$ while
+  computing on $x$.  We define the set of time-T halting paths to be the
+  computations performed by $M$ that halt in the first $T$ steps.
+
+  \begin{definition}{\textbf{Initial computation path} and \textbf{time-T halting path set}}
+
+    Let $M$ be a machine over $R$, and let $x$ be an element of
+    $\inspace_M$ with $\compute_x = z^0, z^1, \ldots, z^k, \ldots$ \\
+    Let $\computepath_x = \eta_0, \eta_1, \ldots, \eta_k, \ldots$.  
+    The \textbf{initial computation path} on $\computepath_x$ of
+    length $k$ is given by: 
+    $$\computepath_x(k) = (\eta_0, \eta_1, \ldots,\eta_k)$$
+
+    The \textbf{time-T path set}, $\haltpaths{T}$, of $M$ is given by:
+    $$\haltpaths{T} = \set{\computepath_x(T) \mid T(x) \leq T, x \in \inspace_M}$$
+
+  \end{definition}
+  
+  \begin{definition}{\textbf{Coincidence set}}
+
+    Let $M$ be a machine over a ring $R$, and let $\computepath =
+    \computepath_{x}(k)$ be the initial computation path of length $k$
+    for some $x \in \inspace_M$. The \textbf{coincidence set} of $M$
+    with respect to $\computepath$, is the set of elements in
+    $\inspace_M$ sharing the same initial computation path of length
+    k.  $\coincidence{\computepath}$, is given by:
+    $$\coincidence{\computepath} = 
+    \set{p' \in \inspace_M \mid \computepath_{x'}(k) = \computepath}$$
+    
+    \emph{\note{Coincidence sets partition $\inspace_M$ into
+        equivalence classes.}}
+
+  \end{definition}
+
+  \begin{theorem}{\textbf{Path Decomposition Theorem}}
+    For any machine $M$ over $R$, we have the following:
+
+    \begin{enumerate}
+    \item For any $T > 0$, $\halting_T$ is a disjoint union of basic
+      semi-algebraic (quasi-algebraic in the unordered case) sets.
+
+    \item $\halting_M$ is a countable union of disjoint basic
+      semi-algebraic sets.
+
+    \item For $\computepath \in \haltpaths{T}$,
+      $\computefn_M|\coincidence{\computepath}$ is a polynomial map.
+    \end{enumerate}
+  \end{theorem}
+
+  \begin{proofsketch}
+    
+    The main idea is that the coincidence sets of a given computation
+    path form basic semi(quasi)-algebraic sets.  We can partition
+    each time-halting set into finitely many coincidence sets, and
+    there are countably many time-halting sets.
+
+    \begin{itemize}
+    \item \textbf{(1)} follows from the fact that there are finitely
+      many computation paths of length T.  Each computation path
+      corresponds to a sequence of branch nodes that corresponds to a
+      sequence of polynomial equalities and inequalities, so the
+      coincidence set of a computation path is basic
+      semi(quasi)-algebraic. Since we can partition $\halting_T$ into
+      coincidence sets, each of which corresponds to a basic
+      semi(quasi)-algebraic, $\halting_T$ is a union of basic
+      semi/quasi-algebraics.
+    \item \textbf{(2)} follows from the fact that $\halting_M$ is just
+      the union over all $T$ of $\halting_M$, and each $\halting_M$ is
+      an equivalence class on $\inspace_M$.
+    \item \textbf{(3)} follows from the fact that $\computepath$
+      corresponds to exactly one sequence of computation nodes, so
+      $\compute_M|\coincidence{\computepath}$ computes the composition of
+      $g_{\eta}$ for $\eta \in \computepath$.
+    \end{itemize}
+  \end{proofsketch}
+  
+  \begin{corollary}
+    Any computable set is a countable union of disjoint basic
+    semi(quasi)-algebraic sets.
+  \end{corollary}
+
+  \section{Generalization of FDMs over R to the Infinite Dimensional Case}
+
+  So far, the machines we have considered can only access a
+  finite-length region of ``memory'', which has size bounded by the
+  dimension of $\statespace_M$.  An important feature of the classical
+  model, however, is that a machine can store an arbitrarily large
+  (though still finite) amount of information on its tape.  This
+  feature is necessary because it allows for the definition of single
+  machines that can accept inputs of arbitrary size. We incorporate
+  this feature into our model by expanding a machine's natural state
+  space to $R^\infty$ and adding new ``shift'' nodes, which move all
+  values stored in the state space to the left or right.
+
+  We denote by $R^\infty$ the disjoint union, $\bigcup_{n \geq 0} R^n$.\\
+
+  We denote by $R_\infty$ the \emph{bi-infinite direct sum} space over
+  $R$, which consists of elements of the form $(\ldots x_{-2}, x_{-1}, x_0,
+  x_1, x_2, \ldots)$.
+  
+  \begin{definition}{\textbf{Machine over R}}
+
+    A machine $M$ over a ring $R$ is a finite, directed, connected
+    graph with five types of nodes: \emph{input, computation, branch,
+      output} and \emph{shift}.  $\inspace_M = \outspace_M =
+    R^\infty$, and $R_\infty = \statespace_M$ The first four node
+    types are defined in the same manner as the finite dimensional
+    case.  Shift nodes behave similarly to computation nodes, in that
+    they have a unique next node and an associated map that transforms
+    the state space of the machine by shifting all stored values one
+    cell to the left or right. Shift nodes are allowed to have one of
+    two maps: \emph{shift left} $\sigma_l$, and \emph{shift
+      right} $\sigma_r$, where:\\
+
+    $$\sigma_l(x)_i = x_{i+1}$$ and $$\sigma_l(x)_i = x_{i+1}$$
+  \end{definition}
+  
+  \begin{theorem}{\textbf{Path Decomposition Theorem (Infinite Dimensional Case)}}
+    
+    For any machine M and positive integers n and T, we have the
+    following:
+
+    \begin{enumerate}
+    \item $\halting_T^n = \bigcup_{\computepath \in \haltpaths{T}}
+      \coincidence{\computepath}^n.$ That is, the n-dimensional
+      component of the time-T halting set M of is a finite disjoint union
+      of basic semi-algebraic sets.
+    \item $\halting_M^n = \bigcup_{\computepath \in \haltpaths{}}
+      \coincidence{\computepath}^n$.  That is, the n-dimensional
+      component of the halting of M is a countable disjoint union of
+      basic semi-algebraic sets.
+      \end{enumerate}
+  \end{theorem}
+
+  \begin{proofsketch}
+    
+    Most of the proof for the infinite dimensional case follows the
+    development for the finite case.  One cause for care is that the
+    shift node maps are not polynomial when considered as maps from
+    $R_\infty \rightarrow R_\infty$.  This difficulty is resolved by
+    noting that the shift maps can be reconstructed as polynomial maps
+    for any finite-dimensional subset, $R^n \subset R_\infty$, and by
+    noting that in time T the machine can only modify a finite number
+    of registers, since all the computation maps are injections of
+    finite polynomial maps from $R^m \rightarrow R^n$ into the state
+    space, $R_\infty \rightarrow R_\infty$, and we can traverse at
+    most T shift nodes in time T.  Since we can bound the total number
+    of registers accessible by a given machine in time T, the
+    computation performed by a machine at any  Thus for any particular size input and any particular
+    halting time, there exists a finite dimensional machine that
+    performs the same computations as M.
+    
+  \end{proofsketch}
+  
+
+  \section{Decision Problems}
+
+  The treatment of complexity questions in our model is much the same
+  as in classical complexity theory.  We frame problems as languages,
+  ie, as subsets of our input domain.  In the classical theory, this
+  means binary encodings of strings -- for us, it means subsets of
+  $R^\infty$.  The complexity/decidability of a problem then becomes a
+  question about the complexity/decidability of testing an input for
+  membership in a language.
+
+  \subsection{Definitions}
+  
+  \begin{definition}{\textbf{Decision Problem}}
+      
+    A \textbf{Decision Problem} over a ring $R$ is a set, $S \subseteq
+    R^\infty$.  A \textbf{Structured Decision Problem} is a set $S$,
+    partitioned into subsets, $S_{yes}$ and $S_{no}$, respectively
+    called the \textbf{Yes Instances} and \textbf{No Instances} of 
+    $S$.
+ 
+  \end{definition}
+
+  \begin{definition}{\textbf{Characteristic Function}}
+
+    Let $S = S_{yes} \cup S_{no} \subseteq R^{\infty}$.  The
+    characteristic function,
+    \functype{\charfunc_S}{S}{\set{0,1}}, is given by:
+
+    $$\charfunc_S(x) = \twopartdef{1}{x \in S_{yes}}{0}{x \in S_{no}}$$
+  \end{definition}
+
+  \subsection{Notable Decision Problems}
+
+  \begin{itemize}
+    \subsubsection{Decision Problems over Arbitrary Rings}
+    \bolditem{HN} - Are there solutions to a finite system of polynomial equations?
+    \bolditem{QUAD} - Does a finite system of quadratic equations have a solution?
+    \bolditem{4-FEAS} - Does a finite system of degree-4 polynomials have a solution?
+    \bolditem{QA-FEAS} - Does a set of quasi-algebraic equations describe the empty set?  
+    \bolditem{KP} - Knapsack Problem
+    
+    \subsubsection{Decision Problems over Ordered Rings}
+    \bolditem{SA-FEAS} - Does a set of semi-algebraic equations describe the empty set?
+    \bolditem{LPF} - Feasibility of Linear Programming Problems
+    \bolditem{TSP} - Travelling Salesman Problem
+    
+    \subsubsection{Decision Problems over $\integers$}
+    \bolditem{IPF} - Feasibility of Integer Programming Problems
+
+    \subsubsection{Decision Problems over $\integers_2$}
+    \bolditem{SAT} - Boolean formula satisfiability
+
+    \todo{Add bounded versions? (See \cite{B98} 84-91.)}
+
+  \end{itemize}
+
+  \subsection{Known Decidability Results}
+
+  All of the above are known to be decidable (when well-defined) over
+  $\complexes$, $\reals$, and $\integers_2$.  Over $\integers$,
+  \textbf{IPF}, \textbf{TSP}, and \textbf{KP} are decidable, but
+  \textbf{4-FEAS}, \textbf{QUAD}, \textbf{HN}, \textbf{QA-FEAS}, and
+  \textbf{SA-FEAS} are not.  Over $\rationals$, \textbf{LPF},
+  \textbf{TSP}, and \textbf{KP} are decidable.  It is an open problem
+  whether \textbf{QUAD} and \textbf{HN} are decidable over $\rationals$.
+
+  \section{The Class P}
+
+The complexity class $P$ is meant to abstract a notion of problems
+that are computationally tractable.  In general the class $P$ refers
+to those decision problems which can be computable in some number of
+steps that is polynomial in some relevant measure of the size of the
+problem's input.  Depending on context and interpretation of inputs,
+the relevant measure of size varies. In the classical theory of
+computation, size refers to the length of the machine's binary input.
+Since the binary representation length of an integer is logarithmic in
+its magnitude, this definition is equivalent to the set of problems
+that can be computed in time polylogarithmic in the magnitude of the
+machine's input interpreted as an integer.  In other cases, we find it
+more appropriate to interpret the input to an algorithm as a set of
+distinct inputs, each of which is bounded in size, rather than a
+single input.  (This is how we generally concepualize the inputs to
+sorting algorithms, for example).  In such a case, the relevant
+measure of cost is taken to be the number of inputs, rather than the
+magnitude of any single input.  In more rare cases, we may care about
+both magnitude and number of inputs, in which case our relevant measure
+of size may involve some product of the two measures.\\
+
+We extend these intuitions to arbitrary rings by defining two
+different measures of the magnitude of an input to a machine: the
+\emph{length} (corresponding to the number of distinct inputs to a
+machine) and the \emph{height} corresponding to the magnitude of each
+input.  The overall size of an input is then taken to be product of
+the length of an input with the maximum height of any element of the
+input.  This naturally abstracts the case where we interpret our input
+as a single value with unbounded magnitude ($length = 1$, $height =
+n$) as well as the case where we regard the input as an array of
+bounded values ($length = n$, $height = 1$).
+
+\subsection{Heights, Sizes,  and Costs}
+
+\begin{definition}{\textbf{Height Function} over $R$}
+
+  We define a \textbf{Height Function} on a ring $R$ to be a map:
+  $$\mfunctype{ht_R}{R^\infty}{\reals}$$
+\end{definition}
+
+\note{As we shall see, the height function on a ring effectively
+  defines what we consider to the the cost of performing a computation
+  on an element of the ring.  Of particular note are the \emph{unit
+    height} function, $ht_R(x) = 1$, and the \emph{bit height}
+  function, $ht_R(x) = \log(|x| + 1)$.  We use the unit height
+  function in cases where we are concerned with the algebraic
+  complexity of an algorithm (ie, the number of algebraic operations
+  required to compute the algorithm, independent of the values on
+  which the operations are performed).  We use the bit height function
+  when we want to capture the classical theory of computation over
+  $\integers$.  Over $\rationals$, we give an alternative definition
+  of bit height, $ht_\rationals(x) = (max(ht_\integers(p),
+  ht_\integers(q))$, where $x = \frac{p}{q}$, $p$ and $q$ relatively
+  prime.  This captures the bit cost of representing a rational $x$ as
+  a pair of integers.  Unless noted otherwise, we generally use bit
+  cost for computation over $\integers$ and $\rationals$, and unit
+  cost otherwise.}
+
+\begin{definition}{\textbf{Input Length}}
+  
+  The \textbf{length} of an input $x \in R^n$ to a machine over $R$ is
+  given by: $$length(x) = n$$
+\end{definition}
+
+\begin{definition}{\textbf{Size}}
+
+  Let $R$ be a ring with height function $ht_R$.  The \textbf{size} of
+  a polynomial $x \in R^n$ is given by:
+  $$length(x) * \max_{1 \leq i \leq n}(ht_R(x_i))$$.
+  \note{In the case that $ht_R$ is the unit height function, the size of
+  the input to a machine reduces to just the length of the input.}\\
+\end{definition}
+
+Now that we have a definition of input size, we want to consider the
+cost of performing a computation on a given machine, which we define
+as the number of steps the machine takes before halting, times the
+maximum size of any value stored in the machine's state space during
+computation.
+
+\begin{definition}{\textbf{Computation Cost}}
+  
+  Let $x \in R^n$ be an input to a machine $M$ over $R$ with height
+  function $ht_R$. The \textbf{cost}, $cost_M$ for $M$ to
+  compute $\computefn_M(x)$ is given by:
+  $$cost_M(x) = T(x) * ht_{max}(x)$$ where $ht_{max}(x)$ is given by the maximum
+  height of any value that appears in the state space of $M$ during
+  computation on $x$.  In the case that $M$ does not halt on input
+  $x$, we say that $cost_M(x) = \infty$.
+  
+\end{definition}
+
+\begin{definition}{\textbf{Polynomial Time Machine}}
+
+  A machine $M$ over $R$ is a \textbf{polynomial time} machine on $X
+  \subset \inspace_M$ if there exist positive integers $c$ and $q$
+  such that:
+  $$cost_M(x) \leq c(size(x))^q \mid \forall x \in X$$
+\end{definition}
+
+\begin{definition}{\textbf{p-morphism}}
+  
+  A function, \functype{\varphi}{X}{Y \cup R^\infty} is called
+  \textbf{polynomial-time computable} over $R$, or a
+  \textbf{p-morphism} over $R$ if there exists a polynomial time
+  machine over $R$ that computes $\varphi$.
+
+\end{definition}
+
+\begin{definition}{Membership in $P$}
+
+  A decision problem $S \subseteq R^\infty$ is said to be in class $P$
+  if its characteristic function, $\charfunc_S$ is a p-morphism.
+\end{definition}
+
+\section{Polynomial Time Reductions}
+
+\begin{definition}{\textbf{p-reducibility}}
+
+  A decision problem $S$ is \textbf{p-reducible} to a decision problem
+  $S'$ if there exists a p-morphism,
+  \functype{\varphi}{R^\infty}{R^\infty} such that $\varphi(S_{yes})
+  \subseteq S'_{yes}$ and $\varphi(S_{no}) \subseteq S'_{no}$.  The
+  map $\varphi$ is called a \textbf{polynomial-time reduction} from
+  $S$ to $S'$.
+n
+  We denote the sentence \emph{$S$ is p-reducible to $S'$} by writing:
+
+  $$S \preduce S'$$
+  \end{definition}
+
+  \note{ From the above definition it follows immediately that if
+    $\varphi$ is a polynomial-time reduction from $S$ to $S'$, then $x
+    \in S_{yes}$ if and only if $\varphi(x) \in S'_{yes}$.  Moreover,
+    since compositions of polynomials are still polynomials, it should
+    be clear that if a decision problem $S$ is p-reducible to a
+    decision problem $S' \in P$, then $S \in P$ as well.}
+
+\section{Notable Prior Results in Reducibility}
+
+\begin{theorem}{\textbf{Known Reductions}}
+  \begin{enumerate}
+  \item Over any ring or field $R$, $HN \preduce QUAD$.
+  \item Over any ordered ring or field $R$, $HN \preduce 4-FEAS$.
+  \item Over $(\integers_2, >)$, 
+    \begin{enumerate}
+    \item $HN \preduce QUAD \preduce 4FEAS$
+    \item $QUAD \preduce IP \preduce IPF$
+    \end{enumerate}
+  \end{enumerate}
+\end{theorem}
+
+\section{The Class NP}
+
+The definition of NP over R given by Blum et al is a generalization of
+the verifiability definition of NP given in classical complexity theory.
+
+\begin{definition}{\textbf{Class NP} over $R$}
+
+  A decision problem $S \subseteq R^\infty$ is in the class NP over a
+  ring $R$ if there exist positive integers $c$ and $q$ and a a
+  machine $M$ over R with $\inspace_M = R^\infty \times R^\infty$ such
+  that:
+
+  \begin{enumerate}
+  \item if $x \in S$ then there exists a \emph{witness}, $w
+    \in R^\infty$, such that $\computefn_M(x,w) = 1$ and
+    $cost_M(x,w) \leq c(size(x))^q$.
+  \item if $x \notin S$, then there is no such $w$.
+  \end{enumerate}
+\end{definition}
+
+A classic simple example of a problem in NP is SUBSETSUM, which asks,
+given a set of values $X = {x_1, x_2, x_3, \ldots x_k}$ and a target
+$T$, is there a subset $S \subseteq X$ such that $\sum\limits_{x_i \in
+  S} x_i = T$?  Though it is not clear how we might go about
+efficiently finding such a subset, it is clear that if we are given a
+candidate subset as a witness, we can quickly verify that it is, in
+fact, a solution by simply adding the values and checking if the sum
+is equal to $T$.\\
+
+An important feature of the class $NP$ in the classical theory is the
+existence of \textbf{NP Complete} problems, which are in a sense the
+``hardest'' problems in $NP$.  More precisely, NP Complete problems
+are those problems which lie in $NP$, and to which every problem in
+$NP$ is reducible in polynomial time.  These problems can be shown to
+exist in the generalized algebraic theory as well.
+
+\begin{definition}{\textbf{NP Hard over R}}
+  A decision problem $S$ is said to be \textbf{NP Hard} over R if
+  every $S' \in NP_R$ is p-reducible to $S$.
+\end{definition}
+
+\begin{definition}{\textbf{NP Complete over R}}
+  A decision problem $S$ is said to be \textbf{NP Complete} over R it
+  is both NP Hard and in NP.
+\end{definition}
+
+\section{Known NP-Complete Problems}
+
+The following results hold with respect to either unit or bit cost.
+See \cite{B98} for details.  \todo{Should we present proofs or proof
+  sketches here?}
+
+\begin{itemize}
+\item QA-FEAS is NP-Complete over any unordered ring or field R.
+\item HN and QUAD are NP-Complete over (F, =) for any field F.
+\item SA-FEAS is NP-Complete over any ordered ring or field R.
+\item HN, QUAD, and 4-FEAS are NP-Complete over $\integers$,
+  $\rationals$ and $\reals$, all considered with order.
+\end{itemize}
+
+\todo{Add bounded versions?}
