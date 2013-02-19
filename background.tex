@@ -25,7 +25,7 @@ the well-known classes $\mathbf{P}$ and $\mathbf{NP}$ to machines that
 compute with values from an arbitrary ring $R$.  We then develop a
 third complexity class, $\ndetp$, which we present as an alternative
 generalization of the $\mathbf{NP}$.  Our major results are that
-$\ndetp \subseteq \exp$ over any ring or field and that $\ndetp =
+$\ndetp \subseteq \exptime$ over any ring or field and that $\ndetp =
 \np$ for any finite ring or field (eg $\integers_p$).
 
 \chapter{Background}
@@ -41,12 +41,12 @@ see \cite{T36}
 
 A Turing Machine can be thought of as an infinitely long 1-way tape
 divided into cells, on each of which can be written a single symbol.
-Such a machine is outfitted with a tape head, which can move left and
-right as well as read and write symbols to and from the tape. The
-machine's program consists of a set of states along with a transition
-function, which provides instructions for how the tape head operates
-and how the machine transitions from state to state.  These ideas are
-made precise as follows:
+Such a machine is outfitted with a tape head which can move left and
+right as well as read and write symbols to and from the tape. A
+machine's ``program'' consists of a set of states along with a
+transition function which provides instructions for how the tape head
+operates and how the machine transitions from state to state.  These
+ideas are made precise as follows:
 
 \begin{definition}{Turing Machine}
 
@@ -64,7 +64,7 @@ made precise as follows:
 
   The transition function $\delta$ determines how the machine passes
   between \textbf{configurations}, which are triples in $\Sigma^*
-  \times Q \times$ encoding the symbols currently written on the tape,
+  \times Q \times \naturals$ encoding the symbols currently written on the tape,
   the machine's current state, and the position of the tape head.  At
   each computation step, the machine read the symbol, $\sigma$ on the
   cell currently occupied by the tape head tape head rests.  If the
@@ -81,12 +81,11 @@ made precise as follows:
 
 A Blum Machine is in essence a Turing Machine with a number of key
 features abstracted to a more general setting. We replace the
-classical finite tape alphabet with elements of an arbitrary
-ring/field and we replace the classical actions of reading and writing
-to individual cells with order/equality comparisons and computations
-of componentwise polynomial/rational
-maps. \\
-
+classical finite tape alphabet with elements of a ring/field, and we
+replace the classical operations of reading and writing to individual
+cells with order/equality comparisons and computations of
+componentwise polynomial/rational maps. \\
+ 
 In order to build intuition about how Blum machines operate and how we
 can analyze their properties, we first present Blum et al's definition of
 a \emph{Finite Dimensional Machine}, which corresponds in the
@@ -95,12 +94,10 @@ Having built some intuition with the finite dimensional model, we then
 show how we can generalize to the infinite dimensional case, allowing
 us to consider machines that can process arbitrarily large inputs.
 
-\subsection*{Definitions}
-
-Let $R$ be a commutative ring with unit, and let $l, m$, and $n$ be positive
-integers. By convention, we use the symbol $x$ to denote a polynomial
-over $R$, and we denote the ring of polynomials over $R$ of degree $k$
-by $R^k$.
+In what follows, let $R$ be a commutative ring with unit, and let $l,
+m$, and $n$ be positive integers. By convention, we will use the
+symbol $x$ to denote a polynomial over $R$, and we denote the ring of
+polynomials over $R$ of degree at most $k$ by $R^k$.
 
 \begin{definition}{\textbf{Finite Dimensional Machine} over a ring
     \textbf{R}}
@@ -156,36 +153,41 @@ by $R^k$.
 
 We are now in a position to define what it means for a machine $M$ to
 perform a computation on some input, $x$.  The basic idea is that a
-computation is a path through $\nodes \times \statespace$, that begins
-with $(\eta_1, I_M(x)$ and follows the computing endomorphism of $M$, halting
-upon reaching the output node of $M$.  The ``run time'' of a
-computation becomes the length of this path, and the halting set of a
-$M$ becomes the set of input values with computations of finite
-length.
+computation is a path through $\nodes \times \statespace$ that begins
+with $(\eta_1, I_M(x)$ and follows the computing endomorphism of $M$,
+halting upon reaching the output node of $M$.  The ``run time'' of a
+computation is given by the length of this path, and the output value
+of a computation is the result of $O_m$ called on whatever is left in
+$\statespace_M$ when a terminal configuration is reached.
 
 \begin{definition}{\textbf{Configuration}}  
 
   A \textbf{configuration} of an FDM, $M$ is a pair $(\eta, x) \in
-  \nodes \times \statespace_M$ where $\eta \neq \nodeout$.
+  \nodes \times \statespace_M$. The set $\nodes \times \statespace_M$
+  is called the \textbf{configuration space} of $M$.  A configuration
+  is said to be \textbf{terminal} if $\eta = \nodeout$, and
+  \textbf{non-terminal} otherwise.
 
 \end{definition}
 
-For each configuration $z = (\eta, x)$, a machine $M$ defines a unique
-next configuration $z' = (\beta, x')$ as follows:
+For each non-terminal configuration $z = (\eta, x)$, a machine $M$
+defines a unique next configuration $z' = (\beta, x')$ as follows:
 
 \begin{itemize}
 \item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
-\item If $\eta$ is a computation node, $z' = (\beta_{\eta}, g(x))$.
+\item If $\eta$ is a computation node, $z' = (\beta_{\eta}, g_\eta(x))$.
 \item If $\eta$ is a branch node, $z' = \twopartdef{(\beta_\eta^+,
-    x)}{h(x) \geq 0}{(\beta_\eta^-, x)}{h(x) < 0}$.
+    x)}{h_\eta(x) \geq 0}{(\beta_\eta^-, x)}{h_\eta(x) < 0}$.
 \end{itemize}
 
 \begin{definition}{\textbf{Halting Computation and time-t Halting Set}}
 
   A \textbf{halting computation} performed by an FDM $M$ on input $x$
-  is a sequence: $$\compute_x = (z_0, z_1, \ldots z_t)$$ \emph{s.t.}\\
+  is a sequence of configurations: $$\compute_x = (z_0, z_1, \ldots
+  z_t)$$ such that \\
+  
   \centerline{$z_0 = (\eta_1, I(x)$, $z_t = (\nodeout, x_t)$, and $z_i
-    = z_{i-1}'$ for $0 < i \leq k$} \\
+    = z_{i-1}'$ for $0 < i \leq k$\\}
 
   The \textbf{output}, $\computefn_M(x)$ of a halting computation is
   the value given by $O(x_t)$.  If such a halting computation exists
@@ -202,8 +204,8 @@ next configuration $z' = (\beta, x')$ as follows:
   enough, for example, to construct machines which will enter infinite
   loops without ever reaching the output node.  In such a case, we
   define the computation of a machine $M$ to be the infinite sequence
-$$z_0, z_1, z_2, \ldots$$, s.t. \centerline{$z_0 = (\eta_1, I(x)$, and $z_i =
-z_{i-1}'$ for $0 < i$.}}\\
+  $$z_0, z_1, z_2, \ldots$$, such that 
+  \centerline{$z_0 = (\eta_1, I(x)$, and $z_i =  z_{i-1}'$ for $0 < i$.}}\\
 
 Intuitively, we can think about the computation of an FDM, $M$ as the
 sequence defined by ``following the flow'' of the node graph.  Given
@@ -321,10 +323,10 @@ co-recognizable.
 
 \section{Characterization of (f.d.) Decidable Sets}
 
-We are now in a position to sketch out some results that characterize
-the computable sets over $R$.  Our first such result shows that any
-computable set can be constructed from a countable set of basic
-semi/quasi algebraic sets.
+Here we sketch out some results that characterize the computable sets
+over $R$.  Our first theorem shows that any computable set can be
+constructed from a countable union of basic semi/quasi algebraic sets.
+Before we proceed, we need a few more definitions.
 
   \begin{definition}{\textbf{Semi-algebraic} and \textbf{Quasi-algebraic Sets}}
     
@@ -335,9 +337,9 @@ semi/quasi algebraic sets.
     semi-algebraic sets.
 
     A set $S \subset R$ is \textbf{basic quasi-algebraic} over an
-    unordered ring, $R$, if $S$ is the set of elements in $R$ satisfying
-    a finite system of polynomial equalities and inequalities. A set
-    is \textbf{quasi-algebraic} over $R$ if it is a finite union of basic
+    unordered ring, $R$, if $S$ is the set of elements in $R$
+    satisfying a finite system of polynomial equalities. A set is
+    \textbf{quasi-algebraic} over $R$ if it is a finite union of basic
     quasi-algebraic sets.
     
   \end{definition}
@@ -368,7 +370,7 @@ semi/quasi algebraic sets.
     for some $x \in \inspace_M$. The \textbf{coincidence set} of $M$
     with respect to $\computepath$, is the set of elements in
     $\inspace_M$ sharing the same initial computation path of length
-    k.  $\coincidence{\computepath}$, is given by:
+    $k$.  $\coincidence{\computepath}$, is given by:
     $$\coincidence{\computepath} = 
     \set{p' \in \inspace_M \mid \computepath_{x'}(k) = \computepath}$$
     
@@ -491,7 +493,8 @@ semi/quasi algebraic sets.
     space, $R_\infty \rightarrow R_\infty$, and we can traverse at
     most T shift nodes in time T.  Since we can bound the total number
     of registers accessible by a given machine in time T, the
-    computation performed by a machine at any  Thus for any particular size input and any particular
+    computation performed by a machine at any node is still
+    polynomial. Thus for any particular size input and any particular
     halting time, there exists a finite dimensional machine that
     performs the same computations as M.
     
