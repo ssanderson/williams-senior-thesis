@@ -27,6 +27,7 @@
 \newcommand{\set}[1]{\{#1\}}
 \newcommand{\functype}[3]{$#1:#2 \rightarrow #3$} 
 \newcommand{\mfunctype}[3]{#1:#2 \rightarrow #3} 
+\newcommand{\note}[1]{{\textbf{Note:} #1}}
 
 % Machine descriptors.
 \newcommand{\inspace}[0]{\mathcal{I}}
@@ -34,6 +35,7 @@
 \newcommand{\statespace}[0]{\mathcal{S}}
 \newcommand{\nodes}[0]{\mathcal{N}}
 \newcommand{\fullstate}[0]{\nodes \times \statespace}
+\newcommand{\fullstatem}[1]{\nodes_#1 \times \statespace_#1}
 \newcommand{\nodein}[0]{\eta_{in}}
 \newcommand{\nodeout}[0]{\eta_{out}}
 \newcommand{\accept}[0]{\eta_{accept}}
@@ -41,7 +43,6 @@
 
 % Machine properties
 \newcommand{\computefn}[0]{\Phi}
-\newcommand{\note}[1]{{\textbf{Note:} #1}}
 \newcommand{\compute}[0]{\phi}
 \newcommand{\computeout}[1]{\phi_{#1}^{out}}
 \newcommand{\halting}[0]{\Omega}
@@ -66,8 +67,6 @@
 \newcommand{\ndetparg}[1]{\mathbf{NDETP_{#1}}}
 \newcommand{\nparg}[1]{\mathbf{NP_{#1}}}
 \newcommand{\parg}[1]{\mathbf{P_{#1}}}
-
-
 
 % Problems
 \newcommand{\subsum}[2]{$\mathbf{SUBSETSUM}_{(#1, #2)}$}

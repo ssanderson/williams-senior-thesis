@@ -11,31 +11,40 @@ point in time.  One shortcoming of this computing model is that it
 does not allow us to describe computational problems that are defined
 over uncountable sets such $\mathbb{R}$ or $\mathbb{C}$.  Examples of
 such problems include analyzing the expected runtime of Newton's
-Method, determining membership in the Mandelbrot Set, and the Hilbert
-Nullstellensatz, which asks whether a finite set of polynomials in $n$
+Method, determining membership in the Mandelbrot Set, and the the
+problem of determining whether a finite set of polynomials in $n$
 variables share a common root. \\
 
-To address the above issues and others, Blum et al. develop a theory
-of computation that generalizes the Turing Machine model to
-computation over arbitrary rings and fields.  In this thesis, we
-present a basic development of their model as well as a sample of
-their major results.  In particular, we show how Blum et al. define
-the relativized complexity classes, $\p$ and $\np$, which generalize
-the well-known classes $\mathbf{P}$ and $\mathbf{NP}$ to machines that
-compute with values from an arbitrary ring $R$.  We then develop a
-third complexity class, $\ndetp$, which we present as an alternative
-generalization of the $\mathbf{NP}$.  Our major results are that
-$\ndetp \subseteq \exptime$ over any ring or field and that $\ndetp =
-\np$ for any finite ring or field (eg $\integers_p$).
+To address the above issues and others, in \cite{B89} Blum et
+al. develop an algebraic theory of computation that generalizes the
+Turing Machine model to computation over arbitrary rings and fields.
+In \cite{B98} the same authors present a wealth of results related to
+their model.  In this thesis, we present a basic development of their
+model as well as a sample of their major results.  In particular, we
+show how Blum et al. define the relativized complexity classes, $\p$
+and $\np$, which generalize the well-known classes $\mathbf{P}$ and
+$\mathbf{NP}$ to machines that compute with values from an arbitrary
+ring $R$.  We then develop a third complexity class, $\ndetp$, which
+we present as an alternative generalization of the classical
+$\mathbf{NP}$.  Our major results are that, over any ring $R$, $\p
+\subseteq \ndetp \subseteq \np$ and $\ndetp \subseteq \exptime$. From
+these containments it follows that $\p \subset \ndetp$ or $\ndetp
+\subset \np$, then $\p \neq \np$.  We also demonstrate the existence
+of at least one ring over which $\ndetp \subset \np$.  (It is already
+known that $\p \neq \np$ for this case.)  We conclude by proving a
+sufficient condition under which the equality $\ndetp = \np$ holds,
+and we conjecture that this condition is also necessary.  
 
 \chapter{Background}
 
 In this Chapter, we present a basic development of an algebraic model
 of computation due to Blum et al.  The material presented here draws
-heavily from \cite{B89} and \cite{B98}.  We begin with a brief review
-of the classical Turing Machine model.  For a more thorough reference
-see \cite{S06}.  For the original article introducing Turing Machines, 
-see \cite{T36}
+heavily from \cite{B89} and \cite{B98}.  Since the computing machines
+developed by Blum et al. are essentially a generalization of the
+classical Turing Machine, we begin with a brief review of Turing
+Machines.  For a more thorough introductory reference see \cite{S06}.
+For Turing's original article introducing the concept of a computing
+machine, see \cite{T36}.
 
 \section{Classical Turing Machines}
 
@@ -60,17 +69,18 @@ ideas are made precise as follows:
   \item $\Gamma \subset \Sigma$ is the tape alphabet.
   \item \functype{\delta}{Q \times \Sigma}{Q \times \Gamma \times
       \set{\leftarrow, \rightarrow}} is a transition function.
+  \item $q_0$ is the initial state of the machine.
   \end{itemize}
 
   The transition function $\delta$ determines how the machine passes
   between \textbf{configurations}, which are triples in $\Sigma^*
-  \times Q \times \naturals$ encoding the symbols currently written on the tape,
-  the machine's current state, and the position of the tape head.  At
-  each computation step, the machine read the symbol, $\sigma$ on the
-  cell currently occupied by the tape head tape head rests.  If the
+  \times Q \times \naturals$ encoding the symbols currently written on
+  the tape, the machine's current state, and the position of the tape
+  head.  At each computation step, the machine reads the symbol,
+  $\sigma$ on the cell currently occupied by the tape head.  If the
   machine is in state $q$, it then calculates $\delta(q, \sigma)$ =
   $(q', \sigma', d \in \set{\leftarrow, \rightarrow})$, transitions
-  into state $q'$, writes $\sigma'$ to the current cell, and move the
+  into state $q'$, writes $\sigma'$ to the current cell, and moves the
   tape head to the left or right depending on the value of $d$.
   
 \end{definition}
@@ -102,7 +112,7 @@ polynomials over $R$ of degree at most $k$ by $R^k$.
 \begin{definition}{\textbf{Finite Dimensional Machine} over a ring
     \textbf{R}}
   
-  A \textbf{Finite Dimensional Machine} (FDM), $M$ over $R$ is a
+  A \textbf{Finite Dimensional Machine} (FDM) $M$ over $R$ is a
   finite, directed, connected graph with four types of nodes:
   \emph{input, computation, branch} and \emph{output}.  An FDM has one
   input and one output node but can have any number of branch and
@@ -132,12 +142,12 @@ polynomials over $R$ of degree at most $k$ by $R^k$.
     by $\eta_1$, and we denote the unique next node of the $\eta_1$ by
     $\beta_{\eta_1}$ or just $\beta_1$.
     
-  \item Associated with each computation node, $\eta$, is a
+  \item Associated with each computation node $\eta$ qis a
     componentwise polynomial map
     \functype{g_\eta}{\statespace_M}{\statespace_M}. We denote the
     unique next node of $\eta$ by $\beta_\eta$.
     
-  \item Associated with each branch node, $\eta$ is a nonzero
+  \item Associated with each branch node $\eta$ is a nonzero
     polynomial function \functype{h_\eta}{\statespace_M}{R}.  We
     associate the condition $h_\eta(x) \geq 0$ with one of the next
     nodes of $\eta$, called the \textbf{Yes Node} of $\eta$.  We
@@ -154,15 +164,15 @@ polynomials over $R$ of degree at most $k$ by $R^k$.
 We are now in a position to define what it means for a machine $M$ to
 perform a computation on some input, $x$.  The basic idea is that a
 computation is a path through $\nodes \times \statespace$ that begins
-with $(\eta_1, I_M(x)$ and follows the computing endomorphism of $M$,
-halting upon reaching the output node of $M$.  The ``run time'' of a
+with $(\eta_1, I_M(x))$ and follows the computing endomorphism of $M$,
+halting upon reaching the output node of $M$.  The ``run-time'' of a
 computation is given by the length of this path, and the output value
 of a computation is the result of $O_m$ called on whatever is left in
 $\statespace_M$ when a terminal configuration is reached.
 
 \begin{definition}{\textbf{Configuration}}  
 
-  A \textbf{configuration} of an FDM, $M$ is a pair $(\eta, x) \in
+  A \textbf{configuration} of an FDM $M$ is a pair $(\eta, x) \in
   \nodes \times \statespace_M$. The set $\nodes \times \statespace_M$
   is called the \textbf{configuration space} of $M$.  A configuration
   is said to be \textbf{terminal} if $\eta = \nodeout$, and
@@ -189,36 +199,38 @@ defines a unique next configuration $z' = (\beta, x')$ as follows:
   \centerline{$z_0 = (\eta_1, I(x)$, $z_t = (\nodeout, x_t)$, and $z_i
     = z_{i-1}'$ for $0 < i \leq k$\\}
 
-  The \textbf{output}, $\computefn_M(x)$ of a halting computation is
+  The \textbf{output} $\computefn_M(x)$ of a halting computation is
   the value given by $O(x_t)$.  If such a halting computation exists
-  for an input $x$, we say that x is in the \textbf{time-t
+  for an input $x$, we say that $x$ is in the \textbf{time-t
     Halting Set} of M and we write $x \in \halting_t$.  \\
 
-  The \textbf{Halting Set}, $\halting_M$ of a machine $M$ is the union
-  over all time-t halting sets, ie, the set of values for which $M$
-  eventually halts.
+  The \textbf{Halting Set} $\halting_M$ of a machine $M$ is the union
+  over all $t > 0$ of the time-t halting sets for $M$, i.e., the set of
+  values for which $M$ eventually halts.
 \end{definition}
 
-\note{If a halting computation exists for an input x, it is unique.
+\note{If a halting computation exists for an input $x$, it is unique.
   However, not every input defines a halting computation.  It is easy
   enough, for example, to construct machines which will enter infinite
   loops without ever reaching the output node.  In such a case, we
   define the computation of a machine $M$ to be the infinite sequence
-  $$z_0, z_1, z_2, \ldots$$, such that 
-  \centerline{$z_0 = (\eta_1, I(x)$, and $z_i =  z_{i-1}'$ for $0 < i$.}}\\
+  $$z_0, z_1, z_2, \ldots$$ such that   
+  \centerline{$z_0 = (\eta_1, I(x))$, and $z_i =  z_{i-1}'$ for $0 < i$.}}\\
 
 Intuitively, we can think about the computation of an FDM, $M$ as the
-sequence defined by ``following the flow'' of the node graph.  Given
-an input $x$, $M$ starts in configuration $\eta_1, I(x)$. At each
-computation node $\eta$, it computes $g_\eta(x)$, where $x$ is the
-current value of stored in the machine's state space.  $g_\eta(x)$
-then becomes the new value of the state space, and the current node
-becomes $\beta_{\eta}$.  At each branch node $\eta$, $M$ computes
-$h_\eta(x)$, where again $x$ is the currently stored value.  If
-$h_\eta(x) \geq 0$, the new node is $\beta_\eta+$.  Otherwise it is
-$\beta_\eta^-$.  The machine halts when it eventually reaches the
-output node, at which point it applies the function $O(x)$ to
-its stored value, which is taken as the machine's output.
+sequence defined by ``following the flow'' of the node graph while
+applying the appropriate transformations to $\statespace_M$ at
+computation nodes. Given an input $x$, $M$ starts in configuration
+$\eta_1, I(x)$. At each computation node $\eta$, it computes
+$g_\eta(x)$, where $x$ is the current value of stored in the machine's
+state space.  $g_\eta(x)$ then becomes the new value of the state
+space, and the current node becomes $\beta_{\eta}$.  At each branch
+node $\eta$, $M$ computes $h_\eta(x)$, where again $x$ is the
+currently stored value.  If $h_\eta(x) \geq 0$, the new node is
+$\beta_\eta+$.  Otherwise it is $\beta_\eta^-$.  The machine halts
+when it eventually reaches the output node, at which point it applies
+the function $O(x)$ to its stored value, which is taken as the
+machine's output.
 
 \begin{definition}{\textbf{Computation Path} and \textbf{State Trajectory}}\\
   
@@ -247,7 +259,7 @@ its stored value, which is taken as the machine's output.
 
 \begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets}}
   
-  A set $S \subset R^n$ is \textbf{(f.d) decidable} over $R$ if its
+  A set $S \subset R^n$ is \textbf{(f.d.) decidable} over $R$ if its
   characteristic function \functype{\chi_S}{R^n}{R} is (f.d)
   computable over $R$, where:
   
@@ -255,13 +267,13 @@ its stored value, which is taken as the machine's output.
   
   A set $S \subset R^n$ is \textbf{(f.d) recognizable} or
   \textbf{(f.d) semi-decidable} over $R$ if its characteristic
-  function \functype{\chi_S}{R^n}{R} is (f.d) computable over $R$,
+  function \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$,
   where:
   
   $$\chi_S(x) =  \twopartdef{1}{x \in S}{0 \text{\emph{ or undefined}}}{x \notin S}$$
   
-  A set $S \subset R^n$ is \textbf{(f.d) co-recognizable} over $R$
-  if its co-characteristic function \functype{\chi'_S}{R^n}{R} is (f.d)
+  A set $S \subset R^n$ is \textbf{(f.d.) co-recognizable} over $R$
+  if its co-characteristic function \functype{\chi'_S}{R^n}{R} is (f.d.)
   computable over $R$, where:
   
   $$\chi'_S(x) =  \twopartdef{1}{x \notin S}{0 \text{\emph{ or undefined}}}{x \in S}$$
@@ -275,7 +287,7 @@ decidable sets are precisely those that are both recognizable and
 co-recognizable.
 
 \begin{proposition}{A set $S \subset R^n$ is decidable if and only if it is
-  both recognizable and co-recognizable}
+  both recognizable and co-recognizable.}
 \end{proposition}
 \begin{proofsketch}
   
@@ -286,7 +298,7 @@ co-recognizable.
   that our constructed machine will halt for all inputs.
 
   \note{The parallelization construction generalizes nicely to any
-    integral number of machines. cf \cite{B98} for concrete details}
+    integral number of machines. See \cite{B98} for concrete details.}
 
 \end{proofsketch}
 
@@ -310,7 +322,7 @@ co-recognizable.
 
 \item The behavior of a machine $M$ is completely determined by the
   values of the coefficients in each map associated with the nodes,
-  $\nodes_M = \set{1, 2, \ldots N}$.  We refer to the collection of
+  $\nodes_M = \set{1, 2, \ldots, N}$.  We refer to the collection of
   these coefficients as the \textbf{machine constants} of $M$,
   written: $\mathcal{C}_M = \set{c_{11}, c_{21}, \ldots, c_{Nk}
     \subset R}$.  It is relatively straightforward to provide an
@@ -323,22 +335,22 @@ co-recognizable.
 
 \section{Characterization of (f.d.) Decidable Sets}
 
-Here we sketch out some results that characterize the computable sets
-over $R$.  Our first theorem shows that any computable set can be
-constructed from a countable union of basic semi/quasi algebraic sets.
+Here we sketch some results that characterize the computable sets over
+$R$.  Our first theorem shows that any computable set is the
+projection of a countable union of basic semi/quasi algebraic sets.
 Before we proceed, we need a few more definitions.
 
   \begin{definition}{\textbf{Semi-algebraic} and \textbf{Quasi-algebraic Sets}}
     
     A set $S \subset R$ is \textbf{basic semi-algebraic} over an
-    ordered ring, $R$, if $S$ is the set of elements in $R$ satisfying
+    ordered ring $R$ if $S$ is the set of elements in $R$ satisfying
     a finite system of polynomial equalities and inequalities. A set
     is \textbf{semi-algebraic} over $R$ if it is a finite union of basic
     semi-algebraic sets.
 
     A set $S \subset R$ is \textbf{basic quasi-algebraic} over an
-    unordered ring, $R$, if $S$ is the set of elements in $R$
-    satisfying a finite system of polynomial equalities. A set is
+    unordered ring $R$ if $S$ is the set of elements in $R$ satisfying
+    a finite system of polynomial equalities. A set is
     \textbf{quasi-algebraic} over $R$ if it is a finite union of basic
     quasi-algebraic sets.
     
@@ -356,10 +368,10 @@ Before we proceed, we need a few more definitions.
     Let $\computepath_x = \eta_0, \eta_1, \ldots, \eta_k, \ldots$.  
     The \textbf{initial computation path} on $\computepath_x$ of
     length $k$ is given by: 
-    $$\computepath_x(k) = (\eta_0, \eta_1, \ldots,\eta_k)$$
+    $$\computepath_x(k) = (\eta_0, \eta_1, \ldots,\eta_k)$$.
 
     The \textbf{time-T path set}, $\haltpaths{T}$, of $M$ is given by:
-    $$\haltpaths{T} = \set{\computepath_x(T) \mid T(x) \leq T, x \in \inspace_M}$$
+    $$\haltpaths{T} = \set{\computepath_x(T) \mid T(x) \leq T, x \in \inspace_M}$$.
 
   \end{definition}
   
@@ -367,17 +379,30 @@ Before we proceed, we need a few more definitions.
 
     Let $M$ be a machine over a ring $R$, and let $\computepath =
     \computepath_{x}(k)$ be the initial computation path of length $k$
-    for some $x \in \inspace_M$. The \textbf{coincidence set} of $M$
-    with respect to $\computepath$, is the set of elements in
-    $\inspace_M$ sharing the same initial computation path of length
-    $k$.  $\coincidence{\computepath}$, is given by:
+    for some $x \in \inspace_M$. The \textbf{coincidence set}
+    $\coincidence{\computepath}$ of $M$ with respect to $\computepath$
+    is the set of elements in $\inspace_M$ whose initial computation
+    path of length $k$ is $\gamma$. It is defined by:
     $$\coincidence{\computepath} = 
     \set{p' \in \inspace_M \mid \computepath_{x'}(k) = \computepath}$$
     
-    \emph{\note{Coincidence sets partition $\inspace_M$ into
-        equivalence classes.}}
+    \emph{\note{It is not hard to see that belonging to the same
+        coincidence set of length $k$ defines an equivalence relation
+        on members of $\inspace_M$.  Thus, for each $k > 0$, the
+        coincidence sets of $M$ on paths of length $k$ partition
+        $\inspace_M$ into disjoint equivalence classes.}}
 
   \end{definition}
+
+  One of the most important tools for investigating the behavior of
+  BSS machines is the system of polynomial equations known as the
+  \textbf{Register Equations}, which provide necessary and sufficient
+  conditions for a machine $M$ to accept an input $w$ in time $t$.
+
+  \begin{definition}{\textbf{Register Equations}}
+
+  \end{definition}
+
 
   \begin{theorem}{\textbf{Path Decomposition Theorem}}
     For any machine $M$ over $R$, we have the following:

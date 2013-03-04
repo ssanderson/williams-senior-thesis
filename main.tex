@@ -1,6 +1,9 @@
+% \includeonly{thesis-macros}
 \documentclass[twoside]{report}
 \usepackage[top=1.0in, bottom=1in, left=1.5in, right=1in, includehead]{geometry}
 \usepackage{thesiscommands}
+\usepackage{appendix}
+
 \pagestyle{headings}
 
 %% Include some fancy-schmancy macros
@@ -48,8 +51,8 @@ Williamstown, Massachusetts\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \tableofcontents
-\listoffigures
-\listoftables
+% \listoffigures
+% \listoftables
 \onehalfspacing
 
 \include{abstract}
@@ -73,6 +76,8 @@ Williamstown, Massachusetts\\
 
 %%%%%%%% Apendixes %%%%%%%%%%%
 \appendix
+\addappheadtotoc
+\include{glossary}
 %%%%%%%% End Appendixes %%%%%%
 
 %%%%%%%% References %%%%%%%%%%

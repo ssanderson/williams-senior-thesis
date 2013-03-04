@@ -1,0 +1,65 @@
+\chapter{Glossary of Symbols and Definitions}
+
+In the following, let $M$ be a BSS Machine (finite or
+infinite-dimensional), let $R$ be a ring, and let $x$ be an element of
+$R^\infty$. In general, for any machine property we may omit the
+subscript $_M$ if the intention is clear from context.
+
+\section{Defining Properties of BSS Machines}
+\begin{itemize}
+\item $\inspace_M$ (\textbf{Input Space}): The space of values in
+  $R^\infty$ that serve as valid inputs to $M$.
+\item $\outspace_M$ (\textbf{Output Space}): The space of balues in
+  $R^\infty$ that serve as valid outputs from $M$.
+\item $\statespace_M$ (\textbf{State Space}): ``Location'' where $M$
+  stores the results of partial computations. BSS analog of the
+  classical Turing Machine tape.
+\item $\nodes_M$ (\textbf{Nodes}): BSS analog to the states of a
+  classical Turing Machine.
+\item $\eta$ : Symbol used to denote a particular node of $M$.
+  Distinguished nodes used in some machine definitions include
+  $\nodein$ (\textbf{Input Node}), $\nodeout$ (\textbf{Output
+    Node}), $\accept$ \textbf{Accept Node}, and $\reject$
+  (\textbf{Reject Node}).
+\item $\beta$ : Symbol used to denote a particular node of $M$.
+  Often used to refer to the successor of a particular $\eta$.  In
+  such cases we may write $\beta_\eta$.  In the case that $\eta$ is
+  a branch node, we write $\beta_\eta^+$ to distinguish the node
+  associated with $h_\eta(x) > 0$ and $\beta_\eta^-$ to distinguish
+  the node associated with $h_\eta(x) < 0$. (For unordered rings,
+  replace the above conditions with $h_\eta = 0$ and $h_\eta \neq
+  0$, respectively.)
+\item $\fullstatem{M}$ (\textbf{Configuration Space}):
+\item $z$ : Symbol used to refer to a machine \textbf{configuration}
+  (i.e. a pair in $\fullstate$).  Completely determines the remainder
+  of any computation performed by $M$.
+\end{itemize}
+\section{Properties of Computations}
+\begin{itemize}
+\item $\computefn_M$ (\textbf{Computation Function}): Function from
+  $\inspace_M \rightarrow \outspace_M$ defined by $M$.
+\item $\compute_M(x)$ (\textbf{Computation}): Sequence of
+  configurations in $\fullstatem{M}$ defined by the computation of $M$
+  on input $x$.  For NDET machines, $\compute_M(x)$ is a set of such
+  paths.
+\item $\computeout{M}(x)$ (\textbf{Computation Output}): Final value
+  of a halting computation.
+\item $\pathprojection$: Projection from $\fullstate{M}$ onto the
+  first coordinate.
+\item $\stateprojection$: Projection from $\fullstatem{M}$ onto the
+  second coordinate.
+\item $\computepath_M(x)$ (\textbf{Computation Path}): The projection
+  of $\compute_M(x)$ under $\pathprojection$, (i.e., the sequence of
+  nodes traversed by $M$ while computing $\compute_M(x)$.
+\item 
+
+
+\item $\halting_M$ (\textbf{Halting Set}): Set of values in
+  $\inspace_M$ for which the $\compute_M(x)$ is finite.  When
+  parameterized as $\halting_M^T$, denotes the \textbf{time-T Halting
+    Set} of $M$, defined by the set of values in $\inspace_M$ for
+  which $\compute_M(x)$ has length less than or equal to $T$.
+
+
+\item $\allpaths$
+\end{itemize}
