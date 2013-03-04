@@ -394,16 +394,6 @@ Before we proceed, we need a few more definitions.
 
   \end{definition}
 
-  One of the most important tools for investigating the behavior of
-  BSS machines is the system of polynomial equations known as the
-  \textbf{Register Equations}, which provide necessary and sufficient
-  conditions for a machine $M$ to accept an input $w$ in time $t$.
-
-  \begin{definition}{\textbf{Register Equations}}
-
-  \end{definition}
-
-
   \begin{theorem}{\textbf{Path Decomposition Theorem}}
     For any machine $M$ over $R$, we have the following:
 
@@ -524,17 +514,29 @@ Before we proceed, we need a few more definitions.
     performs the same computations as M.
     
   \end{proofsketch}
+
+  \section{Register Equations}
+
+  One of the most important tools for investigating the behavior of
+  BSS machines is the system of polynomial equations known as the
+  \textbf{Register Equations}, which provide necessary and sufficient
+  conditions for a machine $M$ to accept an input $w$ in time $t$.
+  These follow directly from the definition of computation for a BSS
+  machine. 
+
+  \begin{definition}{\textbf{Register Equations}}
+  \end{definition}
   
 
   \section{Decision Problems}
 
   The treatment of complexity questions in our model is much the same
   as in classical complexity theory.  We frame problems as languages,
-  ie, as subsets of our input domain.  In the classical theory, this
-  means binary encodings of strings -- for us, it means subsets of
-  $R^\infty$.  The complexity/decidability of a problem then becomes a
-  question about the complexity/decidability of testing an input for
-  membership in a language.
+  ie, as sequences of symbols drawn from some input domain.  In
+  classical theory, this means binary encodings of strings -- for us,
+  it means subsets of $R^\infty$.  The complexity/decidability of a
+  problem then becomes a question about the complexity/decidability of
+  testing an input for membership in a language.
 
   \subsection{Definitions}
   
@@ -561,15 +563,16 @@ Before we proceed, we need a few more definitions.
 
   \begin{itemize}
     \subsubsection{Decision Problems over Arbitrary Rings}
-    \bolditem{HN} - Are there solutions to a finite system of polynomial equations?
+    \bolditem{HN} - (Hilbert Nullstellensatz) Does some finite system
+    of polynomial equations have a shared solution?  
     \bolditem{QUAD} - Does a finite system of quadratic equations have a solution?
-    \bolditem{4-FEAS} - Does a finite system of degree-4 polynomials have a solution?
+    \bolditem{4-FEAS} - Does a finite system of degree-4 polynomials have a solution?  
     \bolditem{QA-FEAS} - Does a set of quasi-algebraic equations describe the empty set?  
     \bolditem{KP} - Knapsack Problem
     
     \subsubsection{Decision Problems over Ordered Rings}
     \bolditem{SA-FEAS} - Does a set of semi-algebraic equations describe the empty set?
-    \bolditem{LPF} - Feasibility of Linear Programming Problems
+    \bolditem{LPF} - Feasibility of Linear Programming
     \bolditem{TSP} - Travelling Salesman Problem
     
     \subsubsection{Decision Problems over $\integers$}
@@ -607,7 +610,7 @@ that can be computed in time polylogarithmic in the magnitude of the
 machine's input interpreted as an integer.  In other cases, we find it
 more appropriate to interpret the input to an algorithm as a set of
 distinct inputs, each of which is bounded in size, rather than a
-single input.  (This is how we generally concepualize the inputs to
+single input.  (This is how we generally conceptualize the inputs to
 sorting algorithms, for example).  In such a case, the relevant
 measure of cost is taken to be the number of inputs, rather than the
 magnitude of any single input.  In more rare cases, we may care about
@@ -668,7 +671,7 @@ bounded values ($length = n$, $height = 1$).
 
 Now that we have a definition of input size, we want to consider the
 cost of performing a computation on a given machine, which we define
-as the number of steps the machine takes before halting, times the
+as the number of steps the machine takes before halting times the
 maximum size of any value stored in the machine's state space during
 computation.
 
@@ -700,6 +703,10 @@ computation.
   machine over $R$ that computes $\varphi$.
 
 \end{definition}
+
+\todo{Rework this using decision machines instead of characteristic
+  functions, since the former generalizes more naturally to NDET
+  Machines.}x
 
 \begin{definition}{Membership in $P$}
 

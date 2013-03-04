@@ -51,15 +51,20 @@ subscript $_M$ if the intention is clear from context.
 \item $\computepath_M(x)$ (\textbf{Computation Path}): The projection
   of $\compute_M(x)$ under $\pathprojection$, (i.e., the sequence of
   nodes traversed by $M$ while computing $\compute_M(x)$.
-\item 
-
-
+\item $\coincidence{\computepath}$ (\textbf{Coincidence Set}): The set
+  of values in $\inspace_M$ whose initial computation paths coincide
+  with $\computepath$
 \item $\halting_M$ (\textbf{Halting Set}): Set of values in
   $\inspace_M$ for which the $\compute_M(x)$ is finite.  When
   parameterized as $\halting_M^T$, denotes the \textbf{time-T Halting
     Set} of $M$, defined by the set of values in $\inspace_M$ for
   which $\compute_M(x)$ has length less than or equal to $T$.
-
-
-\item $\allpaths$
+\item $\allpaths$ (\textbf{Path Set}): Symbol used to refer to a set
+  of paths.  Notable examples include $\allpaths(M, x)$, the set of
+  valid paths for an NDET Machine $M$ on input $x$; $\accpaths(M, x)$,
+  the set of accepting paths for $M$ on input $x$; and $\rejpaths(M,
+  x)$, the set of rejecting paths for $M$ on input $x$.
+\item $\charfunc_S$ (\textbf{Characteristic Function}): Function
+  defined on some decision problem $S$ such that $$\charfunc_S(x) =
+  \twopartdef{1}{x \in S_{yes}}{0}{x \in S_{no}}$$
 \end{itemize}

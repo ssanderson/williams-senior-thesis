@@ -1,6 +1,6 @@
 \chapter{NDET-Machines and the Class NDETP}
 
-Though efficient verifiability in terms of witness strings is arguably
+Although efficient verifiability in terms of witness strings is arguably
 the most important and intuitive characterization of NP in the
 classical theory, there are a number of other equivalent definitions.
 Another important definition, from which the name NP derives, comes
@@ -26,7 +26,8 @@ have multiple \textbf{Yes} and \textbf{No} nodes, and an accepting
 computation is any computational path through the machine that
 respects the branching functions.  In keeping with the literature,
 when we wish to refer to the machines discussed in the previous
-section, we use the expression ``BSS Machine''.
+section, we use the expression ``BSS Machine'' or ``standard
+machine''.
 
 \section{Nondeterministic Computation}
 
@@ -43,18 +44,24 @@ section, we use the expression ``BSS Machine''.
 
   Associated with each shift node, $\eta$ is a next node $\beta_\eta$
   and a shift map, $\sigma_l$ or $\sigma_r$ : $R_\infty \rightarrow
-  R_\infty$.  $\sigma_l$ and $\sigma_r$ are defined in the same manner
-  here as they are in the standard machine case.
+  R_\infty$. Here $\sigma_l$ and $\sigma_r$ are defined in the same
+  manner as in the standard machine case.
 
-  Associated with each branch node, $\eta$, is a nonzero polynomial (rational)
-  function \functype{g_\eta}{R^\infty}{R}, a set $\set{\beta^+_1,
-    \beta^+_2, \ldots \beta^+_i}$ of \emph{Yes Nodes} and a set
-  $\set{\beta^-_1, \beta^-_2, \ldots \beta^-_j}$ of \emph{No Nodes}.
-  We refer to the max of $i$ and $j$ as the \textbf{degree} of $\eta$.
+  Associated with each branch node, $\eta$, is a nonzero polynomial
+  (rational for fields) function \functype{g_\eta}{R^\infty}{R}, a set
+  $\set{\beta^+_1, \beta^+_2, \ldots \beta^+_i}$ of \emph{Yes Nodes}
+  and a set $\set{\beta^-_1, \beta^-_2, \ldots \beta^-_j}$ of \emph{No
+    Nodes}.  We refer to the max of $i$ and $j$ as the
+  \textbf{branching degree} of $\eta$.
 \end{definition}
 
+\note{The only difference between an NDET Machine and a standard BSS
+  machine is that each branch node of an NDET Machine can have
+  multiple Yes and No nodes.}
+
 The computation of an NDET-machine is defined analogously to that of a
-Blum machine, with the caveat that we now accept any input for which
+BSS machine, with the caveat that there are may be multiple valid
+paths continuing from a branch node, and we now accept any input for which
 there exists some accepting path through the machine.  More formally,
 for each configuration pair $z = (\eta, x)$, we define the
 \textbf{next configuration set}, $H(z)$, to be the set of all pairs,
@@ -64,20 +71,20 @@ $\set{(\eta', x')}$, such that:
 \item If $\eta$ is a computation node, then $\eta' = \beta_\eta$, and
   $x' = g(x)$.
 \item If $\eta$ is a shift node, then $\eta' = \beta_\eta$, and
-  $x' = sigma(x)$.
-\item If $\eta$ is a branch node, $x' = x$ and if $g(x) > 0)$, $\eta'$
+  $x' = \sigma(x)$.
+\item If $\eta$ is a branch node, $x' = x$ and if $g(x) > 0$, $\eta'$
   is a yes-node of $\eta$.  If $g(x) < 0$, $\eta'$ is a no-node of
   $\eta$.
 \end{enumerate}
 
 Given a machine $M$ and input $x$, we say that the sequence $z_1 =
-(\eta_1, x_1), z_2 = (\eta_2, x_2), \ldots z_k = (\eta_k, x_k)$ of
+(\eta_1, x_1), z_2 = (\eta_2, x_2), \ldots, z_k = (\eta_k, x_k)$ of
 configurations of $M$ is \textbf{valid} if $x_1 = x$ and, for all $2
-\leq i \leq k$, $x_i \in H(x_{i-1})$.  Such a sequence is said to be
+\leq i \leq k$, $z_i \in H(z_{i-1})$.  Such a sequence is said to be
 \textbf{accepting} if, additionally, $x_k$ is the accept node of $M$.
 It is said to be \textbf{rejecting} if $x_k$ is the reject node of
-$M$.  It is said to be \textbf{halting} if it is either accepting or
-rejecting.
+$M$.  The sequence is said to be \textbf{halting} if it is either
+accepting or rejecting.
 
 We denote the (possibly infinite) set of all valid paths for a machine
 $M$ on input $x$ by $\allpaths(M, x)$, the set of all accepting paths
@@ -97,38 +104,124 @@ for $M$ on $x$ by $\rejpaths(M, x)$.
 
 \begin{definition} \textbf{Nondeterministic Computation Cost}
 
-  Let $\gamma = z_1, z_2, \ldots, z_k$ be a halting path for an
-  NDET-Machine $M$ on input $x$.  The \textbf{cost} of $\gamma$ is
+  Let $\compute = z_1, z_2, \ldots, z_k$ be a halting path for an
+  NDET-Machine $M$ on input $x$.  The \textbf{cost} of $\compute$ is
   given by:
 
-  $$cost(\gamma) = k*ht_{max}(x)$$ where $ht_{max}$ is defined as in 
+  $$cost(\compute) = k*ht_{max}(x)$$ where $ht_{max}$ is defined as in 
   \textbf{(2.6.4)}.
 
   Let $M$ be an NDET-Machine over a ring $R$ with height function
   $ht_R$, and let $M$ halt on input $x$.  The \textbf{cost} of the
   computation of $M$ on $x$ is given by:
   
-  $$\max_{\gamma \in \allpaths}(cost(\gamma))$$
+  $$\max_{\compute \in \allpaths}(cost(\gamma))$$
 
 \end{definition}
 
 \begin{definition} $\ndetp$
+  
   A language, $S$ is in $\ndetp$ if there exists a machine $M$ and a
   constant $p$ such that, $\forall w \in S$, $M$ accepts w with cost
   $O(size(w)^p)$.
 \end{definition}
 
-\section{Results and Open Questions Concerning $\ndetp$}
+\todo{Use this to define $\p$, $\np$, $\ndetp$, etc.}
 
-\proposition{For any ring $R$ and any height function, $\p \subseteq
-  \ndetp$} 
+\begin{definition} $\dtime_{f(x)}$ and $\ndettime_{f(x)}$
+  A decision problem $S, S_{yes}$ is said to belong to
+  $\dtime_{f(x)}$ (deterministic time $f(x)$) if there exists a BSS
+  machine that decides $S$ with computation cost bounded by
+  $f(size(x))$ for all $x$ in $S_{yes}$.  \\n
+  
+  A decision problem $S, S_{yes}$ is said to belong to
+  $\ndettime_{f(x)}$ (deterministic time $f(x)$) if there exists an
+  NDET machine that decides $S$ with computation cost bounded by
+  $f(size(x))$ for all $x$ in $S_{yes}$.  \\
+\end{definition}
 
-\proof{Every standard BSS Machine that acts as a decider
-  can be trivially converted into an NDET Machine in which every
-  branch node has degree 1. Such a machine has only one valid path of
-  any given length, and thus has runtime cost exactly equal to the
-  cost of the original machine for all inputs.  Thus every problem in
-  $\p$ is also in $\ndetp$.}
+\section{$\ndetp$ and Deterministic Complexity}
+
+In this section we present some results relating the class $\ndetp$
+with the deterministic time complexity classes described in Chapter 2.
+Most of the proofs presented here are straightforward generalizations
+of results from classical complexity theory.\\
+
+Our first result generalizes the classical result that every
+nondeterministic time complexity class contains its deterministic
+equivalent.  This is unsurprising, since adding the power of
+nondeterminism can only make computation of a problem more efficient.
+As in the classical case, our proof consists in simply noting that
+every deterministic machine is also a valid nondeterministic that
+happens not to take advantage of the additional power afforded by
+nondeterminism.
+
+\todo{Is this even worth listing as a proposition, or should it just
+  be a note?  If we keep it as a proposition, should the proof be made
+  more formal (e.g. we could proceed by induction on the length of
+  $\gamma_x$), or is this acceptable?}
+
+\proposition{Let $R$ be a ring with any height function, and let $(S,
+  S_{yes})$ be a decision problem over $R$. If $M$ is a BSS machine
+  that decides $S$ in time $t(size(x))$, then $M$ also decides $S$ in
+  time $t(size(x))$ when interpreted as an NDET machine.}
+
+\proof{ Let $x$ be an element of $S$.  We first note that the standard
+  definition of any BSS decision machine is simply a special case of
+  NDET machines for which every branch node has branching degree 1.
+  Thus it makes sense to talk about interpreting $M$ as an NDET
+  machine.  When interpreted as an NDET machine, every node of $M$ is
+  either a computation node, a shift node, or a branch node with
+  branching degree 1.  Thus, for any configuration $(x_i, \eta_i)$ of
+  $M$, there is exactly one valid next configuration, which implies
+  that there is exactly one path in $\allpaths(M, x)$.  Moreover, that
+  path is precisely $\compute_M(x)$, the sequence of configurations
+  computed by $M$ when interpreted as a standard BSS machine.  It
+  follows that $\accpaths(M, x)$ (interpreting $M$ as an NDET machine)
+  is nonempty if and only if $M$ accepts $x$ when interpreted as a
+  standard machine, and under either interpretation the computation
+  cost of $M$ on $x$ is the cost of $\compute_M(x)$.}
+
+\corollary{Over any ring $R$ with any height function, we
+  have: $$\dtime \subseteq \ndettime$$. In particular, we have: $$\p
+  \subseteq \ndetp$$.}
+
+\proposition{Let $R$ be a ring with any height function, and let $(S,
+  S_{yes})$ be a decision problem over $R$.  If $M$ is an NDET Machine
+  that decides $S$ with cost bounded by $t(size(x))$ for all $x$ in
+  $S$, then there exists a standard BSS machine, $M'$ that decides $S$
+  in time $(d^{size(x)})$, where $d$ is the maximum branching degree of
+    any node in $M$.}
+
+  \proof{ Algorithm \ref{alg:Simulate-NDET} uses the existence of the
+    NDET machine $M$ to decide $S$ with the given bound.  The
+    essential idea is that on input $x$ we can breadth-first search
+    through the configuration space of $M$, checking all possible
+    paths of length less than $t(size(x))$.
+
+    \begin{algorithm} 
+      \caption{Simulate-NDET} \label{alg:Simulate-NDET}
+      \begin{algorithmic}
+        \Require $x \in R_\infty$
+        \State $i = 0$
+        \State $pathMax = t(size(x))$
+        \State Add configuration $(x, \eta_1)$ to $queue$
+        \While{1}
+        \State $z$ = $queue.next()$
+        \State $i = i+1$
+        \If{$i$ > $pathMax$} 
+        \State \textbf{reject}
+        \EndIf
+        \State compute $H_M(z)$
+        \For{configuration $(x, \eta)$ in $H_M(z)$} 
+        \If{$\eta$ = $\eta_{accept}$}
+        \State \textbf{accept}
+        \EndIf
+        \Else{ add $(x, \eta)$ to $queue$}
+        \EndFor
+        \EndWhile
+      \end{algorithmic}
+    \end{algorithm}}  
 
 \begin{itemize}
 \item \textbf{Question:} Under what conditions is it the case that $\ndetp = \np$? 
