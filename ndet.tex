@@ -1,33 +1,41 @@
 \chapter{NDET-Machines and the Class NDETP}
 
-Although efficient verifiability in terms of witness strings is arguably
-the most important and intuitive characterization of NP in the
-classical theory, there are a number of other equivalent definitions.
-Another important definition, from which the name NP derives, comes
-from the notion of nondeterministic computation (NP stands for
-\emph{nondeterministic polynomial time}).  In the classical theory, a
-nondeterministic Turing Machine computes in the same manner as a
-standard Turing Machine, except there are multiple possible next
+\todo{This is meant to be generalizing nondeterministic Turing
+  Machines.  Should we give a short intro to them here and/or in the
+  background section?}
+
+Although efficient verifiability in terms of witness strings is
+arguably the most important and intuitive characterization of NP in
+the classical theory, there are a number of other equivalent
+definitions.  Another important definition, from which the name NP
+derives, comes from the notion of nondeterministic computation (NP
+stands for \emph{nondeterministic polynomial time}).  In the classical
+theory, a nondeterministic Turing Machine computes in the same manner
+as a standard Turing Machine, except there are multiple possible next
 configurations associated with each pair of state and tape symbol.  A
-nondeterministic TM accepts its input \todo{talk about decision
-  machines and accepting/rejecting in the background section?} if
-there is \emph{any} valid path of configurations that accepts the
-input.  Somewhat surprisingly, the functions which can be computed in
-polynomial time by nondeterministic Turing Machines turn out to be
-precisely the same functions that can be efficiently verified via
-witness strings.  To our knowledge, there has been little work done to
-investigate whether a similar relationship holds in the generalized
-theory we have been investigating.
+nondeterministic TM accepts its input if there is \emph{any} valid
+path of configurations that accepts the input.  Somewhat surprisingly,
+the functions which can be computed in polynomial time by
+nondeterministic Turing Machines turn out to be precisely the same
+functions that can be efficiently verified via witness strings.  To
+our knowledge, there has been little work done to investigate whether
+a similar relationship holds in the generalized theory we have been
+investigating.
 
 Here we present a model of nondeterministic computation that naturally
 generalizes from the Turing Machine model to the Blum model of
 computation.  The basic idea is that each branch node is allowed to
 have multiple \textbf{Yes} and \textbf{No} nodes, and an accepting
 computation is any computational path through the machine that
-respects the branching functions.  In keeping with the literature,
-when we wish to refer to the machines discussed in the previous
-section, we use the expression ``BSS Machine'' or ``standard
-machine''.
+respects the branching fufnctions and terminates at a distinguished
+accept node.  In keeping with the literature, when we wish to refer to
+the machines discussed in the previous section, we use the expression
+``BSS Machine'' or ``standard machine''.
+
+\todo{The machines in this section are all decision machines, and the
+  theory is a fair amount cleaner if we have accept/reject nodes
+  rather than output nodes. Maybe talk about decision vs. computation
+  machines in the background section?}
 
 \section{Nondeterministic Computation}
 
@@ -40,27 +48,27 @@ machine''.
 
   Associated with each computation node, $\eta$, is a next node,
   $\beta_{\eta}$, and a polynomial (rational for fields) computation
-  map, \functype{g_\eta}{R^\infty}{R^\infty}.
+  map, \functype{g_\eta}{R^\infty}{R^\infty}.\\
 
   Associated with each shift node, $\eta$ is a next node $\beta_\eta$
   and a shift map, $\sigma_l$ or $\sigma_r$ : $R_\infty \rightarrow
   R_\infty$. Here $\sigma_l$ and $\sigma_r$ are defined in the same
-  manner as in the standard machine case.
+  manner as in the standard machine case.\\
 
   Associated with each branch node, $\eta$, is a nonzero polynomial
   (rational for fields) function \functype{g_\eta}{R^\infty}{R}, a set
   $\set{\beta^+_1, \beta^+_2, \ldots \beta^+_i}$ of \emph{Yes Nodes}
   and a set $\set{\beta^-_1, \beta^-_2, \ldots \beta^-_j}$ of \emph{No
     Nodes}.  We refer to the max of $i$ and $j$ as the
-  \textbf{branching degree} of $\eta$.
+  \textbf{branching degree} of $\eta$.\\
 \end{definition}
 
 \note{The only difference between an NDET Machine and a standard BSS
   machine is that each branch node of an NDET Machine can have
-  multiple Yes and No nodes.}
+  multiple Yes and No nodes.\\}
 
 The computation of an NDET-machine is defined analogously to that of a
-BSS machine, with the caveat that there are may be multiple valid
+BSS machine, with the caveat that there may be multiple valid
 paths continuing from a branch node, and we now accept any input for which
 there exists some accepting path through the machine.  More formally,
 for each configuration pair $z = (\eta, x)$, we define the
@@ -77,6 +85,11 @@ $\set{(\eta', x')}$, such that:
   $\eta$.
 \end{enumerate}
 
+\note{From the definitions above, it is clear that if $z = (\eta, x)$
+  is a configuration of some machine $M$ with maximum branching degree
+  $k$, then $|H(z)| \leq 1$ if $\eta$ is a non-branch node, and
+  $|H(z)| \leq k$ if $\eta$ is a branch node.}
+
 Given a machine $M$ and input $x$, we say that the sequence $z_1 =
 (\eta_1, x_1), z_2 = (\eta_2, x_2), \ldots, z_k = (\eta_k, x_k)$ of
 configurations of $M$ is \textbf{valid} if $x_1 = x$ and, for all $2
@@ -88,12 +101,12 @@ accepting or rejecting.
 
 We denote the (possibly infinite) set of all valid paths for a machine
 $M$ on input $x$ by $\allpaths(M, x)$, the set of all accepting paths
-for $M$ on $x$ by $\accpaths(M, x)$, and the set of all rejecting paths 
-for $M$ on $x$ by $\rejpaths(M, x)$.
+for $M$ on $x$ by $\accpaths(M, x)$, and the set of all rejecting
+paths for $M$ on $x$ by $\rejpaths(M, x)$.
 
 \begin{definition} \textbf{NDET-Machine Halting, Acceptance and Rejection}
 
-  An NDET-Machine is said to \textbf{halt} the input $x$ if
+  An NDET-Machine is said to \textbf{halt} on input $x$ if
   $\allpaths(M, x)$ is finite.  It \textbf{accepts} $x$ if it halts
   and $\accpaths(M, x)$ is nonempty.  It \textbf{rejects} if it halts
   and does not accept.
@@ -105,17 +118,17 @@ for $M$ on $x$ by $\rejpaths(M, x)$.
 \begin{definition} \textbf{Nondeterministic Computation Cost}
 
   Let $\compute = z_1, z_2, \ldots, z_k$ be a halting path for an
-  NDET-Machine $M$ on input $x$.  The \textbf{cost} of $\compute$ is
-  given by:
+  NDET-Machine $M$ on input $x$.  The \textbf{cost} of $\compute_M(x)$ is
+  defined in the same manner as in :
 
-  $$cost(\compute) = k*ht_{max}(x)$$ where $ht_{max}$ is defined as in 
-  \textbf{(2.6.4)}.
+  $$\cost(\compute) = k*ht_{max}(x)$$ where $ht_{max}$ is defined as in 
+  \textbf{\ref{def:size}}.
 
   Let $M$ be an NDET-Machine over a ring $R$ with height function
-  $ht_R$, and let $M$ halt on input $x$.  The \textbf{cost} of the
-  computation of $M$ on $x$ is given by:
+  $ht_R$, and let $M$ halt on input $x$.  The cost of the computation
+  of $M$ on $x$ is given by:
   
-  $$\max_{\compute \in \allpaths}(cost(\gamma))$$
+  $$\max_{\compute \in \allpaths}(\cost(\compute_M(x)))$$
 
 \end{definition}
 
@@ -124,9 +137,8 @@ for $M$ on $x$ by $\rejpaths(M, x)$.
   A language, $S$ is in $\ndetp$ if there exists a machine $M$ and a
   constant $p$ such that, $\forall w \in S$, $M$ accepts w with cost
   $O(size(w)^p)$.
+  
 \end{definition}
-
-\todo{Use this to define $\p$, $\np$, $\ndetp$, etc.}
 
 \begin{definition} $\dtime_{f(x)}$ and $\ndettime_{f(x)}$
   A decision problem $S, S_{yes}$ is said to belong to
@@ -140,6 +152,8 @@ for $M$ on $x$ by $\rejpaths(M, x)$.
   $f(size(x))$ for all $x$ in $S_{yes}$.  \\
 \end{definition}
 
+\todo{Use DTIME and NDETTIME to define $\p$, $\np$, $\ndetp$, etc.}
+
 \section{$\ndetp$ and Deterministic Complexity}
 
 In this section we present some results relating the class $\ndetp$
@@ -152,8 +166,8 @@ nondeterministic time complexity class contains its deterministic
 equivalent.  This is unsurprising, since adding the power of
 nondeterminism can only make computation of a problem more efficient.
 As in the classical case, our proof consists in simply noting that
-every deterministic machine is also a valid nondeterministic that
-happens not to take advantage of the additional power afforded by
+every deterministic machine is also a valid nondeterministic machine
+that happens not to take advantage of the additional power afforded by
 nondeterminism.
 
 \todo{Is this even worth listing as a proposition, or should it just
@@ -164,77 +178,186 @@ nondeterminism.
 \proposition{Let $R$ be a ring with any height function, and let $(S,
   S_{yes})$ be a decision problem over $R$. If $M$ is a BSS machine
   that decides $S$ in time $t(size(x))$, then $M$ also decides $S$ in
-  time $t(size(x))$ when interpreted as an NDET machine.}
+  time $t(size(x))$ when interpreted as an NDET machine.\\}
 
-\proof{ Let $x$ be an element of $S$.  We first note that the standard
-  definition of any BSS decision machine is simply a special case of
-  NDET machines for which every branch node has branching degree 1.
-  Thus it makes sense to talk about interpreting $M$ as an NDET
-  machine.  When interpreted as an NDET machine, every node of $M$ is
-  either a computation node, a shift node, or a branch node with
-  branching degree 1.  Thus, for any configuration $(x_i, \eta_i)$ of
-  $M$, there is exactly one valid next configuration, which implies
-  that there is exactly one path in $\allpaths(M, x)$.  Moreover, that
-  path is precisely $\compute_M(x)$, the sequence of configurations
-  computed by $M$ when interpreted as a standard BSS machine.  It
-  follows that $\accpaths(M, x)$ (interpreting $M$ as an NDET machine)
-  is nonempty if and only if $M$ accepts $x$ when interpreted as a
-  standard machine, and under either interpretation the computation
-  cost of $M$ on $x$ is the cost of $\compute_M(x)$.}
+\proof{ We first note that the only difference between the definitions
+  of NDET machines and standard BSS machines is that every branch node
+  $\eta$ of BSS machine has a single $\beta_\eta^+$ and a single
+  $\beta_{\eta}^-$, whereas each branch node of an NDET machine may
+  have multiple yes and no nodes. Thus we can regard standard BSS
+  machines as a special case of NDET machines for which every node has
+  branching degree 1, and it makes sense to talk about interpreting
+  $M$ as an NDET machine.  \\
+
+  Let $x$ be an element of $S$, and let $M$ be a BSS machine that
+  decides $S$, now interpreted as an NDET machine. Since $M$ has
+  maximum branching degree 1, every configuration of $M$ has at most 1
+  one valid next configuration, which implies that there is exactly
+  one halting path in $\allpaths(M, x)$.  Moreover, that path is
+  precisely $\compute_M(x)$, the sequence of configurations computed
+  by $M$ when interpreted as a standard BSS machine.  It follows that
+  $\accpaths(M, x)$ (interpreting $M$ as an NDET machine) is nonempty
+  if and only if $M$ accepts $x$ when interpreted as a standard
+  machine, and under either interpretation the computation cost of $M$
+  on $x$ is the cost of $\compute_M(x)$.}
 
 \corollary{Over any ring $R$ with any height function, we
   have: $$\dtime \subseteq \ndettime$$. In particular, we have: $$\p
   \subseteq \ndetp$$.}
 
+Our next result generalizes the classical proof that any
+nondeterministic Turing Machine can be simulated by a deterministic
+Turing Machine with an exponential slowdown in runtime.  In light of
+results from \cite{B98} showing that there are rings with cost
+measures over which $\np$ contains undecidable problems, a nontrivial
+corollary for us is that every problem in $NTIME_{f(x)}$ is decidable.
+
 \proposition{Let $R$ be a ring with any height function, and let $(S,
   S_{yes})$ be a decision problem over $R$.  If $M$ is an NDET Machine
   that decides $S$ with cost bounded by $t(size(x))$ for all $x$ in
   $S$, then there exists a standard BSS machine, $M'$ that decides $S$
-  in time $(d^{size(x)})$, where $d$ is the maximum branching degree of
-    any node in $M$.}
+  in time $O(d^{t(size(x))})$, where $d$ is the maximum branching degree of
+  any node in $M$.}
 
-  \proof{ Algorithm \ref{alg:Simulate-NDET} uses the existence of the
-    NDET machine $M$ to decide $S$ with the given bound.  The
-    essential idea is that on input $x$ we can breadth-first search
-    through the configuration space of $M$, checking all possible
-    paths of length less than $t(size(x))$.
+\proof{ Algorithm \ref{alg:Simulate-NDET} uses the existence of the
+  NDET machine $M$ to decide $S$ with the given bound.  The
+  essential idea is that on input $x$ we can breadth-first search
+  through the configuration space of $M$, checking all possible
+  paths of length less than $t(size(x))$.
 
-    \begin{algorithm} 
-      \caption{Simulate-NDET} \label{alg:Simulate-NDET}
-      \begin{algorithmic}
-        \Require $x \in R_\infty$
-        \State $i = 0$
-        \State $pathMax = t(size(x))$
-        \State Add configuration $(x, \eta_1)$ to $queue$
-        \While{1}
-        \State $z$ = $queue.next()$
-        \State $i = i+1$
-        \If{$i$ > $pathMax$} 
-        \State \textbf{reject}
-        \EndIf
-        \State compute $H_M(z)$
-        \For{configuration $(x, \eta)$ in $H_M(z)$} 
-        \If{$\eta$ = $\eta_{accept}$}
-        \State \textbf{accept}
-        \EndIf
-        \Else{ add $(x, \eta)$ to $queue$}
-        \EndFor
-        \EndWhile
-      \end{algorithmic}
-    \end{algorithm}}  
+  \begin{algorithm} 
+    \caption{Simulate-NDET} \label{alg:Simulate-NDET}
+    \begin{algorithmic}
+      \Require $x \in R_\infty$
+      \State $i = 0$
+      \State $maxpaths = t(size(x))$
+      \State Add configuration $(x, \eta_1)$ to $queue$
+      \While{True}
+      \State $z$ = $queue.next()$
+      \State $i = i+1$
+      \If{$i$ > $pathMax$} 
+      \State \textbf{reject}
+      \EndIf
+      \State compute $H_M(z)$
+      \For{configuration $(x, \eta)$ in $H_M(z)$} 
+      \If{$\eta$ = $\eta_{accept}$}
+      \State \textbf{accept}
+      \Else add $(x, \eta)$ to $queue$
+      \EndIf
+      \EndFor
+      \EndWhile
+    \end{algorithmic}
+  \end{algorithm}}  
+
+\todo{Runtime analysis of queue implementation.}
+
+Since every node in $M$ has branching degree $d$ or less, there are
+at most $d$ valid next configurations succeeding any configuration,
+$z$.  Thus there are at most $d^{t(size(x))}$ paths of length
+$t(size(x))$.  In the worst case, which occurs whenever we reject,
+we search all such paths, so our worst case runtime is
+$O(d^{t(size(x))})$.
+
+\corollary{For any ring $R$ and any cost measure, $\ndettime_{f(x)}
+  \subseteq \exptime$}
+
+\corollary{Every problem decidable by an NDET machine is decidable in
+  the standard BSS sense.}
+
+The above results shows that nondeterminism does not grant us any more
+power as far as computability goes; it ``merely'' gains us at most an
+exponential decrease in runtime for decision algorithms.  While this
+agrees with the classical case, we note that it is not true in general
+for $\np$ over all rings and cost functions.
+
+\section{$\ndetp$ and $\np$}
+
+We now wish to consider the relationship between the $\ndetp$ and the
+$\np$ as it has been developed by Blum et al and others.  Since these
+classes generalize notions that are equivalent in the classical model,
+the natural question to ask is whether the equivalence holds in the
+generalized model.  Blum et al. show in \cite{B89} that $\parg{\Z{2}}$
+with unit cost and $\parg{\integers}$ are both equivalent to the
+classical $\p$, with similar results obtaining for the analogous
+$\mathbf{NP}$ classes.  Thus we expect that $\ndetp$ and $\np$ should
+coincide for $R = \Z{2}$.  We prove the slightly more general result
+that $\ndetp = \np$ for any ring $R$ with height function $ht_R$ such
+that, for any $k \in R$ there are at most finitely many elements of
+$R$ Our proof follows the classical case by showing that $\ndetp$
+machines can match the computational power of $\np$ machines by simply
+generating all possible witnesses.  This argument depends crucially on
+the fact that for a finite ring there can be at most exponentially
+many witnesses of a given length.  Since this is no longer the case
+for infinite rings, it becomes less clear under what conditions the
+equality still holds.
+
+\todo{Better transition.}
+
+\theorem{When considered with unit cost, $\nparg{\integers}
+  \not\subset \decarg{\integers}$}
+
+\proof{ It is easy to formulate Hilbert's Tenth Problem, which asks if
+  an arbitrary diophantine equation has solutions over the integers,
+  as a decision problem over $\integers$ It is also easy to show that
+  this problem is in $\np$, since a witness for a solvable diophantine
+  equation is the solution in queston. Since it is well known that
+  Hilbert's Tenth Problem is undecidable we have our desired result.
+  For more details see \cite{B98}, Chapter 6.}
+
+The above result shows that the classical equivalence of efficient
+verifiability and nondeterministic computability is not necessarily
+valid for rings other than $\integers_2$.  Two natural questions
+arise concerning the relationship between $\ndetp$ and $\np$.  
 
 \begin{itemize}
-\item \textbf{Question:} Under what conditions is it the case that $\ndetp = \np$? 
-  
-  \textbf{Status:} Known for finite rings and $\integers$ with both
-  bit and unit costs.  Unclear for $\rationals$ and uncountably
-  infinite rings.
-  
-  \proposition{Let $R$ be a finite ring or field with $N$
-    elements. $\ndetp = \np$ with respect to unit cost.}
+\item Is it always the case that $\ndetp \subseteq \np$.
+\item Under what circumstances is it the case that $\ndetp = \np$?
+\end{itemize}
 
-  \proof{We first show that $\np \subseteq \ndetp$.
-    
+We give an affirmative answer to the first question.  This is
+because, given an NDET Machine $M$ that decides a set $S$, we can
+produce an NP Machine $M'$ that also decides $S$ by labelling each
+node in $M$ by a unique value (or series of values if necessary)
+from $R$ and replacing each branch node of $M$ with a subroutine
+that reads the next unread value in the witness $w$, and transitions
+to the node labelled by that integer if it is a valid next node for
+the current configuration. For such a machine, an accepting witness
+is one that encodes the sequence of nondeterministic choices made by
+$M$ on some accepting path.
+
+\theorem{Let $S$ be a decision problem over a ring $R$ with height
+  function $ht_R$, and let $M$ be an NDET machine that decides $M$ in
+  time bounded by $O(T(\size(x)))$.  Then there exists an NP machine,
+  $M'$ which also decides $S$ in time $O(T(\size(x)))$}
+
+\todo{I think this might work better written out in algorithm style
+  like the one above.  Also, should the statement about assuming
+  branching degree 2 be broken out into a Lemma?}
+
+\proof{Let $S$ and $M$ be as stated above.  We assume without loss of
+  generality that $M$ has maximum branching degree 2, since we can
+  always replace a branch node of higher branching degree with a chain
+  of branch nodes of degree 2, and doing so increases the runtime of
+  $M$ by at most a multiplicative constant factor of $d$.  We
+  construct the NP machine $M'$ by starting with $M$ and replacing
+  each branch node $\eta$ of $M$ with a subroutine that first computes
+  the branching check associated with $\eta$, then queries the witness
+  string $w$ and decides which of the possible next nodes to
+  transition into based on the value stored in the first coordinate of
+  $w$.}
+
+Toward answering the second question, we show that a sufficient
+condition for $\ndetp = \np$ is that all values in $R^\infty$ of
+size $s$ or less be enumerable by an NDET machine in
+nondeterministic time $O(log s)$.  We conjecture that this condition
+is also sufficient.  
+
+\theorem{Let $R$ be a ring with associated height function
+  satisfying the property that there exists an NDET Machine that
+  enumerates every value in $R^\infty$ with size at most $s$ in
+  nondeterministic time $O(\log s)$.
+
+  \proof{
     Let $S \in \np$.  Then there exists a machine $M$ such that for
     every $x$ in $S$ there exists a $w$ such that $\computefn_M(x, w)
     = 1$ and $cost_M(x, w) \leq p(size(x))$, where p is some
@@ -246,48 +369,6 @@ nondeterminism.
     input $x$, nondeterministically generates all possible witnesses
     of length at most $p(size(x))$, and then for each possible witness
     $w$ simulates $M$ on input $w$.
-
-    \todo{Figure out how to insert diagram of nondeterministic witness
-      generation submachine.}
-
-    \todo{Backwards Direction Details: Idea is that given an ndet
-      machine, we should be able to construct an NP Machine that uses
-      the state projection of an accepting path as a witness.}  
   }
-  
-  \proposition{Let $R$ = $\integers$ with bit cost.  $\ndetp = \np$.}
-  \proof{\todo{See notes}}
 
-  \proposition{Let $R$ = $\integers$ with unit cost.  $\ndetp \subset
-    \np$}
-
-  \proof{The containment construction still goes through, but we have
-    that $HN_{\integers} \in \np$, but $HN_{\integers}$ is
-    undecidable by standard machines.  Relies on the next
-    proposition.}
-
-  \proposition{For all $R$, $\ndetp \in \mathbb{EXPTIME}$}
-
-  \proof{We can simulate an NDET-Machine with a standard BSS machine
-    with an exponential blowup.  \todo{Fill in details}}
-
-\item If it is not the case that $\ndetp = \np$ for some underlying
-  rings, what is their relationship?  For example, is it always the
-  case that $\ndetp \subseteq \np$?
-\item Are there conditions for which it is the case that $\ndetp = \p$?
-\item Under what conditions do we have the existence of complete
-  problems for $\ndetp$?
-\end{itemize}
-
-\note{The classical theory answers all of these questions for the
-  special case R = $\integers_n$ with unit cost and R = $\integers$
-  with bit cost.  We are interested in investigating how the classical
-  results generalize to the algebraic case.  An important
-  consideration in this work will be attending to elements of the
-  classical theory which depend either on the representation of inputs
-  (since the Blum model says nothing about representation), on the
-  countability/enumerability of the set of possible inputs to a Turing
-  Machine, or on the finite number of possible elements of a given
-  size in the classical model.  All of these assumptions may be
-  violated in the more generalized theory.}
-
+\todo{Section on digital nondeterminism equivalence and DNP-Complete problems.}

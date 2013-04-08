@@ -1,4 +1,3 @@
-
 \chapter{Introduction}
 
 Classical Theory of Computation provides a framework in which we can
@@ -11,8 +10,8 @@ point in time.  One shortcoming of this computing model is that it
 does not allow us to describe computational problems that are defined
 over uncountable sets such $\mathbb{R}$ or $\mathbb{C}$.  Examples of
 such problems include analyzing the expected runtime of Newton's
-Method, determining membership in the Mandelbrot Set, and the the
-problem of determining whether a finite set of polynomials in $n$
+Method, determining membership in the Mandelbrot Set, and the problem
+of determining whether a finite set of polynomials in $n$
 variables share a common root. \\
 
 To address the above issues and others, in \cite{B89} Blum et
@@ -28,7 +27,7 @@ ring $R$.  We then develop a third complexity class, $\ndetp$, which
 we present as an alternative generalization of the classical
 $\mathbf{NP}$.  Our major results are that, over any ring $R$, $\p
 \subseteq \ndetp \subseteq \np$ and $\ndetp \subseteq \exptime$. From
-these containments it follows that $\p \subset \ndetp$ or $\ndetp
+these containments it follows that if $\p \subset \ndetp$ or $\ndetp
 \subset \np$, then $\p \neq \np$.  We also demonstrate the existence
 of at least one ring over which $\ndetp \subset \np$.  (It is already
 known that $\p \neq \np$ for this case.)  We conclude by proving a
@@ -54,8 +53,8 @@ Such a machine is outfitted with a tape head which can move left and
 right as well as read and write symbols to and from the tape. A
 machine's ``program'' consists of a set of states along with a
 transition function which provides instructions for how the tape head
-operates and how the machine transitions from state to state.  These
-ideas are made precise as follows:
+should behave given a symbol and a current machine state.  These ideas
+are made precise as follows:
 
 \begin{definition}{Turing Machine}
 
@@ -134,15 +133,15 @@ polynomials over $R$ of degree at most $k$ by $R^k$.
   denotes the ring of polynomials over $R$ with degree at most $k$).\\
 
   Each node has an associated map and a set of next nodes, which vary
-  in structure in accordance with its type.
+  in structure in accordance with the node's type.
 
   \begin{enumerate}
   \item Associated with the input node is a linear map
     \functype{I}{\inspace_M}{\statespace_M}. We denote the input node
-    by $\eta_1$, and we denote the unique next node of the $\eta_1$ by
+    by $\eta_1$, and we denote the unique next node of $\eta_1$ by
     $\beta_{\eta_1}$ or just $\beta_1$.
     
-  \item Associated with each computation node $\eta$ qis a
+  \item Associated with each computation node $\eta$ is a
     componentwise polynomial map
     \functype{g_\eta}{\statespace_M}{\statespace_M}. We denote the
     unique next node of $\eta$ by $\beta_\eta$.
@@ -193,7 +192,7 @@ defines a unique next configuration $z' = (\beta, x')$ as follows:
 \begin{definition}{\textbf{Halting Computation and time-t Halting Set}}
 
   A \textbf{halting computation} performed by an FDM $M$ on input $x$
-  is a sequence of configurations: $$\compute_x = (z_0, z_1, \ldots
+  is a sequence of configurations: $$\compute_M(x) = (z_0, z_1, \ldots
   z_t)$$ such that \\
   
   \centerline{$z_0 = (\eta_1, I(x)$, $z_t = (\nodeout, x_t)$, and $z_i
@@ -209,12 +208,13 @@ defines a unique next configuration $z' = (\beta, x')$ as follows:
   values for which $M$ eventually halts.
 \end{definition}
 
-\note{If a halting computation exists for an input $x$, it is unique.
-  However, not every input defines a halting computation.  It is easy
-  enough, for example, to construct machines which will enter infinite
-  loops without ever reaching the output node.  In such a case, we
-  define the computation of a machine $M$ to be the infinite sequence
-  $$z_0, z_1, z_2, \ldots$$ such that   
+\note{If a halting computation exists for a machine $M$ on input $x$,
+  it is unique.  However, not every input defines a halting
+  computation.  It is easy enough, for example, to construct machines
+  which will enter infinite loops without ever reaching the output
+  node.  In such a case, we define the computation of a machine $M$ to
+  be the infinite sequence
+  $$z_0, z_1, z_2, \ldots, $$ such that   
   \centerline{$z_0 = (\eta_1, I(x))$, and $z_i =  z_{i-1}'$ for $0 < i$.}}\\
 
 Intuitively, we can think about the computation of an FDM, $M$ as the
@@ -252,8 +252,8 @@ machine's output.
   
   A function \functype{\varphi}{X}{R^l}, $X \subset R^n$ is
   \textbf{f.d. computable} over $R$ if there exists a
-  finite-dimensional machine, $M$ over $R$ such that $\varphi(x) =
-  \compute_M(x) \mid \forall x \in X$.
+  finite-dimensional machine, $M$ over $R$ such that 
+  $\varphi(x) = \compute_M(x) \mid \forall x \in X$.
   
 \end{definition}
 
@@ -527,7 +527,6 @@ Before we proceed, we need a few more definitions.
   \begin{definition}{\textbf{Register Equations}}
   \end{definition}
   
-
   \section{Decision Problems}
 
   The treatment of complexity questions in our model is much the same
@@ -619,14 +618,14 @@ of size may involve some product of the two measures.\\
 
 We extend these intuitions to arbitrary rings by defining two
 different measures of the magnitude of an input to a machine: the
-\emph{length} (corresponding to the number of distinct inputs to a
-machine) and the \emph{height} corresponding to the magnitude of each
-input.  The overall size of an input is then taken to be product of
-the length of an input with the maximum height of any element of the
-input.  This naturally abstracts the case where we interpret our input
-as a single value with unbounded magnitude ($length = 1$, $height =
-n$) as well as the case where we regard the input as an array of
-bounded values ($length = n$, $height = 1$).
+\textbf{length} (corresponding to the number of distinct inputs to a
+machine) and the \textbf{height} corresponding to the magnitude of
+each input.  The overall \textbf{size} of an input is then taken to be
+product of the length of an input with the maximum height of any
+element of the input.  This naturally abstracts the case where we
+interpret our input as a single value with unbounded magnitude
+($length = 1$, $height = n$) as well as the case where we regard the
+input as an array of bounded values ($length = n$, $height = 1$).
 
 \subsection{Heights, Sizes,  and Costs}
 
@@ -657,33 +656,53 @@ bounded values ($length = n$, $height = 1$).
 \begin{definition}{\textbf{Input Length}}
   
   The \textbf{length} of an input $x \in R^n$ to a machine over $R$ is
-  given by: $$length(x) = n$$
+  given by: $$\len(x) = n$$
 \end{definition}
 
 \begin{definition}{\textbf{Size}}
-
+  
   Let $R$ be a ring with height function $ht_R$.  The \textbf{size} of
   a polynomial $x \in R^n$ is given by:
-  $$length(x) * \max_{1 \leq i \leq n}(ht_R(x_i))$$.
+  $$\size(x) = \len(x)\max_{1 \leq i \leq n}(ht_R(x_i))$$.
   \note{In the case that $ht_R$ is the unit height function, the size of
-  the input to a machine reduces to just the length of the input.}\\
+  the input to a machine reduces to just the length of the input.}
 \end{definition}
 
 Now that we have a definition of input size, we want to consider the
-cost of performing a computation on a given machine, which we define
-as the number of steps the machine takes before halting times the
-maximum size of any value stored in the machine's state space during
-computation.
+cost of performing a computation for a given machine on a given input.
+We define this quantity to be the number of steps the machine takes
+before halting times the maximum size of any value stored in the
+machine's state space during computation.
 
 \begin{definition}{\textbf{Computation Cost}}
+  \label{def:size}
   
-  Let $x \in R^n$ be an input to a machine $M$ over $R$ with height
-  function $ht_R$. The \textbf{cost}, $cost_M$ for $M$ to
-  compute $\computefn_M(x)$ is given by:
-  $$cost_M(x) = T(x) * ht_{max}(x)$$ where $ht_{max}(x)$ is given by the maximum
-  height of any value that appears in the state space of $M$ during
-  computation on $x$.  In the case that $M$ does not halt on input
-  $x$, we say that $cost_M(x) = \infty$.
+  Let $x \in R^n$ be an input in $\halting_M$ to a machine $M$ over
+  $R$ with height function $ht_R$, and let $\compute_M(x) = (z_0, z_1,
+  z_2, \ldots, z_T)$ The \textbf{cost} of $\compute_M(x)$ is given by:
+  $$\cost(\compute_M(x)) = T*ht_{max}(\compute_M(x))$$
+  where $ht_{max}(\compute_M(x))$ is given by:
+  $$\max_{x_i \in \stateprojection(\compute_M(x))}(\size(x_i))$$
+  (Recall that $\stateprojection(\compute_M(x))$ is the projection of
+  $\compute_M(x)$ onto the first coordinate, which contains values in
+  $\statespace_M$.)\\
+
+  \todo{This is technically wrong for infinite dimensional machines,
+    since size is only well-defined for finite-length vectors.  What
+    we really want is a projection from $\statespace_M$ to $R^m$,
+    where $k = \max(K_M, n) + T(x)$, which is the maximum number of
+    coordinates we can write to in time $T$. See \cite{B98} pg 87.}
+
+  Note that the above definition is only valid if $M$ halts on $x$,
+  when this is not the case, we say that $\cost(\compute_M(x)) = \infty$.
+
+  \note{The above definition departs slightly from the one given in
+    Chapter 4 of \cite{B98}.  Blum et al. use the notation
+    $\cost_M(x)$ rather than $\cost(\compute_M(x))$.  We do this to
+    emphasize that cost is entirely determined by a height function
+    combined with a path through the configuration space of $M$.  This
+    will be important for us in Chapter 3 when we consider machines
+    that can traverse multiple paths on a single input.}
   
 \end{definition}
 
@@ -706,7 +725,7 @@ computation.
 
 \todo{Rework this using decision machines instead of characteristic
   functions, since the former generalizes more naturally to NDET
-  Machines.}x
+  Machines.}
 
 \begin{definition}{Membership in $P$}
 
