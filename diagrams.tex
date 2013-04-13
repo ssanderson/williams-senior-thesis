@@ -1,0 +1,86 @@
+\documentclass{article}
+
+\usepackage[latin1]{inputenc}
+\usepackage{tikz}
+\usepackage{amsmath, amsfonts, amsthm}
+\usepackage{thesiscommands}
+\usetikzlibrary{shapes,arrows,shapes.geometric}
+
+\begin{document}
+
+% Compute node
+\tikzstyle{compute}=[rectangle, 
+                     thick, 
+                     minimum width=4cm, 
+                     minimum height=2cm, 
+                     inner sep=2mm]
+
+% Variations on compute nodes.
+\tikzstyle{input}=[style=compute, 
+                   fill=blue!15]
+\tikzstyle{accept}=[style=compute, 
+                   fill=green!15]
+\tikzstyle{reject}=[style=compute, 
+                    fill=red!15]
+
+% Branch node.
+\tikzstyle{branch}=[diamond, 
+                    thick, 
+                    minimum width=4cm, 
+                    minimum height=2cm, 
+                    inner sep=2mm]
+
+
+% Newton's Method - High Level 
+{\Huge Newton's Method - High Level}\\
+
+\begin{tikzpicture}[node distance=4cm]
+
+  \node (init)   [input, draw]                    {Input: $p \in \reals[x]$, $z \in \reals$, $\epsilon \in \reals$};
+
+  \node (comp)   [compute, draw, below of=init]   {$z = z - \frac{p(z)}{p'(z)}$};
+  \node (check)  [branch, draw, below of=comp]    {$|p(x)| - \epsilon < 0$};
+  \node (output) [accept, draw, below of=check]   {Output $z$};
+  
+  \draw [->, thick] (init) --                                      (comp);
+  \draw [->, thick] (comp) --                                      (check);
+  \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {No} (comp);
+  \draw [->, thick] (check) to node[auto] {Yes}                    (output);
+
+\end{tikzpicture}
+
+\newpage
+
+% Newton's Method - Lower Level
+
+Newton Machine for 5th-degree polynomials over $\reals$ considered as
+an ordered field.  $\inspace_M = \statespace_M = \reals^8$.
+$\outspace_M = \reals$ The coordinate $x_1$ represents our current
+point $z$, $x_2$ represents $\epsilon$, and the rest of the
+coordinates represent the coefficients of the polynomial. In the
+computation node, we compute $z = \frac{p(x)}{p'(x)}$, and we branch
+on the condition $x_0^2 < \epsilon^2$, which is equivalent to $|x_0| <
+\epsilon$.
+
+\vspace{2.5cm}
+\begin{tikzpicture}[node distance=4cm]
+
+  \node(init) [input, draw] {Input: $x \in \reals^8$};
+  \node(comp) [compute, draw, below of=init] {
+    $g(x) = (x_1 - 
+    \frac{x_3x_1^5 + x_4x_1^4+ x_5x_1^3 + x_6x_1^2 + x_7x_1 + x_8}
+         {5x_3x_1^4 + 4x_4x_1^3 + 3x_5x_1^2 + 2x_6x_1 + x_7}, 
+    x_2, x_3, x_4, x_5, x_6, x_7, x_8)$};
+  \node(check)[branch, draw, below of=comp] {$h(x) = x_1^2 - x_2^2$};
+  \node(output)[accept, draw, below of=check] {Output: $x_0$};
+
+  \draw [->, thick] (init) --                                      (comp);
+  \draw [->, thick] (comp) --                                      (check);
+  \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {No} (comp);
+  \draw [->, thick] (check) to node[auto] {Yes}                    (output);
+
+\end{tikzpicture}
+
+
+\end{document}
+

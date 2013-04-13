@@ -36,7 +36,7 @@ and we conjecture that this condition is also necessary.
 
 \chapter{Background}
 
-In this Chapter, we present a basic development of an algebraic model
+In this chapter, we present a basic development of an algebraic model
 of computation due to Blum et al.  The material presented here draws
 heavily from \cite{B89} and \cite{B98}.  Since the computing machines
 developed by Blum et al. are essentially a generalization of the
@@ -52,13 +52,11 @@ divided into cells, on each of which can be written a single symbol.
 Such a machine is outfitted with a tape head which can move left and
 right as well as read and write symbols to and from the tape. A
 machine's ``program'' consists of a set of states along with a
-transition function which provides instructions for how the tape head
+transition function that provides instructions for how the tape head
 should behave given a symbol and a current machine state.  These ideas
 are made precise as follows:
 
 \begin{definition}{Turing Machine}
-
-   \todo{Is this the right level of detail?}
 
   A Turing Machine is a 5-tuple, $(Q, \Sigma, \Gamma, \delta, q_0)$, where:
 
@@ -83,6 +81,12 @@ are made precise as follows:
   tape head to the left or right depending on the value of $d$.
   
 \end{definition}
+
+\textbf{Example: } The following Turing Machine reads in a binary
+string, $s$ and outputs the string given by replacing each $0$ in $s$
+with a $1$ and each $1$ with a $0$.
+
+
 
 \section{Finite Dimensional Machines}
 
