@@ -1,10 +1,5 @@
 \documentclass{article}
-
-\usepackage[latin1]{inputenc}
-\usepackage{tikz}
-\usepackage{amsmath, amsfonts, amsthm}
 \usepackage{thesiscommands}
-\usetikzlibrary{shapes,arrows,shapes.geometric}
 
 \begin{document}
 
@@ -14,7 +9,6 @@
                      minimum width=4cm, 
                      minimum height=2cm, 
                      inner sep=2mm]
-
 % Variations on compute nodes.
 \tikzstyle{input}=[style=compute, 
                    fill=blue!15]
@@ -22,14 +16,12 @@
                    fill=green!15]
 \tikzstyle{reject}=[style=compute, 
                     fill=red!15]
-
 % Branch node.
 \tikzstyle{branch}=[diamond, 
                     thick, 
                     minimum width=4cm, 
                     minimum height=2cm, 
                     inner sep=2mm]
-
 
 % Newton's Method - High Level 
 {\Huge Newton's Method - High Level}\\
@@ -81,6 +73,9 @@ on the condition $x_0^2 < \epsilon^2$, which is equivalent to $|x_0| <
 
 \end{tikzpicture}
 
+\newpage
+
+\tape[1]{{1,2,3}}
 
 \end{document}
 

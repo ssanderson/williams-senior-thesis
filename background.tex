@@ -62,8 +62,10 @@ are made precise as follows:
 
   \begin{itemize}
   \item $Q$ is a set of machine states.
-  \item $\Sigma$ is an alphabet of input characters. 
-  \item $\Gamma \subset \Sigma$ is the tape alphabet.
+  \item $\Sigma$ is an alphabet of input characters, not containing
+    the blank symbol, $\blank$.
+  \item $\Gamma$ is the tape alphabet, where $\blank \in \Gamma$, and
+    $\Sigma \subset \Gamma$.
   \item \functype{\delta}{Q \times \Sigma}{Q \times \Gamma \times
       \set{\leftarrow, \rightarrow}} is a transition function.
   \item $q_0$ is the initial state of the machine.
@@ -78,15 +80,33 @@ are made precise as follows:
   machine is in state $q$, it then calculates $\delta(q, \sigma)$ =
   $(q', \sigma', d \in \set{\leftarrow, \rightarrow})$, transitions
   into state $q'$, writes $\sigma'$ to the current cell, and moves the
-  tape head to the left or right depending on the value of $d$.
+  tape head to the left or right depending on the value of $d$.  In
+  the case that the machine head would move left when on the leftmost
+  cell, it stays in place.
   
 \end{definition}
 
 \textbf{Example: } The following Turing Machine reads in a binary
-string, $s$ and outputs the string given by replacing each $0$ in $s$
-with a $1$ and each $1$ with a $0$.
+string $s$ and outputs the string given by replacing each $0$ in $s$
+with a $1$ and each $1$ with a $0$.  It accepts on all inputs.
 
+\begin{itemize}
+\item $Q = \set{q_0, q_{accept}, q_{reject}}$
+\item $\Gamma = \set{\blank, 0, 1}$
+\item $\Sigma = \set{0,1}$
+\item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
+\item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
+\item $\delta(q_0, \blank) = (q_{accept}, \blank, \rightarrow)$
+\end{itemize}
 
+On the input $1001$ computation of the above machine would run as
+follows:
+
+\tape[0]{{1,0,0,1,\blank,$\cdots$}}
+\tape[1]{{0,0,0,1,\blank,$\cdots$}}
+\tape[2]{{0,1,0,1,\blank,$\cdots$}}
+\tape[3]{{0,1,1,1,\blank,$\cdots$}}
+\tape[4]{{0,1,1,0,\blank,$\cdots$}}
 
 \section{Finite Dimensional Machines}
 
@@ -835,3 +855,8 @@ See \cite{B98} for details.  \todo{Should we present proofs or proof
 \end{itemize}
 
 \todo{Add bounded versions?}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End: 

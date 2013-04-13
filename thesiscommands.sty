@@ -1,4 +1,11 @@
 
+\usepackage[latin1]{inputenc}
+\usepackage{tikz}
+\usepackage{pgfmath}
+\usepackage{amsmath, amsfonts, amsthm}
+\usepackage{etoolbox}
+\usetikzlibrary{shapes,arrows,shapes.geometric}
+
 \newcommand{\bolditem}[1]{\item{\textbf{#1}}}
 
 \newcommand{\todo}[1]{
@@ -31,6 +38,7 @@
 \newcommand{\len}[0]{\text{length}}
 \newcommand{\size}[0]{\text{size}}
 \newcommand{\cost}[0]{\text{cost}}
+\newcommand{\blank}[0]{\#}
 
 % Machine descriptors.
 \newcommand{\inspace}[0]{\mathcal{I}}
@@ -75,6 +83,36 @@
 \newcommand{\dtime}[0]{\mathbf{DTIME_R}}
 \newcommand{\ndettime}[0]{\mathbf{NDETTIME_R}}
 
-
 % Problems
 \newcommand{\subsum}[2]{$\mathbf{SUBSETSUM}_{(#1, #2)}$}
+
+%Graphics
+
+\tikzstyle{cell}=[rectangle, 
+                  thick, 
+                  minimum width=1cm, 
+                  minimum height=1cm,
+                  inner sep= 2mm]
+
+\newcounter{tape_c}
+\newcommand{\tape}[2][foo]{
+
+  \begin{tikzpicture}
+    
+    \setcounter{tape_c}{0}
+
+    \foreach \symbol in #2
+    {
+      \ifnumequal{#1}{\value{tape_c}}
+      % Tape head.
+      {
+        \node at (\value{tape_c},0) [cell, draw, fill=orange!25]{\symbol};
+      }
+      % Regular cell.
+      {
+        \node at (\value{tape_c},0) [cell, draw]{\symbol};
+      }
+      \addtocounter{tape_c}{1}
+    }
+  \end{tikzpicture}
+}
