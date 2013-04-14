@@ -10,29 +10,31 @@ point in time.  One shortcoming of this computing model is that it
 does not allow us to describe computational problems that are defined
 over uncountable sets such $\mathbb{R}$ or $\mathbb{C}$.  Examples of
 such problems include analyzing the expected runtime of Newton's
-Method, determining membership in the Mandelbrot Set, and the problem
-of determining whether a finite set of polynomials in $n$
-variables share a common root. \\
+Method, determining membership in the Mandelbrot Set, Linear
+Programming with real coefficients, and the problem of determining
+whether a finite set of polynomials in $n$ variables share a common
+root.\\
 
 To address the above issues and others, in \cite{B89} Blum et
 al. develop an algebraic theory of computation that generalizes the
 Turing Machine model to computation over arbitrary rings and fields.
 In \cite{B98} the same authors present a wealth of results related to
-their model.  In this thesis, we present a basic development of their
-model as well as a sample of their major results.  In particular, we
-show how Blum et al. define the relativized complexity classes, $\p$
-and $\np$, which generalize the well-known classes $\mathbf{P}$ and
-$\mathbf{NP}$ to machines that compute with values from an arbitrary
-ring $R$.  We then develop a third complexity class, $\ndetp$, which
-we present as an alternative generalization of the classical
-$\mathbf{NP}$.  Our major results are that, over any ring $R$, $\p
-\subseteq \ndetp \subseteq \np$ and $\ndetp \subseteq \exptime$. From
-these containments it follows that if $\p \subset \ndetp$ or $\ndetp
-\subset \np$, then $\p \neq \np$.  We also demonstrate the existence
-of at least one ring over which $\ndetp \subset \np$.  (It is already
-known that $\p \neq \np$ for this case.)  We conclude by proving a
-sufficient condition under which the equality $\ndetp = \np$ holds,
-and we conjecture that this condition is also necessary.  
+their model, which we refer to as the BSS Machine. In this thesis, we
+present a basic development of their model as well as a sample of
+their major results.  In particular, we show how Blum et al. define
+the relativized complexity classes, $\p$ and $\np$, which generalize
+the well-known classes $\mathbf{P}$ and $\mathbf{NP}$ to machines that
+compute with values from an arbitrary ring $R$.  We then develop a
+third complexity class, $\ndetp$, which we present as an alternative
+generalization of the classical $\mathbf{NP}$.  Our major results are
+that, over any ring $R$, $\p \subseteq \ndetp \subseteq \np$ and
+$\ndetp \subseteq \exptime$. From these containments it follows that
+if $\p \subset \ndetp$ or $\ndetp \subset \np$, then $\p \neq \np$.
+We also demonstrate the existence of at least one ring over which
+$\ndetp \subset \np$.  (It is already known that $\p \neq \np$ for
+this case.)  We conclude by proving a sufficient condition under which
+the equality $\ndetp = \np$ holds, and we conjecture that this
+condition is also necessary.
 
 \chapter{Background}
 
@@ -75,15 +77,14 @@ are made precise as follows:
   between \textbf{configurations}, which are triples in $\Sigma^*
   \times Q \times \naturals$ encoding the symbols currently written on
   the tape, the machine's current state, and the position of the tape
-  head.  At each computation step, the machine reads the symbol,
+  head.  At each computation step, the machine reads the symbol
   $\sigma$ on the cell currently occupied by the tape head.  If the
   machine is in state $q$, it then calculates $\delta(q, \sigma)$ =
   $(q', \sigma', d \in \set{\leftarrow, \rightarrow})$, transitions
-  into state $q'$, writes $\sigma'$ to the current cell, and moves the
-  tape head to the left or right depending on the value of $d$.  In
-  the case that the machine head would move left when on the leftmost
-  cell, it stays in place.
-  
+  into state $q'$, writes $\sigma'$ to the current cell, and
+  increments or decrements the location of the tape head depending on
+  the value of $d$.  In the case that the machine head would move left
+  when on the leftmost cell, it stays in place.
 \end{definition}
 
 \textbf{Example: } The following Turing Machine reads in a binary
@@ -96,65 +97,75 @@ with a $1$ and each $1$ with a $0$.  It accepts on all inputs.
 \item $\Sigma = \set{0,1}$
 \item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
 \item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
-\item $\delta(q_0, \blank) = (q_{accept}, \blank, \rightarrow)$
+\item $\delta(q_0, \blank) = (q_{accept}, \blank, \leftarrow)$
 \end{itemize}
 
-On the input $1001$ computation of the above machine would run as
-follows:
+Figure \ref{fig:turing-example} illustrates the computation of our
+example machine on the input $1001$. In each computation step but the
+last, the machine flips the parity of the symbol beneath the tape,
+then moves to the right and ``transitions'' from $q_0$ to $q_o$.  When
+the machine reads the blank symbol $\blank$, it leaves the same symbol
+on the tape, transitions to the accept state and moves the tape head
+to the left before exiting with output $0110$.
 
-\tape[0]{{1,0,0,1,\blank,$\cdots$}}
-\tape[1]{{0,0,0,1,\blank,$\cdots$}}
-\tape[2]{{0,1,0,1,\blank,$\cdots$}}
-\tape[3]{{0,1,1,1,\blank,$\cdots$}}
-\tape[4]{{0,1,1,0,\blank,$\cdots$}}
+\begin{figure}[h]
+  \begin{center}
+    \tape[1]{$q_0$}{{1,0,0,1,\blank,$\cdots$}} \vspace{1mm}
+    \tape[2]{$q_0$}{{0,0,0,1,\blank,$\cdots$}} \vspace{1mm}
+    \tape[3]{$q_0$}{{0,1,0,1,\blank,$\cdots$}} \vspace{1mm}
+    \tape[4]{$q_0$}{{0,1,1,1,\blank,$\cdots$}} \vspace{1mm}
+    \tape[5]{$q_0$}{{0,1,1,0,\blank,$\cdots$}} \vspace{1mm}
+    \tape[4]{$q_{accept}$}{{0,1,1,0,\blank, $\cdots$}} \vspace{1mm}
+  \end{center}
+  \caption{An Example Turing Machine Computation}
+  \label{fig:turing-example}
+\end{figure}
 
 \section{Finite Dimensional Machines}
 
-\subsection*{Intuition}
-
-A Blum Machine is in essence a Turing Machine with a number of key
+A BSS Machine is in essence a Turing Machine with several key
 features abstracted to a more general setting. We replace the
 classical finite tape alphabet with elements of a ring/field, and we
 replace the classical operations of reading and writing to individual
 cells with order/equality comparisons and computations of
-componentwise polynomial/rational maps. \\
+componentwise polynomial/rational maps. 
  
-In order to build intuition about how Blum machines operate and how we
-can analyze their properties, we first present Blum et al's definition of
+To build intuition about how Blum machines operate and how we can
+analyze their properties, we first present Blum et al's definition of
 a \emph{Finite Dimensional Machine}, which corresponds in the
 classical theory to a Turing Machine with a tape of finite length.
 Having built some intuition with the finite dimensional model, we then
 show how we can generalize to the infinite dimensional case, allowing
 us to consider machines that can process arbitrarily large inputs.
 
-In what follows, let $R$ be a commutative ring with unit, and let $l,
+In what follows, let $R$ be a commutative ring with unity, and let $l,
 m$, and $n$ be positive integers. By convention, we will use the
 symbol $x$ to denote a polynomial over $R$, and we denote the ring of
-polynomials over $R$ of degree at most $k$ by $R^k$.
+polynomials over $R$ of degree at most $k$ by $R^k$.\\
 
 \begin{definition}{\textbf{Finite Dimensional Machine} over a ring
     \textbf{R}}
   
   A \textbf{Finite Dimensional Machine} (FDM) $M$ over $R$ is a
-  finite, directed, connected graph with four types of nodes:
-  \emph{input, computation, branch} and \emph{output}.  An FDM has one
-  input and one output node but can have any number of branch and
-  computation nodes. The input node has indegree 0.  All other nodes
-  have indegree $\geq$ 1. The input node and computation nodes have
-  outdegree 1; branch nodes have outdegree 2, and the output node has
-  outdegree 0.  We use the expression ``next node(s)'' of a node
-  $\eta$ to refer to the node(s) to which $\eta$ has outgoing edges.\\
-  
-  \emph{\note{Blum et al. allow a machine to have multiple output
-      nodes, but it is relatively easy to show that any machine with
-      multiple output nodes can be trivially reduced to a machine with
-      a single output node, so for ease of notation we
-      prefer the single output definition.}}\\
+  finite, directed, connected graph with node set $\nodes$.  The
+  elements of $\nodes$ are divided into four types.: \emph{input,
+    computation, branch} and \emph{output}.  An FDM has one input and
+  one output node but can have any number of branch and computation
+  nodes. The input node has indegree 0.  All other nodes have indegree
+  $\geq$ 1. The input node and computation nodes have outdegree 1;
+  branch nodes have outdegree 2, and the output node has outdegree 0.
+  We use the expression ``next node(s)'' of a node $\eta$ to refer to
+  the node(s) to which $\eta$ has outgoing edges.\footnote{Blum et
+    al. allow a machine to have multiple output nodes, but it is
+    relatively easy to show that any machine with multiple output
+    nodes can be trivially reduced to a machine with a single output
+    node, so for ease of notation we
+    prefer the single output definition.}\\
   
   An FDM has three associated spaces: an input space $\inspace_M
   \subseteq R^n$, a state space $\statespace_M \subseteq R^m$, and an
   output space $\outspace_M \subseteq R^l$.  (Recall that $R^k$
-  denotes the ring of polynomials over $R$ with degree at most $k$).\\
+  denotes the set of $k$-tuples containing elements in $R$).\\
 
   Each node has an associated map and a set of next nodes, which vary
   in structure in accordance with the node's type.
@@ -184,14 +195,90 @@ polynomials over $R$ of degree at most $k$ by $R^k$.
   \end{enumerate}
 \end{definition}
 
-We are now in a position to define what it means for a machine $M$ to
-perform a computation on some input, $x$.  The basic idea is that a
-computation is a path through $\nodes \times \statespace$ that begins
-with $(\eta_1, I_M(x))$ and follows the computing endomorphism of $M$,
-halting upon reaching the output node of $M$.  The ``run-time'' of a
-computation is given by the length of this path, and the output value
-of a computation is the result of $O_m$ called on whatever is left in
-$\statespace_M$ when a terminal configuration is reached.
+\textbf{Note: }The above definition is subject to modification
+depending on whether the ring $R$ is a field and whether it is endowed
+with a natural order.  
+
+In the case that $R$ is a field, we may want to
+allow our machines to take advantage of the natural division operation
+by allowing rational maps rather than polynomial maps for $g_\eta$ and
+$h_\eta$.  In such a case, care needs to be taken to ensure that
+division is always well-defined by prevention divisions by $0$.  We do
+so by adopting the convention that each node that computes a rational
+function is preceded by a subroutine that computes all relevant
+denominators, entering an infinite loop if any of them are zeros.
+This allows us to assume that computations are always well-defined.
+
+When $R$ is unordered, when $R = \complexes$ for example, we replace
+the branching conditions $h(x) > 0$ and $h(x) < 0$ with $h(x) = 0$ and
+$h(x) \neq 0$, respectively.\\
+
+\textbf{Example: } Figures \ref{fig:newton-high} and
+\ref{fig:newton-low} show how one might implement an FDM to carry out
+Newton's Method for determining approximate zeros of a polynomial.
+The former gives a ``high-level'' view of what each node does
+logically, while the latter demonstrates the underlying
+implementation. Because we are currently considering only finite
+dimensional machines, we restrict ourselves to polynomials of degree
+5.  We will show later how we can modify our definitions to allow for
+uniform machines that can process inputs of arbitrary size.
+
+\begin{figure}[p]
+  \centering
+
+  \begin{tikzpicture}[node distance=4cm]
+
+    \node (init)   [input, draw] {Input: $p \in \reals[x]$, $z \in \reals$, $\epsilon \in \reals$};
+    \node (comp)   [compute, draw, below of=init]   {$z = z - \frac{p(z)}{p'(z)}$};
+    \node (check)  [branch, draw, below of=comp]    {$|p(x)| - \epsilon < 0$};
+    \node (output) [accept, draw, below of=check]   {Output $z$};
+    
+    \draw [->, thick] (init) --                                      (comp);
+    \draw [->, thick] (comp) --                                      (check);
+    \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {No} (comp);
+    \draw [->, thick] (check) to node[auto] {Yes}                    (output);
+
+  \end{tikzpicture}
+
+  \caption{Newton Machine - High Level}
+  \label{fig:newton-high}
+\end{figure}
+
+\begin{figure}[p]
+  \framebox[4.3cm][l]{
+    \parbox[l] {4.3cm}{
+      $\nodes = \set{\eta_1, \eta_2, \eta_3, \nodeout}$\\
+      $\inspace_M = \statespace_M = \outspace_M = \reals^8$\\
+      Computation Nodes: $\set{\eta_2}$\\
+      Branch Nodes: $\set{\eta_3}$
+    }
+  }
+  
+  \vspace{\baselineskip}
+
+  \centering
+  
+  \begin{tikzpicture}[node distance=4cm]
+
+    \node(init) [input, draw] {Input: $x = (x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8)$;};
+    \node(comp) [compute, draw, below of=init] {
+      $g(x) = (x_1 - 
+      \frac{x_3x_1^5 + x_4x_1^4+ x_5x_1^3 + x_6x_1^2 + x_7x_1 + x_8}
+      {5x_3x_1^4 + 4x_4x_1^3 + 3x_5x_1^2 + 2x_6x_1 + x_7}, 
+      x_2, x_3, x_4, x_5, x_6, x_7, x_8)$};
+    \node(check)[branch, draw, below of=comp] {$h(x) = x_1^2 - x_2^2$};
+    \node(output)[accept, draw, below of=check] {Output: $O(x) = x_0$};
+
+    \draw [->, thick] (init) --                                             (comp);
+    \draw [->, thick] (comp) --                                            (check);
+    \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {$h(x) > 0$}(comp);
+    \draw [->, thick] (check) to node[auto] {$h(x) < 0$}                  (output);
+    
+  \end{tikzpicture}
+
+  \caption{Newton Machine - Low Level}
+  \label{fig:newton-low}
+\end{figure}
 
 \begin{definition}{\textbf{Configuration}}  
 
@@ -204,7 +291,7 @@ $\statespace_M$ when a terminal configuration is reached.
 \end{definition}
 
 For each non-terminal configuration $z = (\eta, x)$, a machine $M$
-defines a unique next configuration $z' = (\beta, x')$ as follows:
+defines a unique next configuration $z' = (\eta', x')$ as follows:
 
 \begin{itemize}
 \item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
@@ -213,18 +300,34 @@ defines a unique next configuration $z' = (\beta, x')$ as follows:
     x)}{h_\eta(x) \geq 0}{(\beta_\eta^-, x)}{h_\eta(x) < 0}$.
 \end{itemize}
 
+It will occasionally be useful to us to have a compact notation for
+writing ``$z'$ is the next configuration of $z$.''  We do so using the
+expression $z \yields z'$, which we read as $z$ \textbf{yields} $z'$.\\
+
+We are now in a position to define what it means for a machine $M$ to
+perform a computation on some input, $x$.  The basic idea is that a
+computation is a path through $\nodes \times \statespace$ that begins
+with $(\eta_1, I_M(x))$ and proceeeds by following next
+configurations, halting upon reaching the output node of $M$.  The
+``run-time'' of a computation is given by the length of this path, and
+the output value of a computation is the result of $O_m$ called on
+whatever is left in $\statespace_M$ when a terminal configuration is
+reached.\\
+
 \begin{definition}{\textbf{Halting Computation and time-t Halting Set}}
 
   A \textbf{halting computation} performed by an FDM $M$ on input $x$
-  is a sequence of configurations: $$\compute_M(x) = (z_0, z_1, \ldots
-  z_t)$$ such that \\
+  is a sequence of configurations: 
+  $$\compute_M(x) = (z_0, z_1, \ldots, z_t)$$ such that
   
   \centerline{$z_0 = (\eta_1, I(x)$, $z_t = (\nodeout, x_t)$, and $z_i
-    = z_{i-1}'$ for $0 < i \leq k$\\}
-
+    \yields z_{i+1}$ for $0 \leq i < k$}
+  
+  \vspace{\baselineskip}
+  
   The \textbf{output} $\computefn_M(x)$ of a halting computation is
-  the value given by $O(x_t)$.  If such a halting computation exists
-  for an input $x$, we say that $x$ is in the \textbf{time-t
+  the value given by $O(x_t)$.  If a halting computation of length $t$
+  exists for an input $x$, we say that $x$ is in the \textbf{time-t
     Halting Set} of M and we write $x \in \halting_t$.  \\
 
   The \textbf{Halting Set} $\halting_M$ of a machine $M$ is the union

@@ -66,6 +66,7 @@
 \newcommand{\stateprojection}[0]{\pi_\statespace}
 \newcommand{\coincidence}[1]{\mathcal{V}_{#1}}
 \newcommand{\charfunc}[0]{\chi}
+\newcommand{\yields}[0]{\vdash}
 
 % Complexity results
 \newcommand{\preduce}[0]{\hookrightarrow_p}
@@ -94,14 +95,35 @@
                   minimum height=1cm,
                   inner sep= 2mm]
 
+% Compute node
+\tikzstyle{compute}=[rectangle, 
+                     thick, 
+                     minimum width=4cm, 
+                     minimum height=2cm, 
+                     inner sep=2mm]
+% Variations on compute nodes.
+\tikzstyle{input}=[style=compute, 
+                   fill=blue!15]
+\tikzstyle{accept}=[style=compute, 
+                   fill=green!15]
+\tikzstyle{reject}=[style=compute, 
+                    fill=red!15]
+% Branch node.
+\tikzstyle{branch}=[diamond, 
+                    thick, 
+                    minimum width=4cm, 
+                    minimum height=2cm, 
+                    inner sep=2mm]
+
 \newcounter{tape_c}
-\newcommand{\tape}[2][foo]{
+\newcommand{\tape}[3][-1]{
 
   \begin{tikzpicture}
-    
-    \setcounter{tape_c}{0}
 
-    \foreach \symbol in #2
+    \node at (-0.5,0) [circle, draw, minimum width=1.3cm] {#2};
+    \setcounter{tape_c}{1}
+
+    \foreach \symbol in #3
     {
       \ifnumequal{#1}{\value{tape_c}}
       % Tape head.

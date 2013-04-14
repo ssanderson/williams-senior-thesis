@@ -3,33 +3,12 @@
 
 \begin{document}
 
-% Compute node
-\tikzstyle{compute}=[rectangle, 
-                     thick, 
-                     minimum width=4cm, 
-                     minimum height=2cm, 
-                     inner sep=2mm]
-% Variations on compute nodes.
-\tikzstyle{input}=[style=compute, 
-                   fill=blue!15]
-\tikzstyle{accept}=[style=compute, 
-                   fill=green!15]
-\tikzstyle{reject}=[style=compute, 
-                    fill=red!15]
-% Branch node.
-\tikzstyle{branch}=[diamond, 
-                    thick, 
-                    minimum width=4cm, 
-                    minimum height=2cm, 
-                    inner sep=2mm]
-
 % Newton's Method - High Level 
 {\Huge Newton's Method - High Level}\\
 
 \begin{tikzpicture}[node distance=4cm]
 
-  \node (init)   [input, draw]                    {Input: $p \in \reals[x]$, $z \in \reals$, $\epsilon \in \reals$};
-
+  \node (init)   [input, draw] {Input: $p \in \reals[x]$, $z \in \reals$, $\epsilon \in \reals$};
   \node (comp)   [compute, draw, below of=init]   {$z = z - \frac{p(z)}{p'(z)}$};
   \node (check)  [branch, draw, below of=comp]    {$|p(x)| - \epsilon < 0$};
   \node (output) [accept, draw, below of=check]   {Output $z$};
@@ -75,7 +54,43 @@ on the condition $x_0^2 < \epsilon^2$, which is equivalent to $|x_0| <
 
 \newpage
 
-\tape[1]{{1,2,3}}
+% Q Recognizer
+\framebox[5cm][l]{
+  \parbox[l] {5cm}{
+    $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \eta_5, \nodeout}$\\
+    $\inspace_M = \reals, \statespace_M = \reals^3, \outspace_M = \reals^2$\\
+    Computation Nodes: $\set{\eta_2, \eta_4}$\\
+    Branch Nodes: $\set{\eta_3, \eta_5}$\\
+    $\halting_M = \set{q \in \rationals}$
+  }
+}
+
+\vspace{\baselineskip}
+
+\centering
+\begin{tikzpicture}[node distance=4.8cm]
+
+  \node(init) [input, draw] {Input: x = $(x_1, x_2, x_3)$};
+  \node(test) [branch, draw, below of=init] {$h(x) = x_1 - \frac{x_2}{x_3}$};
+  \node(flip)     [compute, draw, left of=test] {$g(x)= (x_1, 1, x_2+1)$};
+  \node(fliptest) [branch, draw, below of=flip] {$h(x) = x_3$};
+  \node(inc)  [compute, draw, below of=fliptest] {$g(x) = (x_1, x_2+1, x_3-1)$};
+  \node(output)   [accept, draw, below of=test, right of=test] {Output: $O(x) = (x_2, x_3)$};
+
+  \draw[->, thick] (init) -- (test);
+  \draw[->, thick] (flip) -- (test);
+  \draw[->, thick] (test) to [out=270, in=0] node [auto] {$h(x) \neq 0$} (inc);
+  \draw[->, thick] (test) to [out=0, in=90] node[auto] {$h(x)=0$} (output);
+  \draw[->, thick] (fliptest) to [out=0, in= 225] node[auto] {$h(x) = 0$} (test);
+  \draw[->, thick] (fliptest) to [out=90, in= 270] node[auto] {$h(x) \neq 0$}(flip);
+  \draw[->, thick] (inc) -- (fliptest);
+
+  
+
+\end{tikzpicture}
+
+
+
 
 \end{document}
 
