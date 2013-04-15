@@ -568,15 +568,28 @@ algebraic sets.  Before we proceed, we need a few more definitions.
     
   \end{definition}
 
-  We define the initial computation path of length $k$ for a machine
-  $M$ on input $x$ as the first $k$ nodes traversed by $M$ while
-  computing on $x$.  We define the set of time-T halting paths to be the
-  computations performed by $M$ that halt in the first $T$ steps.
+  \textbf{Example: } The upper half of the unit disc in $\reals^2$ is
+  a basic semi-algebraic set defined by solutions to the equations:
+  \begin{eqnarray*}
+    x^2 + y^2 < 0\\
+    y > 0
+  \end{eqnarray*}
+
+  The upper half of the unit circle in $\reals^2$ is a basic
+  quasi-algebraic set defined by solutions to the equations:
+  \begin{eqnarray*}
+    x^2 + y^2 = 0\\
+    y = 0
+  \end{eqnarray*}
 
   \begin{definition}{\textbf{Initial computation path} and \textbf{time-T halting path set}}
 
     Let $M$ be a machine over $R$, and let $x$ be an element of
-    $\inspace_M$ with $\compute_x = z^0, z^1, \ldots, z^k, \ldots$ \\
+    $\inspace_M$, and let $\computepath = \computepath_M(x)$ be the
+    computation path of $M$ on $x$.  
+    
+    \todo{HERE}
+
     Let $\computepath_x = \eta_0, \eta_1, \ldots, \eta_k, \ldots$.  
     The \textbf{initial computation path} on $\computepath_x$ of
     length $k$ is given by: 
@@ -586,6 +599,11 @@ algebraic sets.  Before we proceed, we need a few more definitions.
     $$\haltpaths{T} = \set{\computepath_x(T) \mid T(x) \leq T, x \in \inspace_M}$$.
 
   \end{definition}
+
+  We define the initial computation path of length $k$ for a machine
+  $M$ on input $x$ as the first $k$ nodes traversed by $M$ while
+  computing on $x$.  We define the set of time-T halting paths to be the
+  computations performed by $M$ that halt in the first $T$ steps.
   
   \begin{definition}{\textbf{Coincidence set}}
 
