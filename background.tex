@@ -60,7 +60,7 @@ are made precise as follows:
 
 \begin{definition}{Turing Machine}
 
-  A Turing Machine is a 5-tuple, $(Q, \Sigma, \Gamma, \delta, q_0)$, where:
+  A Turing Machine is a 7-tuple, $(Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$, where:
 
   \begin{itemize}
   \item $Q$ is a set of machine states.
@@ -71,6 +71,8 @@ are made precise as follows:
   \item \functype{\delta}{Q \times \Sigma}{Q \times \Gamma \times
       \set{\leftarrow, \rightarrow}} is a transition function.
   \item $q_0$ is the initial state of the machine.
+  \item $q_{accept}$ is the machine's accept state.
+  \item $q_{reject}$ is the machine's reject state.
   \end{itemize}
 
   The transition function $\delta$ determines how the machine passes
@@ -84,7 +86,14 @@ are made precise as follows:
   into state $q'$, writes $\sigma'$ to the current cell, and
   increments or decrements the location of the tape head depending on
   the value of $d$.  In the case that the machine head would move left
-  when on the leftmost cell, it stays in place.
+  when on the leftmost cell, it stays in place.  Computation ends when
+  a machine transitions into either $q_{accept}$ or $q_{reject}$, at
+  which point the machine is said to either \textbf{accept} or
+  \textbf{reject} its input, respectively.  A Turing Machine is said
+  to \textbf{halt} on input $x$ if it either accepts or rejects $x$.
+  Upon halting, the \textbf{output} of a machine is the string left
+  behind on the machine's tape.
+  
 \end{definition}
 
 \textbf{Example: } The following Turing Machine reads in a binary
@@ -123,12 +132,12 @@ to the left before exiting with output $0110$.
 
 \section{Finite Dimensional Machines}
 
-A BSS Machine is in essence a Turing Machine with several key
-features abstracted to a more general setting. We replace the
-classical finite tape alphabet with elements of a ring/field, and we
-replace the classical operations of reading and writing to individual
-cells with order/equality comparisons and computations of
-componentwise polynomial/rational maps. 
+A BSS Machine is in essence a Turing Machine with several key features
+abstracted to a more general setting. We replace the classical finite
+tape alphabet with elements of a ring/field, and we replace the
+classical operations of reading and writing to individual cells with
+order/equality comparisons and computations of componentwise
+polynomial/rational maps.
  
 To build intuition about how Blum machines operate and how we can
 analyze their properties, we first present Blum et al's definition of
@@ -139,28 +148,26 @@ show how we can generalize to the infinite dimensional case, allowing
 us to consider machines that can process arbitrarily large inputs.
 
 In what follows, let $R$ be a commutative ring with unity, and let $l,
-m$, and $n$ be positive integers. By convention, we will use the
-symbol $x$ to denote a polynomial over $R$, and we denote the ring of
-polynomials over $R$ of degree at most $k$ by $R^k$.\\
+m$, and $n$ be positive integers.
 
 \begin{definition}{\textbf{Finite Dimensional Machine} over a ring
     \textbf{R}}
   
-  A \textbf{Finite Dimensional Machine} (FDM) $M$ over $R$ is a
-  finite, directed, connected graph with node set $\nodes$.  The
-  elements of $\nodes$ are divided into four types.: \emph{input,
-    computation, branch} and \emph{output}.  An FDM has one input and
-  one output node but can have any number of branch and computation
-  nodes. The input node has indegree 0.  All other nodes have indegree
-  $\geq$ 1. The input node and computation nodes have outdegree 1;
-  branch nodes have outdegree 2, and the output node has outdegree 0.
-  We use the expression ``next node(s)'' of a node $\eta$ to refer to
-  the node(s) to which $\eta$ has outgoing edges.\footnote{Blum et
-    al. allow a machine to have multiple output nodes, but it is
-    relatively easy to show that any machine with multiple output
-    nodes can be trivially reduced to a machine with a single output
-    node, so for ease of notation we
-    prefer the single output definition.}\\
+  A \textbf{Finite Dimensional Machine} (FDM) $M$ over $R$ is a finite
+  directed graph with node set $\nodes$.  The collection $\nodes$
+  contains three distinguished nodes: the \textbf{input node}
+  $\eta_1$; the \textbf{accept node} $\eta_{accept}$; and the
+  \textbf{reject node} $\eta_{reject}$. The input node has indegree 0;
+  the accept and reject nodes have outdegree 0.  The remaining
+  elements of $\nodes$ are divided into two types: \emph{computation}
+  and \emph{branch}.  Computation nodes have outdegree 1; branch nodes
+  have outdegree 2.  We use the expression ``next node(s)'' of a node
+  $\eta$ to refer to the node(s) to which $\eta$ has outgoing
+  edges.\footnote{The definition used here departs slightly from that
+    used by Blum et al. in \cite{B98} and \cite{B89}.  The main
+    difference is our replacement of a single output node with the
+    pair of accept and reject nodes, which reflects on decision
+    problems instead of computable functions.}\\
   
   An FDM has three associated spaces: an input space $\inspace_M
   \subseteq R^n$, a state space $\statespace_M \subseteq R^m$, and an
@@ -189,25 +196,24 @@ polynomials over $R$ of degree at most $k$ by $R^k$.\\
     the condition $h_\eta(p) < 0$ with the other next node of $b$,
     which we call the \textbf{No Node} and denote $\beta_\eta^-$.
     
-  \item Associated with the output node is a linear map
-    \functype{O}{\statespace_M}{\outspace_M}.  We denote the output
-    node by $\nodeout$.  The output node has no next node.
+  \item Associated with the accept and reject nodes is a linear map
+    \functype{O}{\statespace_M}{\outspace_M}.
   \end{enumerate}
 \end{definition}
 
 \textbf{Note: }The above definition is subject to modification
 depending on whether the ring $R$ is a field and whether it is endowed
-with a natural order.  
+with a natural order.
 
-In the case that $R$ is a field, we may want to
-allow our machines to take advantage of the natural division operation
-by allowing rational maps rather than polynomial maps for $g_\eta$ and
-$h_\eta$.  In such a case, care needs to be taken to ensure that
-division is always well-defined by prevention divisions by $0$.  We do
-so by adopting the convention that each node that computes a rational
-function is preceded by a subroutine that computes all relevant
-denominators, entering an infinite loop if any of them are zeros.
-This allows us to assume that computations are always well-defined.
+In the case that $R$ is a field, we may want to allow our machines to
+take advantage of the natural division operation by allowing rational
+maps rather than polynomial maps for $g_\eta$ and $h_\eta$.  In such a
+case, care needs to be taken to ensure that division is always
+well-defined by preventing divisions by $0$.  We do so by adopting the
+convention that each node that computes a rational function is
+preceded by a subroutine that computes all relevant denominators,
+entering an infinite loop if any of them are zeros.  This allows us to
+assume that computations are always well-defined.
 
 When $R$ is unordered, when $R = \complexes$ for example, we replace
 the branching conditions $h(x) > 0$ and $h(x) < 0$ with $h(x) = 0$ and
@@ -231,12 +237,12 @@ uniform machines that can process inputs of arbitrary size.
     \node (init)   [input, draw] {Input: $p \in \reals[x]$, $z \in \reals$, $\epsilon \in \reals$};
     \node (comp)   [compute, draw, below of=init]   {$z = z - \frac{p(z)}{p'(z)}$};
     \node (check)  [branch, draw, below of=comp]    {$|p(x)| - \epsilon < 0$};
-    \node (output) [accept, draw, below of=check]   {Output $z$};
+    \node (accept) [accept, draw, below of=check]   {Output $z$};
     
     \draw [->, thick] (init) --                                      (comp);
     \draw [->, thick] (comp) --                                      (check);
     \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {No} (comp);
-    \draw [->, thick] (check) to node[auto] {Yes}                    (output);
+    \draw [->, thick] (check) to node[auto] {Yes}                    (accept);
 
   \end{tikzpicture}
 
@@ -247,25 +253,29 @@ uniform machines that can process inputs of arbitrary size.
 \begin{figure}[p]
   \centering
   
-  \begin{tikzpicture}[node distance=4cm, label distance=.5cm]
+  \begin{tikzpicture}[node distance=4cm, label distance=.3cm]
 
-    \node(init) [input, draw, label=left:\Large $\eta_1$] {Input: $x = (x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8)$;};
+    \node(init) [input, draw, label=left:\Large $\eta_1$] 
+    {Input: $x = (x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8)$;};
     \node(comp) [compute, draw, label=left:\Large $\eta_2$, below of=init] {
       $g(x) = (x_1 - 
       \frac{x_3x_1^5 + x_4x_1^4+ x_5x_1^3 + x_6x_1^2 + x_7x_1 + x_8}
       {5x_3x_1^4 + 4x_4x_1^3 + 3x_5x_1^2 + 2x_6x_1 + x_7}, 
       x_2, x_3, x_4, x_5, x_6, x_7, x_8)$};
     \node(check)[branch, draw, label=left:\Large $\eta_3$, below of=comp] {$h(x) = x_1^2 - x_2^2$};
-    \node(output)[accept, draw, label=left:\Large $\nodeout$,below of=check] {Output: $O(x) = x_0$};
+    \node(accept)[accept, draw, label=left:\Large $\accept$,below of=check] {$O(x) = x_0$};
+    \node(reject)[reject, draw, label=above:\Large $\reject$,left of=accept,
+                  node distance= 6cm] 
+    {$O(x) = x_0$};
 
     \draw [->, thick] (init) --                                             (comp);
     \draw [->, thick] (comp) --                                            (check);
     \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {$h(x) > 0$}(comp);
-    \draw [->, thick] (check) to node[auto] {$h(x) < 0$}                  (output);
+    \draw [->, thick] (check) to node[auto] {$h(x) < 0$}                  (accept);
 
-    \node (legend) [rectangle, draw, fill=black!10, right of=output, node distance=6cm] {
+    \node (legend) [rectangle, draw, fill=black!10, right of=accept, node distance=6cm] {
       \makecell[l]{
-        $\nodes = \set{\eta_1, \eta_2, \eta_3, \nodeout}$\\
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \accept, \reject}$\\
         $\inspace_M = \statespace_M = \outspace_M = \reals^8$\\
         Computation Nodes: $\set{\eta_2}$\\
         Branch Nodes: $\set{\eta_3}$
@@ -284,8 +294,8 @@ uniform machines that can process inputs of arbitrary size.
   A \textbf{configuration} of an FDM $M$ is a pair $(\eta, x) \in
   \nodes \times \statespace_M$. The set $\nodes \times \statespace_M$
   is called the \textbf{configuration space} of $M$.  A configuration
-  is said to be \textbf{terminal} if $\eta = \nodeout$, and
-  \textbf{non-terminal} otherwise.
+  is said to be \textbf{terminal} if $\eta \in \set{\accept,
+    \reject}$, and \textbf{non-terminal} otherwise.
 
 \end{definition}
 
@@ -307,11 +317,11 @@ We are now in a position to define what it means for a machine $M$ to
 perform a computation on some input, $x$.  The basic idea is that a
 computation is a path through $\nodes \times \statespace$ that begins
 with $(\eta_1, I_M(x))$ and proceeeds by following next
-configurations, halting upon reaching the output node of $M$.  The
-``run-time'' of a computation is given by the length of this path, and
-the output value of a computation is the result of $O_m$ called on
-whatever is left in $\statespace_M$ when a terminal configuration is
-reached.\\
+configurations, halting upon reaching either the accept or reject node
+of $M$.  The ``run-time'' of a computation is given by the length of
+this path, and the output value of a computation is the result of
+$O_m$ called on whatever is left in $\statespace_M$ when a terminal
+configuration is reached.\\
 
 \begin{definition}{\textbf{Halting Computation and time-t Halting Set}}
 
@@ -319,8 +329,8 @@ reached.\\
   is a sequence of configurations: 
   $$\compute_M(x) = (z_0, z_1, \ldots, z_t)$$ such that
   
-  \centerline{$z_0 = (\eta_1, I(x)$, $z_t = (\nodeout, x_t)$, and $z_i
-    \yields z_{i+1}$ for $0 \leq i < k$}
+  \centerline{$z_0 = (\eta_1, I(x)$, $z_t \in \set{(\accept, x_t),
+      (\reject, x_t)}$, and $z_i \yields z_{i+1}$ for $0 \leq i < k$}
   
   \vspace{\baselineskip}
   
@@ -355,9 +365,9 @@ space, and the current node becomes $\beta_{\eta}$.  At each branch
 node $\eta$, $M$ computes $h_\eta(x)$, where again $x$ is the
 currently stored value.  If $h_\eta(x) \geq 0$, the new node is
 $\beta_\eta+$.  Otherwise it is $\beta_\eta^-$.  The machine halts
-when it eventually reaches the output node, at which point it applies
-the function $O(x)$ to its stored value, which is taken as the
-machine's output.\\
+when it eventually reaches the output $\accept$ or $\reject$, at which
+point it applies the function $O(x)$ to its stored value, which is
+taken as the machine's output.\\
 
 \textbf{Example: } Figure \ref{fig:q-recog} shows a machine over
 $\reals$ which, on input $x \in \rationals^+ $ returns a pair of
@@ -379,25 +389,27 @@ positive rational, the machine does not halt.
     {$h(x) = x_3$};
     \node(inc)  [compute, draw, below of=fliptest, label=left:\Large $\eta_5$,] 
     {$g(x) = (x_1, x_2+1, x_3-1)$};
-    \node(output)   [accept, draw, below of=test, right of=test, label=left:\Large $\nodeout$] 
-    {Output: $O(x) = (x_2, x_3)$};
+    \node(accept)   [accept, draw, below of=test, right of=test, label=left:\Large $\accept$] 
+    {$O(x) = (x_2, x_3)$};
+    \node(reject)   [reject, draw, below of=accept, label=left:\Large $\reject$, node distance=2.4cm] 
+    {$O(x) = (x_2, x_3)$};
 
     \draw[->, thick] (init) -- (test);
     \draw[->, thick] (flip) -- (test);
-    \draw[->, thick] (test) to [out=270, in=0] node [auto] {$h(x) \neq 0$} (inc);
-    \draw[->, thick] (test) to [out=0, in=90] node[auto] {$h(x)=0$} (output);
+    \draw[->, thick] (test) to [out=270, in=0] node [auto, swap] {$h(x) \neq 0$} (inc);
+    \draw[->, thick] (test) to [out=0, in=90] node[auto] {$h(x)=0$} (accept);
     \draw[->, thick] (fliptest) to [out=0, in= 225] node[auto] {$h(x) = 0$} (test);
     \draw[->, thick] (fliptest) to [out=90, in= 270] node[auto] {$h(x) \neq 0$}(flip);
     \draw[->, thick] (inc) -- (fliptest);
 
-    \node (legend) [rectangle, draw, fill=black!10, below of=output] {
+    \node (legend) [rectangle, draw, fill=black!10, below of=reject, node distance=3.0cm] {
       \makecell[l]{
-        $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \eta_5, \nodeout}$\\
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \eta_5, \accept, \reject}$\\
         $\inspace_M = \reals, \statespace_M = \reals^3, \outspace_M = \reals^2$\\
         Computation Nodes: $\set{\eta_3, \eta_5}$\\
         Branch Nodes: $\set{\eta_2, \eta_4}$\\
         $\halting_M = \rationals^+$\\
-        $\computefn_M(x) = (p,q) \mid x = \frac{p}{q}$
+        $\computefn_M(x) = (p,q) \mid x = \frac{p}{q}, \text{ gcd}(p,q) = \, 1$
       }
     };
 
@@ -428,19 +440,17 @@ positive rational, the machine does not halt.
 
 \begin{eqnarray*}
   \phi_M(x) &=& (\eta_1, (2,0,1)), (\eta_2, (2,0,1)), (\eta_5, (2,0,1)), (\eta_4, (2,1,0)), (\eta_3, (2,1,0)),\\
-            &&  (\eta_2, (2,1,2)), (\eta_5, (2,1,2)), (\eta_4, (2,2,1)), (\eta_2, (2,2,1)), (\eta_{out}, (2,2,1))\\
+            &&  (\eta_2, (2,1,2)), (\eta_5, (2,1,2)), (\eta_4, (2,2,1)), (\eta_2, (2,2,1)), (\accept, (2,2,1))\\
             && \\
-  \computepath_M(x) &=& \eta_1, \eta_2, \eta_5, \eta_4, \eta_3, \eta_2, \eta_5, \eta_4, \eta_2, \eta_{out}
+  \computepath_M(x) &=& \eta_1, \eta_2, \eta_5, \eta_4, \eta_3, \eta_2, \eta_5, \eta_4, \eta_2, \accept
 \end{eqnarray*}
 
 The State Trajectory of $M$ on input $x$ is given by:
 $$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1), (2,2,1)$$
 
-\todo{HERE}
-
 \begin{definition}{\textbf{Finite-Dimensionally Computable Function}}
   
-  A function \functype{\varphi}{X}{R^l}, $X \subset R^n$ is
+  A function \functype{\varphi}{X}{R^m}, $X \subset R^n$ is
   \textbf{f.d. computable} over $R$ if there exists a
   finite-dimensional machine, $M$ over $R$ such that 
   $\varphi(x) = \compute_M(x) \mid \forall x \in X$.
@@ -460,7 +470,7 @@ $$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1
   function \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$,
   where:
   
-  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0 \text{\emph{ or undefined}}}{x \notin S}$$
+  $$\chi_S(x) = \twopartdef{1}{x \in S}{0 \text{\emph{ or undefined}}}{x \notin S}$$
   
   A set $S \subset R^n$ is \textbf{(f.d.) co-recognizable} over $R$
   if its co-characteristic function \functype{\chi'_S}{R^n}{R} is (f.d.)
