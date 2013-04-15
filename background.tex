@@ -218,7 +218,7 @@ $h(x) \neq 0$, respectively.\\
 Newton's Method for determining approximate zeros of a polynomial.
 The former gives a ``high-level'' view of what each node does
 logically, while the latter demonstrates the underlying
-implementation. Because we are currently considering only finite
+implementation.  Because we are currently considering only finite
 dimensional machines, we restrict ourselves to polynomials of degree
 5.  We will show later how we can modify our definitions to allow for
 uniform machines that can process inputs of arbitrary size.
@@ -245,40 +245,39 @@ uniform machines that can process inputs of arbitrary size.
 \end{figure}
 
 \begin{figure}[p]
-  \framebox[4.3cm][l]{
-    \parbox[l] {4.3cm}{
-      $\nodes = \set{\eta_1, \eta_2, \eta_3, \nodeout}$\\
-      $\inspace_M = \statespace_M = \outspace_M = \reals^8$\\
-      Computation Nodes: $\set{\eta_2}$\\
-      Branch Nodes: $\set{\eta_3}$
-    }
-  }
-  
-  \vspace{\baselineskip}
-
   \centering
   
-  \begin{tikzpicture}[node distance=4cm]
+  \begin{tikzpicture}[node distance=4cm, label distance=.5cm]
 
-    \node(init) [input, draw] {Input: $x = (x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8)$;};
-    \node(comp) [compute, draw, below of=init] {
+    \node(init) [input, draw, label=left:\Large $\eta_1$] {Input: $x = (x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8)$;};
+    \node(comp) [compute, draw, label=left:\Large $\eta_2$, below of=init] {
       $g(x) = (x_1 - 
       \frac{x_3x_1^5 + x_4x_1^4+ x_5x_1^3 + x_6x_1^2 + x_7x_1 + x_8}
       {5x_3x_1^4 + 4x_4x_1^3 + 3x_5x_1^2 + 2x_6x_1 + x_7}, 
       x_2, x_3, x_4, x_5, x_6, x_7, x_8)$};
-    \node(check)[branch, draw, below of=comp] {$h(x) = x_1^2 - x_2^2$};
-    \node(output)[accept, draw, below of=check] {Output: $O(x) = x_0$};
+    \node(check)[branch, draw, label=left:\Large $\eta_3$, below of=comp] {$h(x) = x_1^2 - x_2^2$};
+    \node(output)[accept, draw, label=left:\Large $\nodeout$,below of=check] {Output: $O(x) = x_0$};
 
     \draw [->, thick] (init) --                                             (comp);
     \draw [->, thick] (comp) --                                            (check);
     \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {$h(x) > 0$}(comp);
     \draw [->, thick] (check) to node[auto] {$h(x) < 0$}                  (output);
+
+    \node (legend) [rectangle, draw, fill=black!10, right of=output, node distance=6cm] {
+      \makecell[l]{
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \nodeout}$\\
+        $\inspace_M = \statespace_M = \outspace_M = \reals^8$\\
+        Computation Nodes: $\set{\eta_2}$\\
+        Branch Nodes: $\set{\eta_3}$
+      }
+    };
     
   \end{tikzpicture}
 
   \caption{Newton Machine - Low Level}
   \label{fig:newton-low}
 \end{figure}
+
 
 \begin{definition}{\textbf{Configuration}}  
 
@@ -341,7 +340,8 @@ reached.\\
   which will enter infinite loops without ever reaching the output
   node.  In such a case, we define the computation of a machine $M$ to
   be the infinite sequence
-  $$z_0, z_1, z_2, \ldots, $$ such that   
+  $$z_0, z_1, z_2, \ldots, $$ 
+  such that   
   \centerline{$z_0 = (\eta_1, I(x))$, and $z_i =  z_{i-1}'$ for $0 < i$.}}\\
 
 Intuitively, we can think about the computation of an FDM, $M$ as the
@@ -357,23 +357,86 @@ currently stored value.  If $h_\eta(x) \geq 0$, the new node is
 $\beta_\eta+$.  Otherwise it is $\beta_\eta^-$.  The machine halts
 when it eventually reaches the output node, at which point it applies
 the function $O(x)$ to its stored value, which is taken as the
-machine's output.
+machine's output.\\
+
+\textbf{Example: } Figure \ref{fig:q-recog} shows a machine over
+$\reals$ which, on input $x \in \rationals^+ $ returns a pair of
+integers, $(p,q)$ such that $x = \frac{p}{q}$.  If $x$ is not a
+positive rational, the machine does not halt.
+
+\begin{figure}[p]
+  \centering
+  
+  \begin{tikzpicture}[node distance=4.8cm]
+
+    \node(init) [input, draw, label=left:\Large $\eta_1$] 
+    {Input: x = $(x_1, x_2, x_3)$};
+    \node(test) [branch, draw, below of=init, label=45:\Large $\eta_2$] 
+    {$h(x) = x_1 - \frac{x_2}{x_3}$};
+    \node(flip) [compute, draw, left of=test, label=left:\Large $\eta_3$,]
+    {$g(x)= (x_1, 1, x_2+1)$};
+    \node(fliptest) [branch, draw, below of=flip, label=left:\Large $\eta_4$] 
+    {$h(x) = x_3$};
+    \node(inc)  [compute, draw, below of=fliptest, label=left:\Large $\eta_5$,] 
+    {$g(x) = (x_1, x_2+1, x_3-1)$};
+    \node(output)   [accept, draw, below of=test, right of=test, label=left:\Large $\nodeout$] 
+    {Output: $O(x) = (x_2, x_3)$};
+
+    \draw[->, thick] (init) -- (test);
+    \draw[->, thick] (flip) -- (test);
+    \draw[->, thick] (test) to [out=270, in=0] node [auto] {$h(x) \neq 0$} (inc);
+    \draw[->, thick] (test) to [out=0, in=90] node[auto] {$h(x)=0$} (output);
+    \draw[->, thick] (fliptest) to [out=0, in= 225] node[auto] {$h(x) = 0$} (test);
+    \draw[->, thick] (fliptest) to [out=90, in= 270] node[auto] {$h(x) \neq 0$}(flip);
+    \draw[->, thick] (inc) -- (fliptest);
+
+    \node (legend) [rectangle, draw, fill=black!10, below of=output] {
+      \makecell[l]{
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \eta_5, \nodeout}$\\
+        $\inspace_M = \reals, \statespace_M = \reals^3, \outspace_M = \reals^2$\\
+        Computation Nodes: $\set{\eta_3, \eta_5}$\\
+        Branch Nodes: $\set{\eta_2, \eta_4}$\\
+        $\halting_M = \rationals^+$\\
+        $\computefn_M(x) = (p,q) \mid x = \frac{p}{q}$
+      }
+    };
+
+  \end{tikzpicture}
+
+  \caption{Recognizer for $\rationals$ over $\reals$}
+  \label{fig:q-recog}
+\end{figure}
 
 \begin{definition}{\textbf{Computation Path} and \textbf{State Trajectory}}\\
   
-  The \textbf{Computation Path}, $\computepath_x$, of $M$ on
-  input $x$ is the projection of $\compute_x$ under the map:
-  $$\mfunctype{\pathprojection}{\fullstate}{\nodes} \mid \pathprojection(\beta, x) = \beta$$
+  The \textbf{Computation Path} $\computepath_M(x)$ of $M$ on
+  input $x$ is the projection of $\compute_M(x)$ under the map:
+  $$\mfunctype{\pathprojection}{\fullstate}{\nodes} \mid \pathprojection(\eta, x) = \eta$$
   
-  The \textbf{State Trajectory} of an FDM $M$ on input $x$ is the
-  projection of $\compute_x$ under the map:
-  $$\mfunctype{\stateprojection}{\fullstate}{\nodes} \mid \stateprojection(\beta, x) = x$$
+  The \textbf{State Trajectory} of $M$ on input $x$ is the projection
+  of $\compute_M(x)$ under the map:
+  $$\mfunctype{\stateprojection}{\fullstate}{\nodes} \mid \stateprojection(\eta, x) = x$$
 \end{definition}
 
 \note{The computation path and state trajectory of a machine encode,
   respectively, the sequence of nodes a machine traverses during a
   computation, and the sequence of values stored in the machine's
-  state space during a computation.}
+  state space during a computation.}\\
+
+\textbf{Example: } Let $M$ be the machine described in Figure
+\ref{fig:q-recog}. For the input $x = 2$, we have:
+
+\begin{eqnarray*}
+  \phi_M(x) &=& (\eta_1, (2,0,1)), (\eta_2, (2,0,1)), (\eta_5, (2,0,1)), (\eta_4, (2,1,0)), (\eta_3, (2,1,0)),\\
+            &&  (\eta_2, (2,1,2)), (\eta_5, (2,1,2)), (\eta_4, (2,2,1)), (\eta_2, (2,2,1)), (\eta_{out}, (2,2,1))\\
+            && \\
+  \computepath_M(x) &=& \eta_1, \eta_2, \eta_5, \eta_4, \eta_3, \eta_2, \eta_5, \eta_4, \eta_2, \eta_{out}
+\end{eqnarray*}
+
+The State Trajectory of $M$ on input $x$ is given by:
+$$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1), (2,2,1)$$
+
+\todo{HERE}
 
 \begin{definition}{\textbf{Finite-Dimensionally Computable Function}}
   

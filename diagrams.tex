@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{thesiscommands}
+\usepackage{makecell}
+\usepackage{setspace}
 
 \begin{document}
 
@@ -33,49 +35,56 @@ computation node, we compute $z = \frac{p(x)}{p'(x)}$, and we branch
 on the condition $x_0^2 < \epsilon^2$, which is equivalent to $|x_0| <
 \epsilon$.
 
-\vspace{2.5cm}
-\begin{tikzpicture}[node distance=4cm]
+\begin{figure}[p]
+  \centering
+  
+  \begin{tikzpicture}[node distance=4cm, label distance=.5cm]
 
-  \node(init) [input, draw] {Input: $x \in \reals^8$};
-  \node(comp) [compute, draw, below of=init] {
-    $g(x) = (x_1 - 
-    \frac{x_3x_1^5 + x_4x_1^4+ x_5x_1^3 + x_6x_1^2 + x_7x_1 + x_8}
-         {5x_3x_1^4 + 4x_4x_1^3 + 3x_5x_1^2 + 2x_6x_1 + x_7}, 
-    x_2, x_3, x_4, x_5, x_6, x_7, x_8)$};
-  \node(check)[branch, draw, below of=comp] {$h(x) = x_1^2 - x_2^2$};
-  \node(output)[accept, draw, below of=check] {Output: $x_0$};
+    \node(init) [input, draw, label=left:\Large $\eta_1$] {Input: $x = (x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8)$;};
+    \node(comp) [compute, draw, label=left:\Large $\eta_2$, below of=init] {
+      $g(x) = (x_1 - 
+      \frac{x_3x_1^5 + x_4x_1^4+ x_5x_1^3 + x_6x_1^2 + x_7x_1 + x_8}
+      {5x_3x_1^4 + 4x_4x_1^3 + 3x_5x_1^2 + 2x_6x_1 + x_7}, 
+      x_2, x_3, x_4, x_5, x_6, x_7, x_8)$};
+    \node(check)[branch, draw, label=left:\Large $\eta_3$, below of=comp] {$h(x) = x_1^2 - x_2^2$};
+    \node(output)[accept, draw, label=left:\Large $\nodeout$,below of=check] {Output: $O(x) = x_0$};
 
-  \draw [->, thick] (init) --                                      (comp);
-  \draw [->, thick] (comp) --                                      (check);
-  \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {No} (comp);
-  \draw [->, thick] (check) to node[auto] {Yes}                    (output);
+    \draw [->, thick] (init) --                                             (comp);
+    \draw [->, thick] (comp) --                                            (check);
+    \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {$h(x) > 0$}(comp);
+    \draw [->, thick] (check) to node[auto] {$h(x) < 0$}                  (output);
 
-\end{tikzpicture}
+    \node (legend) [rectangle, draw, fill=black!10, right of=output, node distance=6cm] {
+      \makecell[l]{
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \nodeout}$\\
+        $\inspace_M = \statespace_M = \outspace_M = \reals^8$\\
+        Computation Nodes: $\set{\eta_2}$\\
+        Branch Nodes: $\set{\eta_3}$
+      }
+    };
+    
+  \end{tikzpicture}
+
+  \caption{Newton Machine - Low Level}
+  \label{fig:newton-low}
+\end{figure}
 
 \newpage
-
-% Q Recognizer
-\framebox[5cm][l]{
-  \parbox[l] {5cm}{
-    $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \eta_5, \nodeout}$\\
-    $\inspace_M = \reals, \statespace_M = \reals^3, \outspace_M = \reals^2$\\
-    Computation Nodes: $\set{\eta_2, \eta_4}$\\
-    Branch Nodes: $\set{\eta_3, \eta_5}$\\
-    $\halting_M = \set{q \in \rationals}$
-  }
-}
-
-\vspace{\baselineskip}
-
 \centering
 \begin{tikzpicture}[node distance=4.8cm]
 
-  \node(init) [input, draw] {Input: x = $(x_1, x_2, x_3)$};
-  \node(test) [branch, draw, below of=init] {$h(x) = x_1 - \frac{x_2}{x_3}$};
-  \node(flip)     [compute, draw, left of=test] {$g(x)= (x_1, 1, x_2+1)$};
-  \node(fliptest) [branch, draw, below of=flip] {$h(x) = x_3$};
-  \node(inc)  [compute, draw, below of=fliptest] {$g(x) = (x_1, x_2+1, x_3-1)$};
-  \node(output)   [accept, draw, below of=test, right of=test] {Output: $O(x) = (x_2, x_3)$};
+  \node(init) [input, draw, label=left:\Large $\eta_1$] 
+  {Input: x = $(x_1, x_2, x_3)$};
+  \node(test) [branch, draw, below of=init, label=45:\Large $\eta_2$] 
+  {$h(x) = x_1 - \frac{x_2}{x_3}$};
+  \node(flip) [compute, draw, left of=test, label=left:\Large $\eta_3$,]
+  {$g(x)= (x_1, 1, x_2+1)$};
+  \node(fliptest) [branch, draw, below of=flip, label=left:\Large $\eta_4$] 
+  {$h(x) = x_3$};
+  \node(inc)  [compute, draw, below of=fliptest, label=left:\Large $\eta_5$,] 
+  {$g(x) = (x_1, x_2+1, x_3-1)$};
+  \node(output)   [accept, draw, below of=test, right of=test, label=left:\Large $\nodeout$] 
+  {Output: $O(x) = (x_2, x_3)$};
 
   \draw[->, thick] (init) -- (test);
   \draw[->, thick] (flip) -- (test);
@@ -85,7 +94,16 @@ on the condition $x_0^2 < \epsilon^2$, which is equivalent to $|x_0| <
   \draw[->, thick] (fliptest) to [out=90, in= 270] node[auto] {$h(x) \neq 0$}(flip);
   \draw[->, thick] (inc) -- (fliptest);
 
-  
+  \node (legend) [rectangle, draw, fill=black!10, below of=output] {
+    \makecell[l]{
+      $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \eta_5, \nodeout}$\\
+      $\inspace_M = \reals, \statespace_M = \reals^3, \outspace_M = \reals^2$\\
+      Computation Nodes: $\set{\eta_3, \eta_5}$\\
+      Branch Nodes: $\set{\eta_2, \eta_4}$\\
+      $\halting_M = \rationals^+$\\
+      $\computefn_M(x) = (p,q) \mid x = \frac{p}{q}$
+    }
+  };
 
 \end{tikzpicture}
 
