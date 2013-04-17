@@ -96,39 +96,41 @@ are made precise as follows:
   
 \end{definition}
 
-\textbf{Example: } The following Turing Machine reads in a binary
-string $s$ and outputs the string given by replacing each $0$ in $s$
-with a $1$ and each $1$ with a $0$.  It accepts on all inputs.
+\begin{example}
+  The following Turing Machine reads in a binary string $s$ and
+  outputs the string given by replacing each $0$ in $s$ with a $1$ and
+  each $1$ with a $0$.  It accepts on all inputs.
 
-\begin{itemize}
-\item $Q = \set{q_0, q_{accept}, q_{reject}}$
-\item $\Gamma = \set{\blank, 0, 1}$
-\item $\Sigma = \set{0,1}$
-\item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
-\item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
-\item $\delta(q_0, \blank) = (q_{accept}, \blank, \leftarrow)$
-\end{itemize}
+  \begin{itemize}
+  \item $Q = \set{q_0, q_{accept}, q_{reject}}$
+  \item $\Gamma = \set{\blank, 0, 1}$
+  \item $\Sigma = \set{0,1}$
+  \item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
+  \item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
+  \item $\delta(q_0, \blank) = (q_{accept}, \blank, \leftarrow)$
+  \end{itemize}
 
-Figure \ref{fig:turing-example} illustrates the computation of our
-example machine on the input $1001$. In each computation step but the
-last, the machine flips the parity of the symbol beneath the tape,
-then moves to the right and ``transitions'' from $q_0$ to $q_o$.  When
-the machine reads the blank symbol $\blank$, it leaves the same symbol
-on the tape, transitions to the accept state and moves the tape head
-to the left before exiting with output $0110$.
+  Figure \ref{fig:turing-example} illustrates the computation of our
+  example machine on the input $1001$. In each computation step but
+  the last, the machine flips the parity of the symbol beneath the
+  tape, then moves to the right and ``transitions'' from $q_0$ to
+  $q_o$.  When the machine reads the blank symbol $\blank$, it leaves
+  the same symbol on the tape, transitions to the accept state and
+  moves the tape head to the left before exiting with output $0110$.
 
-\begin{figure}[h]
-  \begin{center}
-    \tape[1]{$q_0$}{{1,0,0,1,\blank,$\cdots$}} \vspace{1mm}
-    \tape[2]{$q_0$}{{0,0,0,1,\blank,$\cdots$}} \vspace{1mm}
-    \tape[3]{$q_0$}{{0,1,0,1,\blank,$\cdots$}} \vspace{1mm}
-    \tape[4]{$q_0$}{{0,1,1,1,\blank,$\cdots$}} \vspace{1mm}
-    \tape[5]{$q_0$}{{0,1,1,0,\blank,$\cdots$}} \vspace{1mm}
-    \tape[4]{$q_{accept}$}{{0,1,1,0,\blank, $\cdots$}} \vspace{1mm}
-  \end{center}
-  \caption{An Example Turing Machine Computation}
-  \label{fig:turing-example}
-\end{figure}
+  \begin{figure}[p]
+    \begin{center}
+      \tape[1]{$q_0$}{{1,0,0,1,\blank,$\cdots$}} \vspace{1mm}
+      \tape[2]{$q_0$}{{0,0,0,1,\blank,$\cdots$}} \vspace{1mm}
+      \tape[3]{$q_0$}{{0,1,0,1,\blank,$\cdots$}} \vspace{1mm}
+      \tape[4]{$q_0$}{{0,1,1,1,\blank,$\cdots$}} \vspace{1mm}
+      \tape[5]{$q_0$}{{0,1,1,0,\blank,$\cdots$}} \vspace{1mm}
+      \tape[4]{$q_{accept}$}{{0,1,1,0,\blank, $\cdots$}} \vspace{1mm}
+    \end{center}
+    \caption{An Example Turing Machine Computation}
+    \label{fig:turing-example}
+  \end{figure}
+\end{example}
 
 \section{Finite Dimensional Machines}
 
@@ -378,7 +380,6 @@ positive rational, the machine does not halt.
 
 \begin{figure}[p]
   \centering
-  x
   \begin{tikzpicture}[node distance=4.8cm]
 
     \node(init) [input, draw, label=left:\Large $\eta_1$] 
@@ -485,24 +486,26 @@ under either set of definitions.
 
 \begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets (BSS)}}
 
-  A set $S \subset R^n$ is \textbf{(f.d.) decidable} over $R$ if its
-  characteristic function \functype{\chi_S}{R^n}{R} is (f.d)
-  computable over $R$, where:
-  
-  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0}{x \notin S}$$
-  
-  A set $S \subset R^n$ is \textbf{(f.d) recognizable} or
-  \textbf{(f.d) semi-decidable} over $R$ if its characteristic
-  function \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$,
+  A set $S \subset R^n$ is \textbf{(f.d.) decidable} over $R$ if the
+  function \functype{\chi_S}{R^n}{R} is (f.d) computable over $R$,
   where:
   
+  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0}{x \notin S}$$
+  \vspace{\baselineskip}
+  
+  A set $S \subset R^n$ is \textbf{(f.d) recognizable} or
+  \textbf{(f.d) semi-decidable} over $R$ if the function
+  \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$, where:
+  
   $$\chi_S(x) = \twopartdef{1}{x \in S}{0 \text{\emph{ or undefined}}}{x \notin S}$$
+  \vspace{\baselineskip}
   
-  A set $S \subset R^n$ is \textbf{(f.d.) co-recognizable} over $R$
-  if its co-characteristic function \functype{\chi'_S}{R^n}{R} is (f.d.)
-  computable over $R$, where:
+  A set $S \subset R^n$ is \textbf{(f.d.) co-recognizable} over $R$ if
+  the function \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$,
+  where:
   
-  $$\chi'_S(x) =  \twopartdef{1}{x \notin S}{0 \text{\emph{ or undefined}}}{x \in S}$$
+  $$\chi_S(x) =  \twopartdef{1}{x \notin S}{0 \text{\emph{ or undefined}}}{x \in S}$$
+  \vspace{\baselineskip}
   
 \end{definition}
 
@@ -575,35 +578,44 @@ algebraic sets.  Before we proceed, we need a few more definitions.
     y > 0
   \end{eqnarray*}
 
-  The upper half of the unit circle in $\reals^2$ is a basic
-  quasi-algebraic set defined by solutions to the equations:
+  In $\reals^2$, the perimeter of a square centered at the origin with
+  side length 1 is a quasi-algebraic set defined by solutions to the
+  equations:
+
   \begin{eqnarray*}
-    x^2 + y^2 = 0\\
-    y = 0
+    x = \frac{1}{2}\\
+    x = -\frac{1}{2}\\
+    y = \frac{1}{2}\\
+    y = -\frac{1}{2}\\
   \end{eqnarray*}
 
   \begin{definition}{\textbf{Initial computation path} and \textbf{time-T halting path set}}
 
     Let $M$ be a machine over $R$, and let $x$ be an element of
-    $\inspace_M$, and let $\computepath = \computepath_M(x)$ be the
-    computation path of $M$ on $x$.  
+    $\inspace_M$, and let $\computepath_M(x) = (\eta_0, \eta_1, \ldots
+    \eta_k, \eta_{k+1}, \ldots)$ be the computation path of $M$ on
+    $x$.
     
-    \todo{HERE}
-
-    Let $\computepath_x = \eta_0, \eta_1, \ldots, \eta_k, \ldots$.  
-    The \textbf{initial computation path} on $\computepath_x$ of
+    The \textbf{initial computation path} on $\computepath_M(x)$ of
     length $k$ is given by: 
-    $$\computepath_x(k) = (\eta_0, \eta_1, \ldots,\eta_k)$$.
+    $$\computepath_M^k(x) = (\eta_0, \eta_1, \ldots,\eta_k)$$.
 
     The \textbf{time-T path set}, $\haltpaths{T}$, of $M$ is given by:
-    $$\haltpaths{T} = \set{\computepath_x(T) \mid T(x) \leq T, x \in \inspace_M}$$.
+    $$\haltpaths_M(T) = \set{\computepath_M^T(x) \mid T(x) \leq T, x \in \inspace_M}$$.
 
   \end{definition}
 
-  We define the initial computation path of length $k$ for a machine
-  $M$ on input $x$ as the first $k$ nodes traversed by $M$ while
-  computing on $x$.  We define the set of time-T halting paths to be the
-  computations performed by $M$ that halt in the first $T$ steps.
+  Recall that $\computepath_M(x)$ encodes the sequence of nodes
+  traversed by $M$ on input $x$, so $\computepath_M^k(x)$ encodes the
+  first $k$ nodes traversed by $M$ on input $x$, and $\haltpaths_M(T)$
+  is the set containing all possible initial paths of length less than
+  or equal to $T$.  \\
+
+  Given an initial path $\computepath$ of a machine $M$, we may be
+  interested to know which values in $\inspace_M$ cause $M$ to
+  initially traverse $\computepath$.  We call te set of such values
+  the \textbf{coincidence set} of $\computepath$, which we now
+  formally define.
   
   \begin{definition}{\textbf{Coincidence set}}
 
