@@ -290,7 +290,6 @@ uniform machines that can process inputs of arbitrary size.
   \label{fig:newton-low}
 \end{figure}
 
-
 \begin{definition}{\textbf{Configuration}}  
 
   A \textbf{configuration} of an FDM $M$ is a pair $(\eta, x) \in
@@ -578,15 +577,10 @@ algebraic sets.  Before we proceed, we need a few more definitions.
     y > 0
   \end{eqnarray*}
 
-  In $\reals^2$, the perimeter of a square centered at the origin with
-  side length 1 is a quasi-algebraic set defined by solutions to the
-  equations:
-
+  In $\reals^3$, the surface of the unit sphere is a basic
+  quasi-algebraic set defined by solutions to the equation:
   \begin{eqnarray*}
-    x = \frac{1}{2}\\
-    x = -\frac{1}{2}\\
-    y = \frac{1}{2}\\
-    y = -\frac{1}{2}\\
+    x^2 + y^2 + z^2 = 1
   \end{eqnarray*}
 
   \begin{definition}{\textbf{Initial computation path} and \textbf{time-T halting path set}}
@@ -613,18 +607,18 @@ algebraic sets.  Before we proceed, we need a few more definitions.
 
   Given an initial path $\computepath$ of a machine $M$, we may be
   interested to know which values in $\inspace_M$ cause $M$ to
-  initially traverse $\computepath$.  We call te set of such values
+  initially traverse $\computepath$.  We call the set of such values
   the \textbf{coincidence set} of $\computepath$, which we now
   formally define.
   
   \begin{definition}{\textbf{Coincidence set}}
 
     Let $M$ be a machine over a ring $R$, and let $\computepath =
-    \computepath_{x}(k)$ be the initial computation path of length $k$
+    \computepath_M(x)$ be the initial computation path of length $k$
     for some $x \in \inspace_M$. The \textbf{coincidence set}
-    $\coincidence{\computepath}$ of $M$ with respect to $\computepath$
-    is the set of elements in $\inspace_M$ whose initial computation
-    path of length $k$ is $\gamma$. It is defined by:
+    $\coincidence_M(\computepath)$ of $\computepath$ with respect to
+    $M$ is the set of elements in $\inspace_M$ whose initial
+    computation path of length $k$ is $\gamma$. It is defined by:
     $$\coincidence{\computepath} = 
     \set{p' \in \inspace_M \mid \computepath_{x'}(k) = \computepath}$$
     
@@ -633,8 +627,15 @@ algebraic sets.  Before we proceed, we need a few more definitions.
         on members of $\inspace_M$.  Thus, for each $k > 0$, the
         coincidence sets of $M$ on paths of length $k$ partition
         $\inspace_M$ into disjoint equivalence classes.}}
-
   \end{definition}
+
+  \begin{example}
+    
+    For the machine described in Figure \ref{fig:q-recog}, $\computepath_M^
+
+
+
+  \end{example}
 
   \begin{theorem}{\textbf{Path Decomposition Theorem}}
     For any machine $M$ over $R$, we have the following:
