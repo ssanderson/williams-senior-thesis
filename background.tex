@@ -96,39 +96,41 @@ are made precise as follows:
   
 \end{definition}
 
-\textbf{Example: } The following Turing Machine reads in a binary
-string $s$ and outputs the string given by replacing each $0$ in $s$
-with a $1$ and each $1$ with a $0$.  It accepts on all inputs.
+\begin{example}
+  The following Turing Machine reads in a binary string $s$ and
+  outputs the string given by replacing each $0$ in $s$ with a $1$ and
+  each $1$ with a $0$.  It accepts on all inputs.
 
-\begin{itemize}
-\item $Q = \set{q_0, q_{accept}, q_{reject}}$
-\item $\Gamma = \set{\blank, 0, 1}$
-\item $\Sigma = \set{0,1}$
-\item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
-\item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
-\item $\delta(q_0, \blank) = (q_{accept}, \blank, \leftarrow)$
-\end{itemize}
+  \begin{itemize}
+  \item $Q = \set{q_0, q_{accept}, q_{reject}}$
+  \item $\Gamma = \set{\blank, 0, 1}$
+  \item $\Sigma = \set{0,1}$
+  \item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
+  \item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
+  \item $\delta(q_0, \blank) = (q_{accept}, \blank, \leftarrow)$
+  \end{itemize}
 
-Figure \ref{fig:turing-example} illustrates the computation of our
-example machine on the input $1001$. In each computation step but the
-last, the machine flips the parity of the symbol beneath the tape,
-then moves to the right and ``transitions'' from $q_0$ to $q_o$.  When
-the machine reads the blank symbol $\blank$, it leaves the same symbol
-on the tape, transitions to the accept state and moves the tape head
-to the left before exiting with output $0110$.
+  Figure \ref{fig:turing-example} illustrates the computation of our
+  example machine on the input $1001$. In each computation step but
+  the last, the machine flips the parity of the symbol beneath the
+  tape, then moves to the right and ``transitions'' from $q_0$ to
+  $q_o$.  When the machine reads the blank symbol $\blank$, it leaves
+  the same symbol on the tape, transitions to the accept state and
+  moves the tape head to the left before exiting with output $0110$.
 
-\begin{figure}[h]
-  \begin{center}
-    \tape[1]{$q_0$}{{1,0,0,1,\blank,$\cdots$}} \vspace{1mm}
-    \tape[2]{$q_0$}{{0,0,0,1,\blank,$\cdots$}} \vspace{1mm}
-    \tape[3]{$q_0$}{{0,1,0,1,\blank,$\cdots$}} \vspace{1mm}
-    \tape[4]{$q_0$}{{0,1,1,1,\blank,$\cdots$}} \vspace{1mm}
-    \tape[5]{$q_0$}{{0,1,1,0,\blank,$\cdots$}} \vspace{1mm}
-    \tape[4]{$q_{accept}$}{{0,1,1,0,\blank, $\cdots$}} \vspace{1mm}
-  \end{center}
-  \caption{An Example Turing Machine Computation}
-  \label{fig:turing-example}
-\end{figure}
+  \begin{figure}[p]
+    \begin{center}
+      \tape[1]{$q_0$}{{1,0,0,1,\blank,$\cdots$}} \vspace{1mm}
+      \tape[2]{$q_0$}{{0,0,0,1,\blank,$\cdots$}} \vspace{1mm}
+      \tape[3]{$q_0$}{{0,1,0,1,\blank,$\cdots$}} \vspace{1mm}
+      \tape[4]{$q_0$}{{0,1,1,1,\blank,$\cdots$}} \vspace{1mm}
+      \tape[5]{$q_0$}{{0,1,1,0,\blank,$\cdots$}} \vspace{1mm}
+      \tape[4]{$q_{accept}$}{{0,1,1,0,\blank, $\cdots$}} \vspace{1mm}
+    \end{center}
+    \caption{An Example Turing Machine Computation}
+    \label{fig:turing-example}
+  \end{figure}
+\end{example}
 
 \section{Finite Dimensional Machines}
 
@@ -155,9 +157,9 @@ m$, and $n$ be positive integers.
   
   A \textbf{Finite Dimensional Machine} (FDM) $M$ over $R$ is a finite
   directed graph with node set $\nodes$.  The collection $\nodes$
-  contains three distinguished nodes: the \textbf{input node}
-  $\eta_1$; the \textbf{accept node} $\eta_{accept}$; and the
-  \textbf{reject node} $\eta_{reject}$. The input node has indegree 0;
+  contains three distinguished nodes: the \textbf{input node},
+  $\eta_1$; the \textbf{accept node}, $\eta_{accept}$; and the
+  \textbf{reject node}, $\eta_{reject}$. The input node has indegree 0;
   the accept and reject nodes have outdegree 0.  The remaining
   elements of $\nodes$ are divided into two types: \emph{computation}
   and \emph{branch}.  Computation nodes have outdegree 1; branch nodes
@@ -222,8 +224,8 @@ $h(x) \neq 0$, respectively.\\
 \textbf{Example: } Figures \ref{fig:newton-high} and
 \ref{fig:newton-low} show how one might implement an FDM to carry out
 Newton's Method for determining approximate zeros of a polynomial.
-The former gives a ``high-level'' view of what each node does
-logically, while the latter demonstrates the underlying
+Figure \ref{fig:newton-high} gives a ``high-level'' view of what each
+node does logically, while the latter demonstrates the underlying
 implementation.  Because we are currently considering only finite
 dimensional machines, we restrict ourselves to polynomials of degree
 5.  We will show later how we can modify our definitions to allow for
@@ -263,10 +265,10 @@ uniform machines that can process inputs of arbitrary size.
       {5x_3x_1^4 + 4x_4x_1^3 + 3x_5x_1^2 + 2x_6x_1 + x_7}, 
       x_2, x_3, x_4, x_5, x_6, x_7, x_8)$};
     \node(check)[branch, draw, label=left:\Large $\eta_3$, below of=comp] {$h(x) = x_1^2 - x_2^2$};
-    \node(accept)[accept, draw, label=left:\Large $\accept$,below of=check] {$O(x) = x_0$};
+    \node(accept)[accept, draw, label=left:\Large $\accept$,below of=check] {$O(x) = x_1$};
     \node(reject)[reject, draw, label=above:\Large $\reject$,left of=accept,
                   node distance= 6cm] 
-    {$O(x) = x_0$};
+    {$O(x) = x_1$};
 
     \draw [->, thick] (init) --                                             (comp);
     \draw [->, thick] (comp) --                                            (check);
@@ -287,7 +289,6 @@ uniform machines that can process inputs of arbitrary size.
   \caption{Newton Machine - Low Level}
   \label{fig:newton-low}
 \end{figure}
-
 
 \begin{definition}{\textbf{Configuration}}  
 
@@ -349,10 +350,12 @@ configuration is reached.\\
   computation.  It is easy enough, for example, to construct machines
   which will enter infinite loops without ever reaching the output
   node.  In such a case, we define the computation of a machine $M$ to
-  be the infinite sequence
-  $$z_0, z_1, z_2, \ldots, $$ 
-  such that   
-  \centerline{$z_0 = (\eta_1, I(x))$, and $z_i =  z_{i-1}'$ for $0 < i$.}}\\
+  be the infinite sequence $$z_0, z_1, z_2, \ldots, $$ such that   
+
+  \centerline{$z_0 = (\eta_1, I(x))$, and $z_i =  z_{i-1}'$ for $0 < i$.}
+}
+
+\vspace{\baselineskip}
 
 Intuitively, we can think about the computation of an FDM, $M$ as the
 sequence defined by ``following the flow'' of the node graph while
@@ -376,11 +379,10 @@ positive rational, the machine does not halt.
 
 \begin{figure}[p]
   \centering
-  
   \begin{tikzpicture}[node distance=4.8cm]
 
     \node(init) [input, draw, label=left:\Large $\eta_1$] 
-    {Input: x = $(x_1, x_2, x_3)$};
+    {$I(x) = (x, 0, 1)$};
     \node(test) [branch, draw, below of=init, label=45:\Large $\eta_2$] 
     {$h(x) = x_1 - \frac{x_2}{x_3}$};
     \node(flip) [compute, draw, left of=test, label=left:\Large $\eta_3$,]
@@ -437,12 +439,11 @@ positive rational, the machine does not halt.
 
 \textbf{Example: } Let $M$ be the machine described in Figure
 \ref{fig:q-recog}. For the input $x = 2$, we have:
-
 \begin{eqnarray*}
   \phi_M(x) &=& (\eta_1, (2,0,1)), (\eta_2, (2,0,1)), (\eta_5, (2,0,1)), (\eta_4, (2,1,0)), (\eta_3, (2,1,0)),\\
             &&  (\eta_2, (2,1,2)), (\eta_5, (2,1,2)), (\eta_4, (2,2,1)), (\eta_2, (2,2,1)), (\accept, (2,2,1))\\
             && \\
-  \computepath_M(x) &=& \eta_1, \eta_2, \eta_5, \eta_4, \eta_3, \eta_2, \eta_5, \eta_4, \eta_2, \accept
+  \computepath_M(x) &=& \eta_1,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_3,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_2,\, \accept
 \end{eqnarray*}
 
 The State Trajectory of $M$ on input $x$ is given by:
@@ -459,24 +460,51 @@ $$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1
 
 \begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets}}
   
-  A set $S \subset R^n$ is \textbf{(f.d.) decidable} over $R$ if its
-  characteristic function \functype{\chi_S}{R^n}{R} is (f.d)
-  computable over $R$, where:
+  A set $S \subset R^n$ is \textbf{finite-dimensionally decidable} if
+  there exists an FDM $M$ with $\inspace_M = R^n$ such that $M$
+  accepts $x$ if and only if $s \in S$, and $M$ rejects $x$ if and
+  only if $s \notin S$.\\
+
+  A set $S \subset R^n$ is \textbf{finite-dimensionally recognizable}
+  if there exists an FDM $M$ with $\inspace_M = R^n$ such that $M$
+  accepts $x$ if and only if $x \in S$.\\
+
+  A set $S \subset R^n$ is \textbf{finite-dimensionally
+    co-recognizable} if there exists an FDM $M$ with $\inspace_M =
+  R^n$ such that $M$ accepts $x$ if and only if $x \in S$.
+\end{definition}
   
-  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0}{x \notin S}$$
-  
-  A set $S \subset R^n$ is \textbf{(f.d) recognizable} or
-  \textbf{(f.d) semi-decidable} over $R$ if its characteristic
-  function \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$,
+\textbf{Note:} Here we again depart slightly from the development in
+\cite{B89} and \cite{B98}.  Blum et al. do not explicitly appeal to
+notions of acceptance and rejection.  Instead they consider machines
+that output $1$ on some inputs and $0$ on other inputs.  For
+completeness, we also present the BSS characterization of
+decidability.  It is straightforward to verify that classes of
+decidable, recognizable, and co-recognizable languages are the same
+under either set of definitions.
+
+\begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets (BSS)}}
+
+  A set $S \subset R^n$ is \textbf{(f.d.) decidable} over $R$ if the
+  function \functype{\chi_S}{R^n}{R} is (f.d) computable over $R$,
   where:
   
+  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0}{x \notin S}$$
+  \vspace{\baselineskip}
+  
+  A set $S \subset R^n$ is \textbf{(f.d) recognizable} or
+  \textbf{(f.d) semi-decidable} over $R$ if the function
+  \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$, where:
+  
   $$\chi_S(x) = \twopartdef{1}{x \in S}{0 \text{\emph{ or undefined}}}{x \notin S}$$
+  \vspace{\baselineskip}
   
-  A set $S \subset R^n$ is \textbf{(f.d.) co-recognizable} over $R$
-  if its co-characteristic function \functype{\chi'_S}{R^n}{R} is (f.d.)
-  computable over $R$, where:
+  A set $S \subset R^n$ is \textbf{(f.d.) co-recognizable} over $R$ if
+  the function \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$,
+  where:
   
-  $$\chi'_S(x) =  \twopartdef{1}{x \notin S}{0 \text{\emph{ or undefined}}}{x \in S}$$
+  $$\chi_S(x) =  \twopartdef{1}{x \notin S}{0 \text{\emph{ or undefined}}}{x \in S}$$
+  \vspace{\baselineskip}
   
 \end{definition}
 
@@ -505,20 +533,6 @@ co-recognizable.
 \subsection{Notes and Further Properties of Machines}
 
 \begin{itemize}
-\item The theory developed here can be modified to accomodate for both
-  ordered and unordered rings, with the only substantive change in the
-  unordered case being that branch nodes perform equality comparisons
-  with 0 rather than inequality comparisons.
-
-\item The theory developed above can also be extended to fields,
-  allowing the use of rational maps in addition to polynomial maps.
-  (Recall that a field is a commutative ring with unit in which every
-  nonzero element has a multiplicative inverse.)  The only cause for
-  concern is the possibility of division by zero, which can be handled
-  by inserting sequences of branch nodes before each computation node
-  to check that all denominators in the node's map are nonzero.  In
-  the case that a zero-division occurs, the machine can transition to
-  an additionally-defined exception state and halt.
 
 \item The behavior of a machine $M$ is completely determined by the
   values of the coefficients in each map associated with the nodes,
@@ -535,10 +549,10 @@ co-recognizable.
 
 \section{Characterization of (f.d.) Decidable Sets}
 
-Here we sketch some results that characterize the computable sets over
-$R$.  Our first theorem shows that any computable set is the
-projection of a countable union of basic semi/quasi algebraic sets.
-Before we proceed, we need a few more definitions.
+Here we sketch some results that characterize the finite dimensionally
+decidable sets over $R$.  Our first theorem shows that any computable
+set is the projection of a countable union of basic semi/quasi
+algebraic sets.  Before we proceed, we need a few more definitions.
 
   \begin{definition}{\textbf{Semi-algebraic} and \textbf{Quasi-algebraic Sets}}
     
@@ -556,33 +570,55 @@ Before we proceed, we need a few more definitions.
     
   \end{definition}
 
-  We define the initial computation path of length $k$ for a machine
-  $M$ on input $x$ as the first $k$ nodes traversed by $M$ while
-  computing on $x$.  We define the set of time-T halting paths to be the
-  computations performed by $M$ that halt in the first $T$ steps.
+  \textbf{Example: } The upper half of the unit disc in $\reals^2$ is
+  a basic semi-algebraic set defined by solutions to the equations:
+  \begin{eqnarray*}
+    x^2 + y^2 < 0\\
+    y > 0
+  \end{eqnarray*}
+
+  In $\reals^3$, the surface of the unit sphere is a basic
+  quasi-algebraic set defined by solutions to the equation:
+  \begin{eqnarray*}
+    x^2 + y^2 + z^2 = 1
+  \end{eqnarray*}
 
   \begin{definition}{\textbf{Initial computation path} and \textbf{time-T halting path set}}
 
     Let $M$ be a machine over $R$, and let $x$ be an element of
-    $\inspace_M$ with $\compute_x = z^0, z^1, \ldots, z^k, \ldots$ \\
-    Let $\computepath_x = \eta_0, \eta_1, \ldots, \eta_k, \ldots$.  
-    The \textbf{initial computation path} on $\computepath_x$ of
+    $\inspace_M$, and let $\computepath_M(x) = (\eta_0, \eta_1, \ldots
+    \eta_k, \eta_{k+1}, \ldots)$ be the computation path of $M$ on
+    $x$.
+    
+    The \textbf{initial computation path} on $\computepath_M(x)$ of
     length $k$ is given by: 
-    $$\computepath_x(k) = (\eta_0, \eta_1, \ldots,\eta_k)$$.
+    $$\computepath_M^k(x) = (\eta_0, \eta_1, \ldots,\eta_k)$$.
 
     The \textbf{time-T path set}, $\haltpaths{T}$, of $M$ is given by:
-    $$\haltpaths{T} = \set{\computepath_x(T) \mid T(x) \leq T, x \in \inspace_M}$$.
+    $$\haltpaths_M(T) = \set{\computepath_M^T(x) \mid T(x) \leq T, x \in \inspace_M}$$.
 
   \end{definition}
+
+  Recall that $\computepath_M(x)$ encodes the sequence of nodes
+  traversed by $M$ on input $x$, so $\computepath_M^k(x)$ encodes the
+  first $k$ nodes traversed by $M$ on input $x$, and $\haltpaths_M(T)$
+  is the set containing all possible initial paths of length less than
+  or equal to $T$.  \\
+
+  Given an initial path $\computepath$ of a machine $M$, we may be
+  interested to know which values in $\inspace_M$ cause $M$ to
+  initially traverse $\computepath$.  We call the set of such values
+  the \textbf{coincidence set} of $\computepath$, which we now
+  formally define.
   
   \begin{definition}{\textbf{Coincidence set}}
 
     Let $M$ be a machine over a ring $R$, and let $\computepath =
-    \computepath_{x}(k)$ be the initial computation path of length $k$
+    \computepath_M(x)$ be the initial computation path of length $k$
     for some $x \in \inspace_M$. The \textbf{coincidence set}
-    $\coincidence{\computepath}$ of $M$ with respect to $\computepath$
-    is the set of elements in $\inspace_M$ whose initial computation
-    path of length $k$ is $\gamma$. It is defined by:
+    $\coincidence_M(\computepath)$ of $\computepath$ with respect to
+    $M$ is the set of elements in $\inspace_M$ whose initial
+    computation path of length $k$ is $\gamma$. It is defined by:
     $$\coincidence{\computepath} = 
     \set{p' \in \inspace_M \mid \computepath_{x'}(k) = \computepath}$$
     
@@ -591,8 +627,15 @@ Before we proceed, we need a few more definitions.
         on members of $\inspace_M$.  Thus, for each $k > 0$, the
         coincidence sets of $M$ on paths of length $k$ partition
         $\inspace_M$ into disjoint equivalence classes.}}
-
   \end{definition}
+
+  \begin{example}
+    
+    For the machine described in Figure \ref{fig:q-recog}, $\computepath_M^
+
+
+
+  \end{example}
 
   \begin{theorem}{\textbf{Path Decomposition Theorem}}
     For any machine $M$ over $R$, we have the following:

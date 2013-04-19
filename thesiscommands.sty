@@ -1,7 +1,5 @@
-
 \usepackage[latin1]{inputenc}
 \usepackage{tikz}
-% \usepackage{pgfmath}
 \usepackage{amsmath, amsfonts, amsthm}
 \usepackage{etoolbox}
 \usetikzlibrary{shapes,arrows,shapes.geometric}
@@ -60,11 +58,11 @@
 \newcommand{\allpaths}[0]{\Gamma}
 \newcommand{\accpaths}[0]{\allpaths_{accept}}
 \newcommand{\rejpaths}[0]{\allpaths_{reject}}
-\newcommand{\haltpaths}[1]{\Gamma_{#1}}
+\newcommand{\haltpaths}[0]{\Gamma}
 \newcommand{\computepath}[0]{\gamma}
 \newcommand{\pathprojection}[0]{\pi_\nodes}
 \newcommand{\stateprojection}[0]{\pi_\statespace}
-\newcommand{\coincidence}[1]{\mathcal{V}_{#1}}
+\newcommand{\coincidence}[0]{\mathcal{V}}
 \newcommand{\charfunc}[0]{\chi}
 \newcommand{\yields}[0]{\vdash}
 
