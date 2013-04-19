@@ -221,16 +221,17 @@ When $R$ is unordered, when $R = \complexes$ for example, we replace
 the branching conditions $h(x) > 0$ and $h(x) < 0$ with $h(x) = 0$ and
 $h(x) \neq 0$, respectively.\\
 
-\textbf{Example: } Figures \ref{fig:newton-high} and
-\ref{fig:newton-low} show how one might implement an FDM to carry out
-Newton's Method for determining approximate zeros of a polynomial.
-Figure \ref{fig:newton-high} gives a ``high-level'' view of what each
-node does logically, while the latter demonstrates the underlying
-implementation.  Because we are currently considering only finite
-dimensional machines, we restrict ourselves to polynomials of degree
-5.  We will show later how we can modify our definitions to allow for
-uniform machines that can process inputs of arbitrary size.
-
+\begin{example}
+  Figures \ref{fig:newton-high} and \ref{fig:newton-low} show how one
+  might implement an FDM to carry out Newton's Method for determining
+  approximate zeros of a polynomial.  Figure \ref{fig:newton-high}
+  gives a ``high-level'' view of what each node does logically, while
+  the latter demonstrates the underlying implementation.  Because we
+  are currently considering only finite dimensional machines, we
+  restrict ourselves to polynomials of degree 5.  We will show later
+  how we can modify our definitions to allow for uniform machines that
+  can process inputs of arbitrary size.
+\end{example}
 \begin{figure}[p]
   \centering
 
@@ -338,7 +339,7 @@ configuration is reached.\\
   The \textbf{output} $\computefn_M(x)$ of a halting computation is
   the value given by $O(x_t)$.  If a halting computation of length $t$
   exists for an input $x$, we say that $x$ is in the \textbf{time-t
-    Halting Set} of M and we write $x \in \halting_t$.  \\
+    Halting Set} of M and we write $x \in \halting_M(t)$.  \\
 
   The \textbf{Halting Set} $\halting_M$ of a machine $M$ is the union
   over all $t > 0$ of the time-t halting sets for $M$, i.e., the set of
@@ -372,10 +373,12 @@ when it eventually reaches the output $\accept$ or $\reject$, at which
 point it applies the function $O(x)$ to its stored value, which is
 taken as the machine's output.\\
 
-\textbf{Example: } Figure \ref{fig:q-recog} shows a machine over
-$\reals$ which, on input $x \in \rationals^+ $ returns a pair of
-integers, $(p,q)$ such that $x = \frac{p}{q}$.  If $x$ is not a
-positive rational, the machine does not halt.
+\begin{example}
+  Figure \ref{fig:q-recog} shows a machine over $\reals$ which, on
+  input $x \in \rationals^+ $ returns a pair of integers, $(p,q)$ such
+  that $x = \frac{p}{q}$.  If $x$ is not a positive rational, the
+  machine does not halt. 
+\end{example}
 
 \begin{figure}[p]
   \centering
@@ -416,9 +419,35 @@ positive rational, the machine does not halt.
     };
 
   \end{tikzpicture}
-
   \caption{Recognizer for $\rationals$ over $\reals$}
   \label{fig:q-recog}
+\end{figure}
+  
+\begin{figure}[p]
+  \centering
+  
+  \begin{tikzpicture}[node distance=4.8cm]
+
+    \node(init)     [input, draw, label=left:\Large $\eta_1$] {$I(x) = (x, 0)$};
+    \node(magcheck) [branch, draw, below of=init, label=135:\Large $\eta_2$] {$h(x) = x_1 - x_2$};
+    \node(equal)    [branch, draw, right of= magcheck, node distance= 5.2cm, label=above:\Large $\eta_3$] {$h(x) = x_2 - x_1$};
+    \node(inc)      [compute, draw, below of=magcheck, label=right:\Large $\eta_4$] {$g(x) = (x_1, x_2+1)$};
+    \node(accept)   [accept, draw, below of=equal, right of=equal, label=left:\Large $\accept$] 
+    {$O(x) = x_2$};
+    \node(reject)   [reject, draw, above of=equal, right of=equal, label=left:\Large $\reject$] 
+    {$O(x) = x_2$};
+
+    \draw[->, thick] (init) -- (magcheck);
+    \draw[->, thick] (magcheck) to node[auto] {$h(x) < 0$} (inc);
+    \draw[->, thick] (inc) to [out=180, in=180] (magcheck);
+    \draw[->, thick] (magcheck) to node [auto] {$h(x) \geq 0$} (equal);
+    \draw[->, thick] (equal) to [out=-45, in=90]  node  [auto] {$h(x) \geq 0$} (accept);
+    \draw[->, thick] (equal) to [out=45, in=270] node  [auto, swap] {$h(x) < 0$} (reject);
+
+  \end{tikzpicture}
+
+  \caption{Decision Machine for $\integers^+$}
+  \label{fig:z-decide}
 \end{figure}
 
 \begin{definition}{\textbf{Computation Path} and \textbf{State Trajectory}}\\
@@ -453,8 +482,8 @@ $$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1
   
   A function \functype{\varphi}{X}{R^m}, $X \subset R^n$ is
   \textbf{f.d. computable} over $R$ if there exists a
-  finite-dimensional machine, $M$ over $R$ such that 
-  $\varphi(x) = \compute_M(x) \mid \forall x \in X$.
+  finite-dimensional machine, $M$ over $R$ such that $\varphi(x) =
+  \compute_M(x) \mid \forall x \in X$.
   
 \end{definition}
 
@@ -463,11 +492,13 @@ $$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1
   A set $S \subset R^n$ is \textbf{finite-dimensionally decidable} if
   there exists an FDM $M$ with $\inspace_M = R^n$ such that $M$
   accepts $x$ if and only if $s \in S$, and $M$ rejects $x$ if and
-  only if $s \notin S$.\\
+  only if $s \notin S$.  Such a machine $M$ is said to \textbf{decide}
+  $S$.
 
   A set $S \subset R^n$ is \textbf{finite-dimensionally recognizable}
   if there exists an FDM $M$ with $\inspace_M = R^n$ such that $M$
-  accepts $x$ if and only if $x \in S$.\\
+  accepts $x$ if and only if $x \in S$.  Such a machine is said to
+  \textbf{recognize} $M$.
 
   A set $S \subset R^n$ is \textbf{finite-dimensionally
     co-recognizable} if there exists an FDM $M$ with $\inspace_M =
@@ -508,6 +539,13 @@ under either set of definitions.
   
 \end{definition}
 
+\begin{example}
+  The machine presented in Figure \ref{q-recog} shows that
+  $\rationals$ is finite-dimensionally recognizable over $\reals$.
+  The machine presented in Figure \ref{z-decide} shows that
+  $\integers$ is decidable over $\reals$.
+\end{example}
+
 It is fairly straightforward to see that the recognizable sets over
 $R$ are precisely the halting sets over R and the co-recognizable sets
 are those whose complements are recognizable. Less obviously, the
@@ -519,11 +557,13 @@ co-recognizable.
 \end{proposition}
 \begin{proofsketch}
   
-  Given semidecision machines, $M$ and $M'$ for both $S$ and $R^n -
-  S$, we can contruct a decision machine for $S$ by simulating $M$ and
-  $M'$ in parallel, outputting 1 if $M$ halts and 0 if $M'$ halts.
-  Since one of $M$ and $M'$ must halt eventually, we are guaranteed
-  that our constructed machine will halt for all inputs.
+  A machine that acts as a decider for a set $S$ is by definition a
+  recognizer for both $S$ and $S'$.  Conversely, if $M$ and $M'$ are
+  recognizers for $S$ and $R^n - S$, we can contruct a decision
+  machine for $S$ by simulating $M$ and $M'$ in parallel, outputting 1
+  if $M$ halts and 0 if $M'$ halts.  Since one of $M$ and $M'$ must
+  halt eventually, we are guaranteed that our constructed machine will
+  halt for all inputs.
 
   \note{The parallelization construction generalizes nicely to any
     integral number of machines. See \cite{B98} for concrete details.}
@@ -629,14 +669,6 @@ algebraic sets.  Before we proceed, we need a few more definitions.
         $\inspace_M$ into disjoint equivalence classes.}}
   \end{definition}
 
-  \begin{example}
-    
-    For the machine described in Figure \ref{fig:q-recog}, $\computepath_M^
-
-
-
-  \end{example}
-
   \begin{theorem}{\textbf{Path Decomposition Theorem}}
     For any machine $M$ over $R$, we have the following:
 
@@ -686,35 +718,37 @@ algebraic sets.  Before we proceed, we need a few more definitions.
 
   \section{Generalization of FDMs over R to the Infinite Dimensional Case}
 
+  \todo{here}
+
   So far, the machines we have considered can only access a
   finite-length region of ``memory'', which has size bounded by the
   dimension of $\statespace_M$.  An important feature of the classical
   model, however, is that a machine can store an arbitrarily large
-  (though still finite) amount of information on its tape.  This
-  feature is necessary because it allows for the definition of single
-  machines that can accept inputs of arbitrary size. We incorporate
-  this feature into our model by expanding a machine's natural state
-  space to $R^\infty$ and adding new ``shift'' nodes, which move all
-  values stored in the state space to the left or right.
+  number of symbols on its tape.  This feature is necessary because it
+  allows for the definition of machines that accept inputs of
+  arbitrary size.  We incorporate this feature into our model by
+  expanding a machine's natural input, output, and state spaces to
+  $R^\infty$ and adding new ``shift'' nodes, which move all values
+  stored in the state space to the left or right.
 
-  We denote by $R^\infty$ the disjoint union, $\bigcup_{n \geq 0} R^n$.\\
+  We denote by $R^\infty$ the union, $\bigcup_{n \geq 0} R^n$.\\
 
-  We denote by $R_\infty$ the \emph{bi-infinite direct sum} space over
-  $R$, which consists of elements of the form $(\ldots x_{-2}, x_{-1}, x_0,
+  We denote by $R_\infty$ the \emph{bi-infinite direct sum} over $R$,
+  which consists of elements of the form $(\ldots x_{-2}, x_{-1}, x_0,
   x_1, x_2, \ldots)$.
   
-  \begin{definition}{\textbf{Machine over R}}
+  \begin{definition}{\textbf{BSS Machine over R}}
 
     A machine $M$ over a ring $R$ is a finite, directed, connected
-    graph with five types of nodes: \emph{input, computation, branch,
-      output} and \emph{shift}.  $\inspace_M = \outspace_M =
-    R^\infty$, and $R_\infty = \statespace_M$ The first four node
-    types are defined in the same manner as the finite dimensional
-    case.  Shift nodes behave similarly to computation nodes, in that
-    they have a unique next node and an associated map that transforms
-    the state space of the machine by shifting all stored values one
-    cell to the left or right. Shift nodes are allowed to have one of
-    two maps: \emph{shift left} $\sigma_l$, and \emph{shift
+    graph with three types of nodes: \emph{computation, branch,} and
+    \emph{shift}.  $\inspace_M = \outspace_M = R^\infty$, and
+    $R_\infty = \statespace_M$. The first two node types are defined in
+    the same manner as the finite dimensional case.  Shift nodes
+    behave similarly to computation nodes in that they have a unique
+    next node and an associated map that transforms the state space of
+    the machine by shifting all stored values one cell to the left or
+    right. Shift nodes are allowed to have one of two maps:
+    \emph{shift left} $\sigma_l$, and \emph{shift
       right} $\sigma_r$, where:\\
 
     $$\sigma_l(x)_i = x_{i+1}$$ and $$\sigma_l(x)_i = x_{i+1}$$
@@ -986,7 +1020,7 @@ machine's state space during computation.
   \subseteq S'_{yes}$ and $\varphi(S_{no}) \subseteq S'_{no}$.  The
   map $\varphi$ is called a \textbf{polynomial-time reduction} from
   $S$ to $S'$.
-n
+
   We denote the sentence \emph{$S$ is p-reducible to $S'$} by writing:
 
   $$S \preduce S'$$
