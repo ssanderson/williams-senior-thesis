@@ -1,0 +1,37 @@
+\chapter{Introduction}
+
+Classical Theory of Computation provides a framework in which we can
+pose mathematically rigorous questions about the possibility and cost
+of solving problems via algorithmic procedures.  Historically central
+to this theory has been the Turing Machine model of computation, in
+which the memory of of an ideal computing machine is represented by an
+``infinitely long'' tape containing finitely many symbols at any given
+point in time.  One shortcoming of this computing model is that it
+does not allow us to describe computational problems that are defined
+over uncountable sets such $\mathbb{R}$ or $\mathbb{C}$.  Examples of
+such problems include analyzing the expected runtime of Newton's
+Method, determining membership in the Mandelbrot Set, Linear
+Programming with real coefficients, and the problem of determining
+whether a finite set of polynomials in $n$ variables share a common
+root.\\
+
+To address the above issues and others, in \cite{B89} Blum et
+al. develop an algebraic theory of computation that generalizes the
+Turing Machine model to computation over arbitrary rings and fields.
+In \cite{B98} the same authors present a wealth of results related to
+their model, which we refer to as the BSS Machine. In this thesis, we
+present a basic development of their model as well as a sample of
+their major results.  In particular, we show how Blum et al. define
+the relativized complexity classes, $\p$ and $\np$, which generalize
+the well-known classes $\mathbf{P}$ and $\mathbf{NP}$ to machines that
+compute with values from an arbitrary ring $R$.  We then develop a
+third complexity class, $\ndetp$, which we present as an alternative
+generalization of the classical $\mathbf{NP}$.  Our major results are
+that, over any ring $R$, $\p \subseteq \ndetp \subseteq \np$ and
+$\ndetp \subseteq \exptime$. From these containments it follows that
+if $\p \subset \ndetp$ or $\ndetp \subset \np$, then $\p \neq \np$.
+We also demonstrate the existence of at least one ring over which
+$\ndetp \subset \np$.  (It is already known that $\p \neq \np$ for
+this case.)  We conclude by proving a sufficient condition under which
+the equality $\ndetp = \np$ holds, and we conjecture that this
+condition is also necessary.
