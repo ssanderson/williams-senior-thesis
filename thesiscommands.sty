@@ -33,10 +33,15 @@
 \newcommand{\functype}[3]{$#1:#2 \rightarrow #3$} 
 \newcommand{\mfunctype}[3]{#1:#2 \rightarrow #3} 
 \newcommand{\note}[1]{{\textbf{Note:} #1}}
-\newcommand{\len}[0]{\text{length}}
+\newcommand{\len}[0]{\text{len}}
 \newcommand{\size}[0]{\text{size}}
 \newcommand{\cost}[0]{\text{cost}}
 \newcommand{\blank}[0]{\#}
+\newcommand{\suchthat}[0]{\text{ such that }}
+\newcommand{\poly}[1]{#1[x]}
+\newcommand{\polyn}[1]{#1[x_1, x_2,\ldots,x_n]}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
 
 % Machine descriptors.
 \newcommand{\inspace}[0]{\mathcal{I}}
@@ -81,6 +86,8 @@
 \newcommand{\decarg}[1]{\mathbf{DEC_{#1}}}
 \newcommand{\dtime}[0]{\mathbf{DTIME_R}}
 \newcommand{\ndettime}[0]{\mathbf{NDETTIME_R}}
+\newcommand{\dtimearg}[1]{\mathbf{DTIME_{#1}}}
+\newcommand{\ndettimearg}[1]{\mathbf{NDETTIME_{#1}}}
 
 % Problems
 \newcommand{\subsum}[2]{$\mathbf{SUBSETSUM}_{(#1, #2)}$}
