@@ -434,7 +434,7 @@ taken as the machine's output.\\
   
   The \textbf{State Trajectory} of $M$ on input $x$ is the projection
   of $\compute_M(x)$ under the map:
-  $$\mfunctype{\stateprojection}{\fullstate}{\nodes} \mid \stateprojection(\eta, x) = x$$
+  $$\mfunctype{\stateprojection}{\fullstate}{\statespace} \mid \stateprojection(\eta, x) = x$$
 
 \end{definition}
 
@@ -447,17 +447,19 @@ taken as the machine's output.\\
   first $k$ coordinates of $\statespace_M$ by the sequence.  We denote
   this sequence by $\stateprojection^k$.}
 
-\textbf{Example: } Let $M$ be the machine described in Figure
-\ref{fig:q-recog}. For the input $x = 2$, we have:
-\begin{eqnarray*}
-  \phi_M(x) &=& (\eta_1, (2,0,1)), (\eta_2, (2,0,1)), (\eta_5, (2,0,1)), (\eta_4, (2,1,0)), (\eta_3, (2,1,0)),\\
-            &&  (\eta_2, (2,1,2)), (\eta_5, (2,1,2)), (\eta_4, (2,2,1)), (\eta_2, (2,2,1)), (\accept, (2,2,1))\\
-            && \\
-  \computepath_M(x) &=& \eta_1,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_3,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_2,\, \accept
-\end{eqnarray*}
+\begin{example}
+  Let $M$ be the machine described in Figure \ref{fig:q-recog}. For
+  the input $x = 2$, we have:
+  \begin{eqnarray*}
+    \phi_M(x) &=& (\eta_1, (2,0,1)), (\eta_2, (2,0,1)), (\eta_5, (2,0,1)), (\eta_4, (2,1,0)), (\eta_3, (2,1,0)),\\
+    &&  (\eta_2, (2,1,2)), (\eta_5, (2,1,2)), (\eta_4, (2,2,1)), (\eta_2, (2,2,1)), (\accept, (2,2,1))\\
+    && \\
+    \computepath_M(x) &=& \eta_1,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_3,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_2,\, \accept
+  \end{eqnarray*}
 
-The State Trajectory of $M$ on input $x$ is given by:
-$$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1), (2,2,1)$$
+  The State Trajectory of $M$ on input $x$ is given by:
+  $$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1), (2,2,1)$$
+\end{example}
 
 \begin{definition}{\textbf{Finite-Dimensionally Computable Function}}
   
@@ -890,14 +892,14 @@ co-recognizable.
     $x_0$, outputting the value $p(x_0)$.  Using this machine as a
     subroutine, we can construct an algorithm to run Newton's Method
     for arbitrary polynomial inputs.  Here and in what follows, we use
-    the notation $\langle expression \rangle$ to denote an
-    \textbf{encoding} of $expression$.
+    the notation $\langle X \rangle$ to denote an \textbf{encoding} of
+    some object $X$.
 
     \begin{algorithm}
       \caption{Newton's Method} \label{alg:newton}
       \begin{algorithmic}
-        \Require $\langle p(x), x_0 \rangle \mid p(x) \in \poly{R}\,; x_0 \in R\,; \epsilon \in R$
-        \State Compute $\langle p'(x) \rangle$
+        \Require $\langle (p(x), x_0, \epsilon) \rangle \mid p(x) \in \poly{R}\,; x_0 \in R\,; \epsilon \in R$
+        \State Compute and store $\langle p'(x) \rangle$
         \While{$p(x_0) > \epsilon$ }
         \State Compute, using UPE subroutine, the values $p(x_0)$ and $p'(x_0)$
         \State $x_0 = x - \frac{p(x)}{p'(x)}$
@@ -960,7 +962,7 @@ co-recognizable.
     given machine in time $T$, the computation performed by $M$ in
     time $T$ on inputs of size at most $n$ is equivalent to the
     computation of some finite dimensional machine.  The theorem
-    statements then follow from Theorem \ref{thm:ptd-finite}.
+    statements then follow from Theorem \ref{thm:pdt-finite}.
     
   \end{proofsketch}
 
@@ -1101,7 +1103,7 @@ of its entries.
   
   Let $R$ be a ring with height function $ht_R$.  The \textbf{size} of
   a polynomial $x \in R^n$ is given by:
-  $$\size(x) = \len(x)\max_{1 \leq i \leq n}(ht_R(x_i))$$.
+  $$\size(x) = \len(x)\max_{1 \leq i \leq n}(ht_R(x_i))$$
   \note{In the case that $ht_R$ is the unit height function, the size of
   the input to a machine reduces to just the length of the input.}
 \end{definition}
@@ -1114,15 +1116,16 @@ stored in the machine's state space during computation.
 
 \begin{definition}{\textbf{Computation Cost}}
   
-  Let $x \in R^n$ be an input in $\halting_M$ to a machine $M$ over
-  $R$ with height function $ht_R$, and let
+  Let $M$ be a BSS Machine over $R$ with height function $ht_R$, and
+  let $x \in \halting_M$, such that 
   $$\compute_M(x) = (z_0, z_1,z_2, \ldots, z_T)$$ 
+  
   The \textbf{cost} of $\compute_M(x)$ is given by:
   $$\cost_M(\compute_M(x)) = T*ht_{max}(x)$$
   where $ht_{max}(x)$ is the maximum height of any element occurring
   in the computation of $M$ on input $x$.  More specifically, if the
-  state trajectory $\stateprojection(x)$ is given by:
-  \todo{Figure out how to center this properly.}
+  state trajectory $\stateprojection(x)$ is given by: \todo{Figure out
+    how to center this properly.}
   \begin{eqnarray*}
     \ldots x_{(-2,0)}x_{(-1,0)}x_{(0,0)}.x_{(1,0)}x_{(2,0)} \ldots ,\\ 
     \ldots x_{(-2,1)}x_{(-1,1)}x_{(0,1)}.x_{(1,1)}x_{(2,1)} \ldots ,\\ 
@@ -1130,21 +1133,32 @@ stored in the machine's state space during computation.
     \vdots       
   \end{eqnarray*}
 
-  and $m$ 
-  (Recall that $\stateprojection(\compute_M(x))$ is the 
-
-  Note that the above definition is only valid if $M$ halts on $x$,
-  when this is not the case, we say that $\cost(\compute_M(x)) = \infty$.
+  then $$ht_{max}(x) = \max_{i \in \integers, \; \j \leq T(x)}ht(x_{(i,j)})$$
+  In the case that $M$ does not halt on $x$ (i.e., $x \notin
+  \halting_M$, we adopt the convention that $\cost_M(x) = \infty$.
+\end{definition}
 
   \note{The above definition departs slightly from the one given in
     Chapter 4 of \cite{B98}.  Blum et al. use the notation
-    $\cost_M(x)$ rather than $\cost(\compute_M(x))$.  We do this to
-    emphasize that cost is entirely determined by a height function
-    combined with a path through the configuration space of $M$.  This
-    will be important for us in Chapter 3 when we consider machines
-    that can traverse multiple paths on a single input.}
-  
+    $\cost_M(x)$, rather than $\cost(\compute_M(x))$.  We do this to
+    emphasize that cost is determined by a height function combined
+    with a particular path through the configuration space of $M$.
+    This will be important for us in Chapter \ref{chap:ndet} when we
+    consider machines that traverse multiple paths on a single input.}
+
+\begin{definition}\textbf{$\dtime(O(f(x)))$}
+
+  Let $f(x)$ be a function $\reals \rightarrow \reals$.  A decision
+  problem $S$ is said to be a member of the complexity class
+  $\dtime(O(f(x)))$ if there exists a machine $M$ and a constant $c
+  \in \reals$ such that $M$ decides $S$ and for all $x \in \inspace_M$
+  we have:
+  $$\cost_M(\compute_M(x)) \leq cf(x)$$
 \end{definition}
+
+\begin{example}
+  \todo{Good example for this}
+\end{example}
 
 \begin{definition}{\textbf{Polynomial Time Machine}}
 
