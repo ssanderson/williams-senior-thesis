@@ -6,8 +6,8 @@ heavily from \cite{B89} and \cite{B98}.  Since the computing machines
 developed by Blum et al. are essentially a generalization of the
 classical Turing Machine, we begin with a brief review of Turing
 Machines.  For a more thorough introductory reference to Turing
-Machines, see \cite{S06}.  For Turing's original article introducing the
-concept of a computing machine, see \cite{T36}.
+Machines, see \cite{S06}.  For Turing's original article introducing
+the concept of a computing machine, see \cite{T36}.
 
 \section{Classical Turing Machines}
 
@@ -125,7 +125,7 @@ m$, and $n$ be positive integers.
   \textbf{reject node} $\eta_{reject}$. The input node has indegree 0
   and outdegree 1; the accept and reject nodes have outdegree 0.  The
   remaining elements of $\nodes$ are divided into two types:
-  \emph{computation} and \emph{branch}.  Computation nodes have
+  \emph{computation} and \emph{branch}. Computation nodes have
   outdegree 1; branch nodes have outdegree 2.  We use the expression
   ``next node(s)'' of a node $\eta$ to refer to the node(s) to which
   $\eta$ has outgoing edges.\footnote{The definition used here departs
@@ -1037,7 +1037,7 @@ co-recognizable.
   whether \textbf{QUAD} and \textbf{HN} are decidable over
   $\rationals$.
 
-\section{Measuring Complexity}
+\section{Measuring the Cost of Computation}
 \label{sec:measuring}
 One of the major goals of classical theory of computation is to
 provide a framework for analyzing the \emph{difficulty} of solving
@@ -1138,13 +1138,15 @@ stored in the machine's state space during computation.
   \halting_M$, we adopt the convention that $\cost_M(x) = \infty$.
 \end{definition}
 
-  \note{The above definition departs slightly from the one given in
-    Chapter 4 of \cite{B98}.  Blum et al. use the notation
-    $\cost_M(x)$, rather than $\cost(\compute_M(x))$.  We do this to
-    emphasize that cost is determined by a height function combined
-    with a particular path through the configuration space of $M$.
-    This will be important for us in Chapter \ref{chap:ndet} when we
-    consider machines that traverse multiple paths on a single input.}
+\note{The above definition departs slightly from the one given in
+  Chapter 4 of \cite{B98}.  Blum et al. use the notation $\cost_M(x)$,
+  rather than $\cost(\compute_M(x))$.  Our change reflects our desire
+  to emphasize that cost is determined by a height function combined
+  with a particular path through the configuration space of $M$.  This
+  will be important for us in Chapter \ref{chap:ndet} when we consider
+  machines that traverse multiple paths on a single input.}
+
+\section{The Complexity Class $\p$}
 
 \begin{definition}\textbf{$\dtime(O(f(x)))$}
 
@@ -1156,8 +1158,16 @@ stored in the machine's state space during computation.
   $$\cost_M(\compute_M(x)) \leq cf(x)$$
 \end{definition}
 
+\begin{definition}{$\p$}
+
+  We define the complexity class $\p$ to be the union:
+
+  $$\bigcup_{p(x) \in \poly{R}}\dtime(O(p(x)))$$
+
+\end{definition}
+
 \begin{example}
-  \todo{Good example for this}
+  \todo{Good (nonlinear?) example for this}
 \end{example}
 
 \begin{definition}{\textbf{Polynomial Time Machine}}
@@ -1177,16 +1187,6 @@ stored in the machine's state space during computation.
 
 \end{definition}
 
-\todo{Rework this using decision machines instead of characteristic
-  functions, since the former generalizes more naturally to NDET
-  Machines.}
-
-\begin{definition}{Membership in $P$}
-
-  A decision problem $S \subseteq R^\infty$ is said to be in class $P$
-  if its characteristic function, $\charfunc_S$ is a p-morphism.
-\end{definition}
-
 \section{Polynomial Time Reductions}
 
 \begin{definition}{\textbf{p-reducibility}}
@@ -1198,17 +1198,17 @@ stored in the machine's state space during computation.
   map $\varphi$ is called a \textbf{polynomial-time reduction} from
   $S$ to $S'$.
 
-  We denote the sentence \emph{$S$ is p-reducible to $S'$} by writing:
+  We abbreviate the sentence \emph{$S$ is p-reducible to $S'$} by writing:
 
   $$S \preduce S'$$
   \end{definition}
 
-  \note{ From the above definition it follows immediately that if
-    $\varphi$ is a polynomial-time reduction from $S$ to $S'$, then $x
-    \in S_{yes}$ if and only if $\varphi(x) \in S'_{yes}$.  Moreover,
-    since compositions of polynomials are still polynomials, it should
-    be clear that if a decision problem $S$ is p-reducible to a
-    decision problem $S' \in P$, then $S \in P$ as well.}
+  \note{Since compositions of polynomials are still polynomials, it
+    immediately follows that if $S \in \p$, and $S \preduce S'$, then
+    $S' \in \p$, so $\p$ is closed under the relation of
+    p-reducibility. It is similarly easy to show that if $X \preduce
+    Y$ and $Y \preduce Z$, then $X \preduce Z$ so the relation of
+    p-reducibility is transitive.}
 
 \section{Notable Prior Results in Reducibility}
 
@@ -1224,10 +1224,26 @@ stored in the machine's state space during computation.
   \end{enumerate}
 \end{theorem}
 
-\section{The Class NP}
+\section{The Class $\np$}
 
-The definition of NP over R given by Blum et al is a generalization of
-the verifiability definition of NP given in classical complexity theory.
+The definition of $\mathbf{NP}$ given by Blum et al is a
+generalization of the classical characterization of $NP$ as the class
+of decision problems which are verifiable in polynomial time.  The
+idea of verifiability is roughly the following: for many decision
+problems $S$, it seems difficult to determine whether an arbitrary
+input $s$ is a member of $S$.  For some of these problems, however,
+there exist ``short'' proofs of the fact that $s \in S$.
+
+A classic example of such a problem is \subsum, which asks, given a
+set of numbers $X = \set{x_1, x_2, \ldots x_k}$ and a target $t$, is
+there some subset $X_t \subseteq X$ such that $\sum_{x \in X_t} = t$.
+This problem is clearly decidable, since there are only finitely many
+possible subsets to check, but it is unclear how we might go about
+finding such a subset (or proving one does not exist) in a way that is
+more efficient than checking all the subsets.  Nevertheless, for any
+particular SUBSUM instance $(X, t)$, we can quickly verify that it is, in
+fact, a solution by simply adding the values and checking if the sum
+is equal to $T$.\\
 
 \begin{definition}{\textbf{Class NP} over $R$}
 
