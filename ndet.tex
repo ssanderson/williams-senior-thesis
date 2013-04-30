@@ -1,27 +1,131 @@
-\chapter{NDET-Machines and the Class NDETP}
+\chapter{NDET-Machines}
 \label{chap:ndet}
 
-\todo{This is meant to be generalizing nondeterministic Turing
-  Machines.  Should we give a short intro to them here and/or in the
-  background section?}
+Up until this point, we have focused our attention on presenting the
+BSS Machine model as it appears in \cite{B89} and \cite{B98}.  Where
+we have made modifications to the theory, they have been essentially
+cosmetic.  Our original contributions up to this point have mostly
+consisted of new examples and (hopefully) clear explanations of some
+of the more terse sections of our source material.\\
 
-Although efficient verifiability in terms of witness strings is
-arguably the most important and intuitive characterization of NP in
-the classical theory, there are a number of other equivalent
-definitions.  Another important definition, from which the name NP
-derives, comes from the notion of nondeterministic computation (NP
-stands for \emph{nondeterministic polynomial time}).  In the classical
-theory, a nondeterministic Turing Machine computes in the same manner
-as a standard Turing Machine, except there are multiple possible next
-configurations associated with each pair of state and tape symbol.  A
-nondeterministic TM accepts its input if there is \emph{any} valid
-path of configurations that accepts the input.  Somewhat surprisingly,
-the functions which can be computed in polynomial time by
-nondeterministic Turing Machines turn out to be precisely the same
-functions that can be efficiently verified via witness strings.  To
-our knowledge, there has been little work done to investigate whether
-a similar relationship holds in the generalized theory we have been
-investigating.
+In this chapter, we present an original extension to the BSS Machine
+model that generalizes the classical notion of a
+\textbf{nondeterministic} Turing Machine.  Our contribution to the
+theory is motivated by the following set of observations:
+
+\begin{itemize}
+
+\item In Definition \ref{def:np}, we characterized the relativized
+  complexity class $\np$ as the class of decision problems efficiently
+  verifiable by a standard BSS Machine.  This definition naturally
+  generalized the chracterization of the classical $\clnp$ as the
+  class of decision problems efficiently verifiable by a standard
+  Turing Machine.\footnote{Recall that for a machine $M$ to be an
+    efficient verifier for some decision problem $S$ is for it to be
+    the case that for each $x \in S$, there exists some additional
+    input value $w$ such that M accepts $(w, x)$ with polynomial cost
+    if and only if $x \in S_{yes}$.  Ignoring the technical details
+    involved in defining costs for TMs and BSS Machines, this
+    definition holds equally well for both computational models}
+  
+\item In classical theory of computation, there are a number of
+  characterizations of $\clnp$ that turn out to be equivalent to the
+  verifiability definition.  In particular, the class of problems
+  efficiently verifiable by standard Turing Machines turns out to be
+  equivalent to the class of problems that are efficiently
+  \emph{computable} by a more powerful class of machine called
+  \textbf{nondeterministic} Turing Machines.\footnote{There are other
+    influential characterizations of $\clnp$ in the classical theory.
+    For example, \cite{AS98} links membership in $\clnp$ to a process
+    of probabilistic verification using a logarithmic number of random
+    bits.  In this thesis, however, we focus primarily on
+    generalizations from efficient computability by nondeterministic
+    Turing Machines.  Considering how other characterizations of
+    $\clnp$ translate to the BSS Machine model could be a promising
+    direction for future work.}
+
+\item In the classical theory, the standard proof of the equivalence
+  of efficient verifiability and efficient nondeterministic
+  computability depends crucially on the fact that Turing Machines
+  work with a finite alphabet.  To our knowledge no proof exists that
+  does not rely on this fact.
+\end{itemize}
+
+In light of the above observations, we are led to wonder whether the
+nondeterministic Turing Machine could be generalized to computation
+over an arbitrary ring/field.  The contents of this chapter represent
+an answer in the affirmative to this question.  We present a class of
+machines, which we call $\mathbf{NDET}$ Machines, that naturally
+extend the BSS Machine model while also generalizing nondeterministic
+Turing Machines.  We refer to the class of problems that are
+efficiently (i.e. polynomial-cost) computable by our machines as
+$\ndetp$.\\
+
+We are also naturally led to consider whether the problems efficiently
+computable by our new machines coincide with the class $\np$ as
+defined by Blum et al.  Over general rings, we are able to show that
+$$\p \subseteq \ndetp \subseteq \np$$
+with $\ndetp = \np$ for finite rings, and $\ndetp \subset \np$ for $R
+= \integers$ with unit cost.  We are also able to show that every
+language in $\ndetp$ is decidable by some deterministic BSS Machine,
+which is not always true of Blum et al.'s $\np$.\\
+
+Before we present our $\mathbf{ndet}$ Machines, we once again exhibit
+the classical machine model they generalize.  As in our introduction
+to the classical TM, our reference here is \cite{S06}.
+
+\section{Classical Nondeterminism}
+
+\begin{definition}{\textbf{Nondeterministic Turing Machine}}
+  
+  A \textbf{nondeterministic Turing Machine} (NTM) is a 7-tuple, $(Q,
+  \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$, where:
+  
+  \begin{itemize}
+  \item $Q$ is a set of machine states.
+  \item $\Sigma$ is an alphabet of input characters, not containing
+    the blank symbol, $\blank$.
+  \item $\Gamma$ is the tape alphabet, where $\blank \in \Gamma$, and
+    $\Sigma \subset \Gamma$.
+  \item \functype{\delta}{Q \times \Gamma}{\power{Q \times \Gamma
+        \times \set{\leftarrow, \rightarrow}}} is the machine's
+    \textbf{nondeterministic transition function}.
+  \item $q_0$ is the initial state of the machine.
+  \item $q_{accept}$ is the machine's accept state.
+  \item $q_{reject}$ is the machine's reject state.
+  \end{itemize}
+  
+\end{definition}
+
+The only change in the definition of an NTM from the definition of a
+standard Turing Machine is in the output of the transition function
+$\delta$.  Whereas the transition function of a standard TM returns
+values in $Q \times \Gamma \times \set{\leftarrow, \rightarrow}$, the
+transition function of an NTM returns values in $\power{Q \times
+  \Gamma \times \set{\leftarrow, \rightarrow}}$.  Here the symbol
+$\mathcal{P}(S)$ denotes the \textbf{power set} of $S$, the set
+containing all subsets of $S$.  Thus we can think of a
+nondeterministic transition function as taking an initial
+configuration and outputting several next configurations instead of a
+single one.\\
+
+The computation of an NTM $M$ on some input $x$ can be thought of as a
+tree whose nodes correspond to different possible configurations for
+the machine.  The root of the tree corresponds to the usual initial
+configuration of a TM on input $x$, with symbols of $x$ laid out in
+the first $n$ cells of the machine's tape, the machine's tape head in
+the leftmost cell, and the machine in state $q_0$.  The children of
+the root node are the configurations corresponding to each value
+output by $\delta$, the nondeterministic transition function of $M$.
+The tree continues on in this way, with each level of nodes
+corresponding to the possible next configurations of the previous
+level.  When $\delta$ computes a halting configuration (i.e., a
+configuration whose state is $\qaccept$ or $\qreject$), that
+configuration becomes a leaf of the tree.  An NTM is said to halt on
+an input $x$ if every path through the computation tree on $x$
+eventually reaches a leaf.  An NTM accepts an input $x$ if it halts on
+$x$, and if at least one of the leaves of the computation tree for $x$
+is in the state $\qaccept$.\\
 
 Here we present a model of nondeterministic computation that naturally
 generalizes from the Turing Machine model to the Blum model of
@@ -32,11 +136,6 @@ respects the branching fufnctions and terminates at a distinguished
 accept node.  In keeping with the literature, when we wish to refer to
 the machines discussed in the previous section, we use the expression
 ``BSS Machine'' or ``standard machine''.
-
-\todo{The machines in this section are all decision machines, and the
-  theory is a fair amount cleaner if we have accept/reject nodes
-  rather than output nodes. Maybe talk about decision vs. computation
-  machines in the background section?}
 
 \section{Nondeterministic Computation}
 
@@ -373,3 +472,9 @@ is also sufficient.
   }
 
 \todo{Section on digital nondeterminism equivalence and DNP-Complete problems.}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End: 

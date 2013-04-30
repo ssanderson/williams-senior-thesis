@@ -22,7 +22,8 @@ are made precise as follows:
 
 \begin{definition}{\textbf{Turing Machine}}
 
-  A Turing Machine is a 7-tuple, $(Q, \Sigma, \Gamma, \delta, q_0, q_{accept}, q_{reject})$, where:
+  A \textbf{Turing Machine} (TM) is a 7-tuple, $(Q, \Sigma, \Gamma,
+  \delta, q_0, q_{accept}, q_{reject})$, where:
 
   \begin{itemize}
   \item $Q$ is a set of machine states.
@@ -30,8 +31,9 @@ are made precise as follows:
     the blank symbol, $\blank$.
   \item $\Gamma$ is the tape alphabet, where $\blank \in \Gamma$, and
     $\Sigma \subset \Gamma$.
-  \item \functype{\delta}{Q \times \Sigma}{Q \times \Gamma \times
-      \set{\leftarrow, \rightarrow}} is a transition function.
+  \item \functype{\delta}{Q \times \Gamma}{Q \times \Gamma \times
+      \set{\leftarrow, \rightarrow}} is the machine's
+    \textbf{transition function}.
   \item $q_0$ is the initial state of the machine.
   \item $q_{accept}$ is the machine's accept state.
   \item $q_{reject}$ is the machine's reject state.
@@ -405,8 +407,8 @@ taken as the machine's output.\\
   \begin{tikzpicture}[node distance=4.8cm]
 
     \node(init)     [input, draw, label=left:\Large $\eta_1$] {$I(x) = (x, 0)$};
-    \node(magcheck) [branch, draw, below of=init, label=135:\Large $\eta_2$] {$h(x) = x_1 - x_2$};
-    \node(equal)    [branch, draw, right of= magcheck, node distance= 5.2cm, label=above:\Large $\eta_3$] {$h(x) = x_2 - x_1$};
+    \node(magcheck) [branch, draw, below of=init, label=135:\Large $\eta_2$] {$h(x) = x_z - x_1$};
+    \node(equal)    [branch, draw, right of= magcheck, node distance= 5.2cm, label=above:\Large $\eta_3$] {$h(x) = x_1 - x_2$};
     \node(inc)      [compute, draw, below of=magcheck, label=right:\Large $\eta_4$] {$g(x) = (x_1, x_2+1)$};
     \node(accept)   [accept, draw, below of=equal, right of=equal, label=left:\Large $\accept$] 
     {$O(x) = x_2$};
@@ -420,9 +422,19 @@ taken as the machine's output.\\
     \draw[->, thick] (equal) to [out=-45, in=90]  node  [auto] {$h(x) \geq 0$} (accept);
     \draw[->, thick] (equal) to [out=45, in=270] node  [auto, swap] {$h(x) < 0$} (reject);
 
-  \end{tikzpicture}
+    \node (legend) [rectangle, draw, fill=black!10, below of=accept, node distance=3.0cm] {
+      \makecell[l]{
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \accept, \reject}$\\
+        $\inspace_M = \reals, \statespace_M = \reals^2, \outspace_M = \reals$\\
+        Computation Nodes: $\set{\eta_4}$\\
+        Branch Nodes: $\set{\eta_2, \eta_3}$\\
+        $\halting_M = \naturals$\\
+        $\computefn_M(x) = \ceil{x}$
+      }
+    };
 
-  \caption{Decision Machine for $\integers^+$}
+  \end{tikzpicture}
+  \caption{Decision Machine for $\naturals$}
   \label{fig:z-decide}
 \end{figure}
 
@@ -717,8 +729,6 @@ co-recognizable.
   like to be able to define \textbf{uniform machines}, which can
   compute on inputs of arbitrary size.\\
 
-  \todo{Talk about Universal Machine as well}
-
   Allowing for uniform machines requires two major changes to the
   finite-dimensional model.  First, we allow the input, state, and
   output spaces to have unbounded length.  Second, we introduce a new
@@ -999,7 +1009,7 @@ co-recognizable.
   \end{definition}
 
   \subsection{Notable Decision Problems}
-
+  
   \todo{Figure out what to do with this.}
 
   \begin{itemize}
@@ -1021,8 +1031,6 @@ co-recognizable.
 
     \subsubsection{Decision Problems over $\integers_2$}
     \bolditem{SAT} - Boolean formula satisfiability
-
-    \todo{Add bounded versions? (See \cite{B98} 84-91.)}
 
   \end{itemize}
 
@@ -1124,14 +1132,15 @@ stored in the machine's state space during computation.
   $$\cost_M(\compute_M(x)) = T*ht_{max}(x)$$
   where $ht_{max}(x)$ is the maximum height of any element occurring
   in the computation of $M$ on input $x$.  More specifically, if the
-  state trajectory $\stateprojection(x)$ is given by: \todo{Figure out
-    how to center this properly.}
+  state trajectory $\stateprojection(x)$ is given by: 
   \begin{eqnarray*}
-    \ldots x_{(-2,0)}x_{(-1,0)}x_{(0,0)}.x_{(1,0)}x_{(2,0)} \ldots ,\\ 
-    \ldots x_{(-2,1)}x_{(-1,1)}x_{(0,1)}.x_{(1,1)}x_{(2,1)} \ldots ,\\ 
-    \ldots x_{(-2,2)}x_{(-1,2)}x_{(0,2)}.x_{(1,2)}x_{(2,2)} \ldots ,\\
-    \vdots       
+    \ldots x_{(-2,0)}x_{(-1,0)}x_{(0,0)}.x_{(1,0)}x_{(2,0)} \ldots \\ 
+    \ldots x_{(-2,1)}x_{(-1,1)}x_{(0,1)}.x_{(1,1)}x_{(2,1)} \ldots \\ 
+    \ldots x_{(-2,2)}x_{(-1,2)}x_{(0,2)}.x_{(1,2)}x_{(2,2)} \ldots \\
   \end{eqnarray*}
+  
+  \vspace{-\baselineskip}
+  \centerline{$\vdots$}
 
   then $$ht_{max}(x) = \max_{i \in \integers, \; \j \leq T(x)}ht(x_{(i,j)})$$
   In the case that $M$ does not halt on $x$ (i.e., $x \notin
@@ -1167,7 +1176,7 @@ stored in the machine's state space during computation.
 \end{definition}
 
 \begin{example}
-  \todo{Good (nonlinear?) example for this}
+  \todo{Nonlinear example for this.}
 \end{example}
 
 \begin{definition}{\textbf{Polynomial Time Machine}}
@@ -1180,16 +1189,13 @@ stored in the machine's state space during computation.
 
 \begin{definition}{\textbf{p-morphism}}
   
-  A function, \functype{\varphi}{X}{Y \cup R^\infty} is called
+  A function, \functype{\varphi}{X}{Y \subset R^\infty} is called
   \textbf{polynomial-time computable} over $R$, or a
   \textbf{p-morphism} over $R$ if there exists a polynomial time
   machine over $R$ that computes $\varphi$.
-
 \end{definition}
 
-\section{Polynomial Time Reductions}
-
-\begin{definition}{\textbf{p-reducibility}}
+\begin{definition}{\textbf{Polynomial-Time Reduction}}
 
   A decision problem $S$ is \textbf{p-reducible} to a decision problem
   $S'$ if there exists a p-morphism,
@@ -1232,7 +1238,7 @@ of decision problems which are verifiable in polynomial time.  The
 idea of verifiability is roughly the following: for many decision
 problems $S$, it seems difficult to determine whether an arbitrary
 input $s$ is a member of $S$.  For some of these problems, however,
-there exist ``short'' proofs of the fact that $s \in S$.
+there exist ``short'' proofs of the fact that $s \in S$.\\
 
 A classic example of such a problem is \subsum, which asks, given a
 set of numbers $X = \set{x_1, x_2, \ldots x_k}$ and a target $t$, is
@@ -1240,41 +1246,43 @@ there some subset $X_t \subseteq X$ such that $\sum_{x \in X_t} = t$.
 This problem is clearly decidable, since there are only finitely many
 possible subsets to check, but it is unclear how we might go about
 finding such a subset (or proving one does not exist) in a way that is
-more efficient than checking all the subsets.  Nevertheless, for any
-particular SUBSUM instance $(X, t)$, we can quickly verify that it is, in
-fact, a solution by simply adding the values and checking if the sum
-is equal to $T$.\\
+more efficient than checking all the subsets.  On the other hand, it
+is easy to convince someone that a particular instance of \subsum
+is, in fact, a Yes-Instance once we know the correct subset.  For
+example, given a problem instance 
+$$X = (\set{1, 15, 7, 44, 3, 9, -4, 5, -3, 2, 8}, 31)$$
+we can determine immediately that $X$ is a Yes-Instance if we are
+given the set $S = \set{1,15,-4,5, -3, 8, 9}$, because we can verify
+that $S$ is a subset of the problem instance set that adds up to the
+problem instance target.  Thus, while it's unclear if \subsum is
+efficiently (i.e., polynomial time) decidable, the above
+considerations lead us to say that \subsum is \textbf{efficiently
+  verifiable}.  The complexity class $\np$ represents the class of
+problems that share this feature of efficient verifiability.
 
 \begin{definition}{\textbf{Class NP} over $R$}
-
-  A decision problem $S \subseteq R^\infty$ is in the class NP over a
-  ring $R$ if there exist positive integers $c$ and $q$ and a a
+  \label{def:np}
+  
+  A decision problem $S \subseteq R^\infty$ is in the class $\clnp$
+  over a ring $R$ if there exist positive integers $c$ and $q$ and a a
   machine $M$ over R with $\inspace_M = R^\infty \times R^\infty$ such
   that:
 
   \begin{enumerate}
-  \item if $x \in S$ then there exists a \emph{witness}, $w
-    \in R^\infty$, such that $\computefn_M(x,w) = 1$ and
-    $cost_M(x,w) \leq c(size(x))^q$.
-  \item if $x \notin S$, then there is no such $w$.
+  \item If $x \in S$ then there exists a \emph{witness}, $w \in
+    R^\infty$, such that $M$ accepts $(w, x)$ and $cost_M(x,w) \leq
+    c(size(x))^q$.
+  \item If $x \notin S$, then there is no such $w$ such that $M$
+    accepts $(w, x)$.
   \end{enumerate}
 \end{definition}
 
-A classic simple example of a problem in NP is SUBSETSUM, which asks,
-given a set of values $X = {x_1, x_2, x_3, \ldots x_k}$ and a target
-$T$, is there a subset $S \subseteq X$ such that $\sum\limits_{x_i \in
-  S} x_i = T$?  Though it is not clear how we might go about
-efficiently finding such a subset, it is clear that if we are given a
-candidate subset as a witness, we can quickly verify that it is, in
-fact, a solution by simply adding the values and checking if the sum
-is equal to $T$.\\
-
-An important feature of the class $NP$ in the classical theory is the
-existence of \textbf{NP Complete} problems, which are in a sense the
-``hardest'' problems in $NP$.  More precisely, NP Complete problems
-are those problems which lie in $NP$, and to which every problem in
-$NP$ is reducible in polynomial time.  These problems can be shown to
-exist in the generalized algebraic theory as well.
+An important feature of the class $\mathbf{NP}$ in the classical
+theory is the existence of \textbf{NP Complete} problems, which are in
+a sense the ``hardest'' problems in $NP$.  More precisely, NP Complete
+problems are those problems which lie in $NP$, and to which every
+problem in $NP$ is reducible in polynomial time.  These problems can
+be shown to exist in the generalized algebraic theory as well.
 
 \begin{definition}{\textbf{NP Hard over R}}
   A decision problem $S$ is said to be \textbf{NP Hard} over R if
@@ -1289,8 +1297,10 @@ exist in the generalized algebraic theory as well.
 \section{Known NP-Complete Problems}
 
 The following results hold with respect to either unit or bit cost.
-See \cite{B98} for details.  \todo{Should we present proofs or proof
-  sketches here?}
+See \cite{B98} for details.  
+
+\todo{Figure out what to do with this and the section on decision
+  problems.}
 
 \begin{itemize}
 \item QA-FEAS is NP-Complete over any unordered ring or field R.
@@ -1299,8 +1309,6 @@ See \cite{B98} for details.  \todo{Should we present proofs or proof
 \item HN, QUAD, and 4-FEAS are NP-Complete over $\integers$,
   $\rationals$ and $\reals$, all considered with order.
 \end{itemize}
-
-\todo{Add bounded versions?}
 
 %%% Local Variables: 
 %%% mode: latex
