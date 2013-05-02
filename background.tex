@@ -1,4 +1,5 @@
 \chapter{Background}
+\label{chap:background}
 
 In this chapter, we present a basic development of an algebraic model
 of computation due to Blum et al.  The material presented here draws
@@ -122,7 +123,7 @@ m$, and $n$ be positive integers.
   
   A \textbf{Finite Dimensional Machine} (FDM) $M$ over $R$ is a finite
   directed graph with node set $\nodes$.  The collection $\nodes$
-  contains three distinguished nodes: the \textbf{input node}
+  contains three distinguished elements: the \textbf{input node}
   $\eta_1$, the \textbf{accept node} $\eta_{accept}$, and the
   \textbf{reject node} $\eta_{reject}$. The input node has indegree 0
   and outdegree 1; the accept and reject nodes have outdegree 0.  The
@@ -258,12 +259,15 @@ $h(x) \neq 0$, respectively.\\
 \end{figure}
 
 \begin{definition}{\textbf{Configuration}}  
+  \label{def:configuration}
 
   A \textbf{configuration} of an FDM $M$ is a pair $(\eta, x) \in
   \nodes \times \statespace_M$. The set $\nodes \times \statespace_M$
   is called the \textbf{configuration space} of $M$.  A configuration
-  is said to be \textbf{terminal} if $\eta \in \set{\accept,
-    \reject}$, and \textbf{non-terminal} otherwise.
+  is said to be \textbf{accepting} if $\eta = \accept$, and it is said
+  to be \textbf{rejecting} if $\eta = \reject$.  A configuration is
+  said to be \textbf{terminal} if it is either accepting or rejecting,
+  and it is said to be \textbf{non-terminal} otherwise.
 
 \end{definition}
 
@@ -273,8 +277,9 @@ unique next configuration $z' = (\eta', x')$ as follows:
 \begin{itemize}
 \item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
 \item If $\eta$ is a computation node, $z' = (\beta_{\eta}, g_\eta(x))$.
-\item If $\eta$ is a branch node, $z' = \twopartdef{(\beta_\eta^+,
-    x)}{h_\eta(x) \geq 0}{(\beta_\eta^-, x)}{h_\eta(x) < 0}$.
+\item If $\eta$ is a branch node, $z' = \twopartdef
+  {(\beta_\eta^+,x)}  {h_\eta(x) \geq 0}
+  {(\beta_\eta^-, x)} {h_\eta(x) < 0}$.
 \end{itemize}
 
 It will occasionally be useful to us to have a compact notation for
@@ -795,6 +800,7 @@ co-recognizable.
   \end{definition}
   
   \begin{definition} \textbf{Input and Output Maps}
+    \label{def:io-map}
     
     We define the input map, \functype{I_\infty}{R^\infty}{R_\infty}
     by:
@@ -818,7 +824,7 @@ co-recognizable.
 
     A machine $M$ over a ring $R$ is a finite directed graph with
     node set $\nodes$.  The collection $\nodes$ contains three
-    distinguished nodes: the \textbf{input node} $\eta_1$, the
+    distinguished elements: the \textbf{input node} $\eta_1$, the
     \textbf{accept node} $\accept$, and the \textbf{reject node}
     $\reject$.  The input node has indegree 0 and outdegree 1; the
     accept and reject nodes have outdegree 0.  The remaining
@@ -830,11 +836,10 @@ co-recognizable.
     space back to $R^\infty$.\footnote{In this respect, the
       description of a BSS Machine is simpler than that of a
       finite-dimensional machine, since every BSS Machine has the same
-      input, output, and state spaces.  Occasionally, when we wish to
-      emphasize the use of $R^\infty$ as the input or output space of
-      $M$, we use the notation $\inspace_M$ and $\outspace_M$
-      developed for FDMs.  The same goes for referring to $R_\infty$
-      as $\statespace_M$.}
+      input, output, and state spaces.  When we wish to emphasize the
+      use of $R^\infty$ as the input or output space of $M$, we use
+      the notation $\inspace_M$ and $\outspace_M$ as we did for FDMs.
+      The same goes for referring to $R_\infty$ as $\statespace_M$.}
 
     As with FDMs, each node of a BSS Machine has an associated map and
     a set of next nodes.\footnote{As with finite dimensional machines,
@@ -845,22 +850,28 @@ co-recognizable.
 
     \begin{enumerate}
     \item Associated with the input node $\eta_1$ is the input map
-      \functype{I_\infty}{R^\infty}{R_\infty} We denote the input node
-      by $\eta_1$, and we denote the unique next node of $\eta_1$ by
+      \functype{I_\infty}{R^\infty}{R_\infty} given in Definition
+      \ref{def:io-map}. We denote the unique next node of $\eta_1$ by
       $\beta_{\eta_1}$ or just $\beta_1$.
 
-    \item Associated with each computation node $\eta$ is a polynomial
-      map \functype{\widehat{g}_\eta}{R_\infty}{R_\infty}. We again
-      denote the unique next node of $\eta$ by $\beta_\eta$.
+    \item Associated with both the accept and reject nodes is the
+      output map \functype{O_\infty}{R_\infty}{R^\infty} given in
+      Definition \ref{def:io-map}.  The accept and reject nodes have
+      no next node.
 
-    \item Associated with each branch node is a polynomial map
+    \item Associated with each computation node $\eta$ is a polynomial
+      map \functype{\widehat{g}_\eta}{R_\infty}{R_\infty}. We denote
+      the unique next node of $\eta$ by $\beta_\eta$.
+
+    \item Associated with each branch node $\eta$ is a polynomial map
       \functype{\widehat{h}_\eta}{R_\infty}{R}.  We associate the
       condition $\widehat{h}_\eta(x) \geq 0$ with the Yes Node of
       $\eta$, which we denote by $\beta_\eta^+$.  We associate the
       condition $\widehat{h}_\eta(x) < 0$ with the No Node
       $\beta_\eta^-$.
 
-    \item Associated with each shift node $\sigma$ is either the
+    \item Associated with each shift node $\eta$ is a map
+      \functype{\sigma_\eta}{R_\infty}{R_\infty}, which is either the
       \textbf{shift left} map $\sigma_l$ or the \textbf{shift right}
       map $\sigma_r$.  The shift maps are given by:
       \begin{align*}
@@ -1083,7 +1094,7 @@ of its entries.
 \begin{definition}{\textbf{Height Function} over $R$}
 
   We define a \textbf{Height Function} on a ring $R$ to be a map:
-  $$\mfunctype{ht_R}{R^\infty}{\reals}$$
+  $$\mfunctype{ht_R}{R}{\reals}$$
 \end{definition}
 
 \note{Common height functions include the \emph{unit height} function,
@@ -1123,6 +1134,7 @@ machine takes before halting times the maximum height of any value
 stored in the machine's state space during computation.
 
 \begin{definition}{\textbf{Computation Cost}}
+  \ref{def:cost}
   
   Let $M$ be a BSS Machine over $R$ with height function $ht_R$, and
   let $x \in \halting_M$, such that 

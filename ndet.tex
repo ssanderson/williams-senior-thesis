@@ -1,40 +1,40 @@
 \chapter{NDET-Machines}
 \label{chap:ndet}
 
-Up until this point, we have focused our attention on presenting the
-BSS Machine model as it appears in \cite{B89} and \cite{B98}.  Where
-we have made modifications to the theory, they have been essentially
-cosmetic.  Our original contributions up to this point have mostly
-consisted of new examples and (hopefully) clear explanations of some
-of the more terse sections of our source material.\\
+Up until now, we have focused our attention on presenting the BSS
+Machine model as it appears in \cite{B89} and \cite{B98}.  Where we
+have made modifications to the theory, they have been essentially
+cosmetic, and our original contributions have mostly consisted of new
+examples and (hopefully) clear explanations of some of the more terse
+sections of our source material.\\
 
 In this chapter, we present an original extension to the BSS Machine
-model that generalizes the classical notion of a
-\textbf{nondeterministic} Turing Machine.  Our contribution to the
-theory is motivated by the following set of observations:
+model that results in an alternative generalization of the complexity
+class $\clnp$.  Our contribution is motivated by the following
+observations:
 
 \begin{itemize}
 
 \item In Definition \ref{def:np}, we characterized the relativized
   complexity class $\np$ as the class of decision problems efficiently
   verifiable by a standard BSS Machine.  This definition naturally
-  generalized the chracterization of the classical $\clnp$ as the
-  class of decision problems efficiently verifiable by a standard
-  Turing Machine.\footnote{Recall that for a machine $M$ to be an
-    efficient verifier for some decision problem $S$ is for it to be
-    the case that for each $x \in S$, there exists some additional
-    input value $w$ such that M accepts $(w, x)$ with polynomial cost
-    if and only if $x \in S_{yes}$.  Ignoring the technical details
-    involved in defining costs for TMs and BSS Machines, this
-    definition holds equally well for both computational models}
+  generalized the chracterization of the classical $\clnp$ as the set
+  of decision problems efficiently verifiable by a standard Turing
+  Machine.\footnote{Recall that for a machine $M$ to be an efficient
+    verifier for some decision problem $S$ is for it to be the case
+    that for each $x \in S$, there exists some additional input value
+    $w$ such that M accepts $(w, x)$ with polynomial cost if and only
+    if $x \in S_{yes}$.  Ignoring the technical details involved in
+    defining costs for TMs and BSS Machines, this definition holds
+    equally well for both computational models}
   
-\item In classical theory of computation, there are a number of
+\item In classical theory of computation, there are several
   characterizations of $\clnp$ that turn out to be equivalent to the
   verifiability definition.  In particular, the class of problems
   efficiently verifiable by standard Turing Machines turns out to be
   equivalent to the class of problems that are efficiently
   \emph{computable} by a more powerful class of machine called
-  \textbf{nondeterministic} Turing Machines.\footnote{There are other
+  nondeterministic Turing Machines.\footnote{There are other
     influential characterizations of $\clnp$ in the classical theory.
     For example, \cite{AS98} links membership in $\clnp$ to a process
     of probabilistic verification using a logarithmic number of random
@@ -51,28 +51,27 @@ theory is motivated by the following set of observations:
   does not rely on this fact.
 \end{itemize}
 
-In light of the above observations, we are led to wonder whether the
+In light of the above observations, we are led to consider how the
 nondeterministic Turing Machine could be generalized to computation
-over an arbitrary ring/field.  The contents of this chapter represent
-an answer in the affirmative to this question.  We present a class of
-machines, which we call $\mathbf{NDET}$ Machines, that naturally
-extend the BSS Machine model while also generalizing nondeterministic
-Turing Machines.  We refer to the class of problems that are
-efficiently (i.e. polynomial-cost) computable by our machines as
-$\ndetp$.\\
+over an arbitrary ring/field.  We present a class of machines, which
+we call \ndet Machines, that naturally extend the BSS
+Machine model while also preserving important structural properties of
+nondeterministic Turing Machines.  We refer to the class of problems
+that are efficiently (i.e. polynomial-cost) computable by our machines
+as $\ndetp$.\\
 
 We are also naturally led to consider whether the problems efficiently
 computable by our new machines coincide with the class $\np$ as
-defined by Blum et al.  Over general rings, we are able to show that
+defined by Blum et al.  Very generally, we are able to show that
 $$\p \subseteq \ndetp \subseteq \np$$
 with $\ndetp = \np$ for finite rings, and $\ndetp \subset \np$ for $R
 = \integers$ with unit cost.  We are also able to show that every
 language in $\ndetp$ is decidable by some deterministic BSS Machine,
 which is not always true of Blum et al.'s $\np$.\\
 
-Before we present our $\mathbf{ndet}$ Machines, we once again exhibit
-the classical machine model they generalize.  As in our introduction
-to the classical TM, our reference here is \cite{S06}.
+Before we present our \ndet Machines, we once again exhibit the
+classical machine model they generalize.  As in our introduction to
+the standard TM, our reference here is \cite{S06}.
 
 \section{Classical Nondeterminism}
 
@@ -99,130 +98,229 @@ to the classical TM, our reference here is \cite{S06}.
 
 The only change in the definition of an NTM from the definition of a
 standard Turing Machine is in the output of the transition function
-$\delta$.  Whereas the transition function of a standard TM returns
-values in $Q \times \Gamma \times \set{\leftarrow, \rightarrow}$, the
-transition function of an NTM returns values in $\power{Q \times
-  \Gamma \times \set{\leftarrow, \rightarrow}}$.  Here the symbol
-$\mathcal{P}(S)$ denotes the \textbf{power set} of $S$, the set
-containing all subsets of $S$.  Thus we can think of a
-nondeterministic transition function as taking an initial
-configuration and outputting several next configurations instead of a
-single one.\\
+$\delta$.  The transition function of a standard TM returns values in
+$Q \times \Gamma \times \set{\leftarrow, \rightarrow}$; the transition
+function of an NTM returns values in $\power{Q \times \Gamma \times
+  \set{\leftarrow, \rightarrow}}$.  Here the symbol $\mathcal{P}(S)$
+denotes the \textbf{power set} of $S$, the set containing all subsets
+of $S$.  Thus we can think of a nondeterministic transition function
+as taking an initial configuration and any number of next
+configurations instead of a single one.\\
 
-The computation of an NTM $M$ on some input $x$ can be thought of as a
+The computation of an NTM $M$ for an input $x$ can be thought of as a
 tree whose nodes correspond to different possible configurations for
-the machine.  The root of the tree corresponds to the usual initial
-configuration of a TM on input $x$, with symbols of $x$ laid out in
-the first $n$ cells of the machine's tape, the machine's tape head in
-the leftmost cell, and the machine in state $q_0$.  The children of
-the root node are the configurations corresponding to each value
-output by $\delta$, the nondeterministic transition function of $M$.
-The tree continues on in this way, with each level of nodes
-corresponding to the possible next configurations of the previous
-level.  When $\delta$ computes a halting configuration (i.e., a
-configuration whose state is $\qaccept$ or $\qreject$), that
-configuration becomes a leaf of the tree.  An NTM is said to halt on
-an input $x$ if every path through the computation tree on $x$
-eventually reaches a leaf.  An NTM accepts an input $x$ if it halts on
-$x$, and if at least one of the leaves of the computation tree for $x$
-is in the state $\qaccept$.\\
+the machine.  The root of the tree is the usual initial configuration
+of a TM on input $x$, with symbols of $x$ laid out in the first $n$
+cells of the machine's tape, the machine's tape head in the leftmost
+cell, and the machine in state $q_0$.  The children of the root node
+are the configurations corresponding to each element of the set output
+by $\delta$, the nondeterministic transition function of $M$.  The
+tree continues on in this way, with each level of nodes corresponding
+to the possible next configurations of the previous level.  When
+$\delta$ computes a halting configuration (i.e., a configuration whose
+state is $\qaccept$ or $\qreject$), that configuration becomes a leaf
+of the tree.  An NTM is said to halt on an input $x$ if every path
+through the computation tree on $x$ eventually reaches a leaf.  An NTM
+accepts an input $x$ if it halts on $x$ and if at least one of the
+leaves of the computation tree for $x$ is in the state $\qaccept$.\\
 
-Here we present a model of nondeterministic computation that naturally
-generalizes from the Turing Machine model to the Blum model of
-computation.  The basic idea is that each branch node is allowed to
-have multiple \textbf{Yes} and \textbf{No} nodes, and an accepting
-computation is any computational path through the machine that
-respects the branching fufnctions and terminates at a distinguished
-accept node.  In keeping with the literature, when we wish to refer to
-the machines discussed in the previous section, we use the expression
-``BSS Machine'' or ``standard machine''.
+\todo{Example computation tree.}
 
 \section{Nondeterministic Computation}
 
-\begin{definition} \textbf{NDET-Machine over R}
+We have seen that the primary difference in definition between NTMs
+and standard TMs is that the transition function of an NTM computes
+multiple next configurations rather than a single one, and we have
+seen that this transforms the computation of an NTM from a sequence of
+configurations to a branching tree of possible configurations.  We
+capture this change with a BSS-style machine by leaving computation
+and shift nodes unchanged and modifying the structure of a machine's
+branch nodes.  For standard BSS Machines, each branch node has a
+unique Yes-Node and a unique No-Node.  For our \ndet Machines, we
+allow each branch node \emph{any} number of Yes and No nodes.  This
+leads us, as in the classical case, to consider computation as a tree
+of configurations in $\nodes \times \statespace_M$ rather than as a
+fixed sequence of such configurations.\\
 
-  An NDET-Machine over a ring R is a finite, directed, connected graph
-  with three types of nodes: \emph{computation}, \emph{shift} and
-  \emph{branch}, along with distinguished \emph{input}, \emph{accept}, 
-  and \emph{reject} nodes.\\
+As has been the case throughout our exposition, references to
+polynomial maps can be replaced with rational maps whenever $R$ is a
+field, and branching on $>$ can be replaced with branching on $=$ for
+rings not endowed with a natural order.
 
-  Associated with each computation node, $\eta$, is a next node,
-  $\beta_{\eta}$, and a polynomial (rational for fields) computation
-  map, \functype{g_\eta}{R^\infty}{R^\infty}.\\
+\begin{definition} \textbf{\ndet Machine over R}
 
-  Associated with each shift node, $\eta$ is a next node $\beta_\eta$
-  and a shift map, $\sigma_l$ or $\sigma_r$ : $R_\infty \rightarrow
-  R_\infty$. Here $\sigma_l$ and $\sigma_r$ are defined in the same
-  manner as in the standard machine case.\\
+  An \ndet Machine $M$ over a ring R is a finite directed graph with
+  node set $\nodes$.  The collection $\nodes$ contains three
+  distinguished elements: an input node $\nodein$, an accept node
+  $\accept$, and a reject node $\reject$.  The input node has indegree
+  0 and outdegree 1; the accept and reject nodes have outdegree 0.
+  The remaining elements of $\nodes$ are divided into three types:
+  \emph{computation, branch,} and \emph{shift}.\\
 
-  Associated with each branch node, $\eta$, is a nonzero polynomial
-  (rational for fields) function \functype{g_\eta}{R^\infty}{R}, a set
-  $\set{\beta^+_1, \beta^+_2, \ldots \beta^+_i}$ of \emph{Yes Nodes}
-  and a set $\set{\beta^-_1, \beta^-_2, \ldots \beta^-_j}$ of \emph{No
-    Nodes}.  We refer to the max of $i$ and $j$ as the
-  \textbf{branching degree} of $\eta$.\\
+  The inputs to $M$ are drawn from $R^\infty$.  The state space of $M$
+  is $R_\infty$. Unlike standard BSS Machines, \ndet machines do not
+  produce output values; they only choose to either accept or reject
+  an input.\\
+
+  When we wish to emphasize the use of $R^\infty$ as the input space
+  of $M$, we retain the use of the notation $\inspace_M$. The same
+  goes for $R_\infty$ and $\statespace_M$.
+
+  As with FDM's and full BSS Machines, each node has an associated map
+  and a set of next nodes:
+
+  \begin{enumerate}
+  \item Associated with the input node $\eta_1$ is the input map
+    \functype{I_\infty}{R^\infty}{R_\infty} given by Definition
+    \ref{def:io-map}. We denote the unique next node of $\eta_1$ by
+    $\beta_{\eta_1}$ or just $\beta_1$.
+
+  \item Associated with both the accept and reject nodes is the
+    output map \functype{O_\infty}{R_\infty}{R^\infty} given in
+    Definition \ref{def:io-map}.  The accept and reject nodes have
+    no next node.
+
+  \item Associated with each computation node $\eta$ is a polynomial
+    map \functype{\widehat{g}_\eta}{R_\infty}{R_\infty}. We denote the
+    unique next node of $\eta$ by $\beta_\eta$.
+    
+  \item Associated with each branch node $\eta$ is a nonzero
+    polynomial map \functype{\widehat{h}_\eta}{R_\infty}{R}, a
+    nonempty set of Yes-Nodes, $\beta^+_\eta = \set{\yesnode{1},
+      \yesnode{2}, \ldots, \yesnode{i}}$, and a nonempty set of
+    No-Nodes, $\beta_\eta^- = \set{\nonode{1}, \nonode{2}, \ldots,
+      \nonode{j}}$.  We associate the Yes-Nodes with the condition
+    $h(x) \geq 0$, and the No-Nodes with the condition $h(x) < 0$. We
+    refer to the max of $i$ and $j$ as the \textbf{branching degree}
+    of $\eta$, and we refer to the maximum branching degree of any
+    node in $M$ as the branching degree of $M$.
+
+  \item Associated with each shift node $\eta$ is a next node
+    $\beta_\eta$ and a shift map
+    \functype{\sigma_\eta}{R_\infty}{R_\infty}, which is either
+    $\sigma_l$ or $\sigma_r$. The maps $\sigma_l$ and $\sigma_r$, are
+    the same as those used in the definition of a standard BSS
+    Machine.
+
+  \end{enumerate}
 \end{definition}
 
-\note{The only difference between an NDET Machine and a standard BSS
-  machine is that each branch node of an NDET Machine can have
-  multiple Yes and No nodes.\\}
+The definition of \emph{configuration} given in Definition
+\ref{def:configuration} remains unchanged for \ndet Machines, as do
+the definitions of \emph{accepting, rejecting, terminal}, and
+\emph{non-terminal configuration}. The notions of next configuration
+and computation, however, require some modification for this new
+setting.
 
-The computation of an NDET-machine is defined analogously to that of a
-BSS machine, with the caveat that there may be multiple valid
-paths continuing from a branch node, and we now accept any input for which
-there exists some accepting path through the machine.  More formally,
-for each configuration pair $z = (\eta, x)$, we define the
-\textbf{next configuration set}, $H(z)$, to be the set of all pairs,
-$\set{(\eta', x')}$, such that:
+\begin{definition}{\textbf{Next Configuration Set}}
 
-\begin{enumerate}
-\item If $\eta$ is a computation node, then $\eta' = \beta_\eta$, and
-  $x' = g(x)$.
-\item If $\eta$ is a shift node, then $\eta' = \beta_\eta$, and
-  $x' = \sigma(x)$.
-\item If $\eta$ is a branch node, $x' = x$ and if $g(x) > 0$, $\eta'$
-  is a yes-node of $\eta$.  If $g(x) < 0$, $\eta'$ is a no-node of
-  $\eta$.
-\end{enumerate}
+  Let $M$ be an \ndet Machine over $R$, and let $z = (\eta, x) \in
+  \nodes_M \times \statespace_M$ be a configuration of $M$.  We define
+  the \textbf{next configuration set} of $z$, denoted $H(z)$, as
+  follows:
 
-\note{From the definitions above, it is clear that if $z = (\eta, x)$
-  is a configuration of some machine $M$ with maximum branching degree
-  $k$, then $|H(z)| \leq 1$ if $\eta$ is a non-branch node, and
-  $|H(z)| \leq k$ if $\eta$ is a branch node.}
+  \begin{enumerate}
+  \item If $\eta = \eta_1$, $H(z) = \set{(\beta_1, x)}$.
+  \item If $\eta \in \set{\accept, \reject}$, $H(z) = \emptyset$.
+  \item If $\eta$ is a computation node, $H(z) = \set{(\beta_\eta, g_\eta(x))}$.
+  \item If $\eta$ is a shift node, $H(z) = \set{(\beta_\eta,
+      \sigma_\eta(x))$}.
+  \item If $\eta$ is a branch node:
+    $\twopartdef  
+    {H(x) = \set{(\beta, x) \mid \beta \in \beta_\eta^+}} {h(x) \geq 0}
+    {H(x) = \set{(\beta, x) \mid \beta \in \beta_\eta^-}} {h(x) < 0} 
+    $
+  \end{enumerate}
 
-Given a machine $M$ and input $x$, we say that the sequence $z_1 =
-(\eta_1, x_1), z_2 = (\eta_2, x_2), \ldots, z_k = (\eta_k, x_k)$ of
-configurations of $M$ is \textbf{valid} if $x_1 = x$ and, for all $2
-\leq i \leq k$, $z_i \in H(z_{i-1})$.  Such a sequence is said to be
-\textbf{accepting} if, additionally, $x_k$ is the accept node of $M$.
-It is said to be \textbf{rejecting} if $x_k$ is the reject node of
-$M$.  The sequence is said to be \textbf{halting} if it is either
-accepting or rejecting.
+  Retaining the notation used in Chapter \ref{chap:background}, we
+  abbreviate the expression ``$z'$ is in the next node set of $z$'' by
+  writing $z \yields z'$.
+\end{definition}
 
-We denote the (possibly infinite) set of all valid paths for a machine
-$M$ on input $x$ by $\allpaths(M, x)$, the set of all accepting paths
-for $M$ on $x$ by $\accpaths(M, x)$, and the set of all rejecting
-paths for $M$ on $x$ by $\rejpaths(M, x)$.
+\vspace{\baselineskip}
 
-\begin{definition} \textbf{NDET-Machine Halting, Acceptance and Rejection}
+For any configuration $z = (\eta, x)$ for which $\eta$ is not a branch
+node, $H(z)$ is just the set containing the unique next configuration
+of $z$ as determined by the same rules defining next configurations
+for standard BSS Machines. In the case that $\eta$ is a branch node,
+there are two possibilities for $H(z)$.  If the branching function
+$h_\eta$ is greater than or equal to $0$, then $H(z)$ is the set of
+all pairs $(\beta, x)$, such that $x$ is unchanged, and $\beta$ is a
+Yes-Node of $\eta$.  If $h_\eta(x) < 0$, then $H(z)$ is the set of
+all pairs $(\beta, x)$ such that $x$ is unchanged, and $\beta$ is a
+No-Node of $\eta$.
 
-  An NDET-Machine is said to \textbf{halt} on input $x$ if
-  $\allpaths(M, x)$ is finite.  It \textbf{accepts} $x$ if it halts
-  and $\accpaths(M, x)$ is nonempty.  It \textbf{rejects} if it halts
-  and does not accept.
+\begin{definition}{\textbf{\ndet Machine Computation}}
+  
+  Let $M$ be an \ndet Machine over $R$, and let $x \in \inspace_M$.
+  The computation performed by $M$ on input $x$, $\compute_M(x)$ is a
+  (possibly infinite) directed tree whose vertices are elements of
+  $\nodes_M \times \statespace_M$.\footnote{We use the term ``vertex''
+    rather than node here to avoid confusion with the nodes of the
+    machine $M$ itself.}  The structure of $\compute_M(x)$ is defined
+  recursively as follows:
+  
+  \begin{itemize}
+  \item The root of $\compute_M(x)$ is the initial configuration of
+    $M$ on input $x$ given by $(\eta_1, I_\infty(x))$.
+    
+  \item If $z$ is any vertex of $\compute_M$, and $z'$ is a
+    configuration of $M$ such that $z \yields z'$, then $z'$ is a
+    child vertex of $z$.\footnote{It immediately follows from this
+      definition that a configuration $z$ can be a leaf of
+      $\compute_M(x)$ only if it is a terminal configuration.}
+  \end{itemize}
   
 \end{definition}
 
-\section{Computation Cost and the Class NDETP}
+\note{The vertices of a nondeterministic computation $\compute_M(x)$
+  can be organized into levels according their distance from the
+  root. Level 1 contains only the root vertex, $(\eta_1,
+  I_\infty(x))$.  Level 2 contains all of the next configurations of
+  $z_1$.  Level 3 contains all of the next configurations of nodes in
+  Level 2, and so on.  A given configuration can appear multiple times
+  in the tree and can even appear multiple times in a particular level
+  if different nondeterministic paths of the same length result in the
+  same configuration.}
 
-\begin{definition} \textbf{Nondeterministic Computation Cost}
+\todo{Example}
 
-  Let $\compute = z_1, z_2, \ldots, z_k$ be a halting path for an
-  NDET-Machine $M$ on input $x$.  The \textbf{cost} of $\compute_M(x)$ is
-  defined in the same manner as in :
+\begin{definition}{\textbf{Halting Sub-Computation}}
+  
+  Let $M$ be an \ndet Machine over $R$, let $\compute_M(x)$ be the
+  computation of $M$ for some input $x$, and let $z$ be 
 
-  $$\cost(\compute) = k*ht_{max}(x)$$ where $ht_{max}$ is defined as in 
-  \textbf{\ref{def:size}}.
+
+For each leaf of $\compute_M(x)$, we define the
+  \textbf{halting sub-computation}
+
+\end{definition}
+
+\begin{definition} \textbf{NDET-Machine Halting, Acceptance and Rejection}
+
+  An \ndet Machine $M$ is said to \textbf{halt} on input $x$ if every
+  directed path through $\compute_M(x)$ reaches a terminal
+  configuration of $M$.  We use the symbol $\halting_M$ to
+  denote the subset of $\inspace_M$ on which $M$ halts. \\
+
+  An \ndet Machine $M$ is said to \textbf{accept} an input $x$ if $M$
+  halts on $x$ and at least one leaf of $\compute_M(x)$ is an
+  accepting configuration of $M$. If $M$ halts on $x$ and no leaf is
+  labelled with an accepting configuration, we say that $M$ rejects
+  $x$.
+  
+\end{definition}
+
+\section{Computation Cost for  NDET Machines}
+
+\begin{definition}{\textbf{Nondeterministic Computation Cost}}
+
+  Let $M$ be an \ndet Machine over a ring $R$ with associated height
+  function \functype{ht_R}{R}{\reals}.  Let $x \in \inspace_M$ be an
+  input such that $M$ halts on $x$.  
+
+  The \textbf{cost} of $\compute_M(x)$ is given by:
+  
 
   Let $M$ be an NDET-Machine over a ring $R$ with height function
   $ht_R$, and let $M$ halt on input $x$.  The cost of the computation

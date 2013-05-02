@@ -16,8 +16,8 @@
 {
   \left\{
     \begin{array}{ll}
-      #1 & \mid #2 \\
-      #3 & \mid #4
+      #1 & \text{ if } #2 \\
+      #3 & \text{ if } #4
     \end{array}
   \right.
 }
@@ -57,6 +57,8 @@
 \newcommand{\reject}[0]{\eta_{reject}}
 \newcommand{\qaccept}[0]{q_{accept}}
 \newcommand{\qreject}[0]{q_{reject}}
+\newcommand{\yesnode}[1]{\beta_{(\eta, #1)}^+}
+\newcommand{\nonode}[1]{\beta_{(\eta, #1)}^-}
 
 % Machine properties
 \newcommand{\computefn}[0]{\Phi}
@@ -79,6 +81,7 @@
 
 % Complexity classes
 \newcommand{\ndetp}[0]{\mathbf{NDETP_R}}
+\newcommand{\ndet}[0]{$\mathbf{NDET}$ }
 \newcommand{\np}[0]{\mathbf{NP_R}}
 \newcommand{\clnp}[0]{\mathbf{NP}}
 \newcommand{\p}[0]{\mathbf{P_R}}
