@@ -1,0 +1,77 @@
+
+Title: 
+    - Greetings/Thanks
+    - Explain Title
+(1:00)
+
+Talk Outline:
+    - What is Complexity Theory?
+    - Machine Models/Turing Machines
+    - BSS Model
+    - NDET Machines
+    - Results
+    - Future Work?
+(2:00)
+    
+What is Complexity Theory:
+    - We want to mathematically characterize 
+      the intrinsic difficulty of solving problems.
+    - Requires model of computation
+        - (What can be computed?)
+    - Requires a notion of resources consumed in computation
+        - (How expensive is a computation?)
+(3:00)
+
+Classical Complexity Theory:
+    - Machine Model = Turing Machine
+    - Resources vary
+        - Time
+        - Space
+        - We're going to focus on time
+(4:00)
+
+Turing Machines: (Re-use Miller talk slides?)
+    - Infinite 1-way tape w/ symbols
+    - Tape head on a cell
+    - Set of states
+    - Transition function from (symbol, state) -> (symbol, state, direction)
+(5:00)
+
+Turing Machine Example (inverter):
+    - Pretty picture
+(5:30)
+
+Motivating BSS Model (TM Limitations):
+    - Turing Machines inherently tied to finite symbolic representation of data.
+        - Picture of tape w/ cells
+    - Complexity theory fundamentally understanding algorithms/iterative processes.
+    - Math has lots of algorithms/iterative processes.
+    - Not all of them can be expressed in terms of finite symbols.
+(6:30)
+
+Motivating BSS Model (TM Limitations):
+    - Example: Mandelbrot Set           
+    - Pretty picture
+    - We might want to know if some algorithm exists to determine membership.
+    - Can't even ask the question using TM's.
+(7:00)
+
+Motivating BSS Model (Natural Generalization):
+    - Some problems we talk about in Classical Theory naturally generalize to 
+      non-integer domains.
+    - Example: Subset Sum
+    - Known to be hard in a precise in classical theory, but often discrete problems
+      are harder than continuous problems. Perhaps less hard in the continuous case?
+(8:30)
+
+Motivating BSS Model (General Theorem -> Specific Theorem)
+    - Sometimes best way to prove things about a special case is actually to
+      prove a more general theorem.
+    
+
+
+
+
+           
+
+Allotted Time: 45 minutes
