@@ -130,22 +130,23 @@ leaves of the computation tree for $x$ is in the state $\qaccept$.\\
 
 We have seen that the primary difference in definition between NTMs
 and standard TMs is that the transition function of an NTM computes
-multiple next configurations rather than a single one, and we have
-seen that this transforms the computation of an NTM from a sequence of
-configurations to a branching tree of possible configurations.  We
-capture this change with a BSS-style machine by leaving computation
-and shift nodes unchanged and modifying the structure of a machine's
-branch nodes.  For standard BSS Machines, each branch node has a
-unique Yes-Node and a unique No-Node.  For our \ndet Machines, we
-allow each branch node \emph{any} number of Yes and No nodes.  This
-leads us, as in the classical case, to consider computation as a tree
-of configurations in $\nodes \times \statespace_M$ rather than as a
-fixed sequence of such configurations.\\
+multiple next configurations rather than a single one.  This has the
+effect of transforming the computation of an NTM from a single
+sequence of configurations to a branching tree of possible
+configurations.  We capture this change with a BSS-style machine by
+leaving computation and shift nodes unchanged and modifying the
+structure of a machine's branch nodes.  For standard BSS Machines,
+each branch node has a unique Yes-Node and a unique No-Node.  For our
+\ndet Machines, we allow each branch node \emph{any} number of Yes and
+No nodes.  This leads us, as in the classical case, to consider
+computation as a tree of configurations in $\nodes \times
+\statespace_M$ rather than as a particular fixed sequence.\\
 
 As has been the case throughout our exposition, references to
 polynomial maps can be replaced with rational maps whenever $R$ is a
 field, and branching on $>$ can be replaced with branching on $=$ for
-rings not endowed with a natural order.
+rings not endowed with a natural order.  The usual caveats apply with
+regard to rational maps and division by zero.\\
 
 \begin{definition} \textbf{\ndet Machine over R}
 
@@ -170,15 +171,13 @@ rings not endowed with a natural order.
   and a set of next nodes:
 
   \begin{enumerate}
-  \item Associated with the input node $\eta_1$ is the input map
-    \functype{I_\infty}{R^\infty}{R_\infty} given by Definition
+  \item Associated with the input node $\nodein$ is the input map
+    \functype{I_\infty}{R^\infty}{R_\infty} given in Definition
     \ref{def:io-map}. We denote the unique next node of $\eta_1$ by
     $\beta_{\eta_1}$ or just $\beta_1$.
 
-  \item Associated with both the accept and reject nodes is the
-    output map \functype{O_\infty}{R_\infty}{R^\infty} given in
-    Definition \ref{def:io-map}.  The accept and reject nodes have
-    no next node.
+  \item The accept and reject nodes have no associated map. The accept
+    and reject nodes have no next node.
 
   \item Associated with each computation node $\eta$ is a polynomial
     map \functype{\widehat{g}_\eta}{R_\infty}{R_\infty}. We denote the
@@ -267,8 +266,8 @@ No-Node of $\eta$.
   \item If $z$ is any vertex of $\compute_M$, and $z'$ is a
     configuration of $M$ such that $z \yields z'$, then $z'$ is a
     child vertex of $z$.\footnote{It immediately follows from this
-      definition that a configuration $z$ can be a leaf of
-      $\compute_M(x)$ only if it is a terminal configuration.}
+      definition that a configuration appearing in $\compute_M(x)$ is
+      a leaf if and only if it is a terminal configuration.}
   \end{itemize}
   
 \end{definition}
@@ -288,26 +287,41 @@ No-Node of $\eta$.
 \begin{definition}{\textbf{Halting Sub-Computation}}
   
   Let $M$ be an \ndet Machine over $R$, let $\compute_M(x)$ be the
-  computation of $M$ for some input $x$, and let $z$ be 
-
-
-For each leaf of $\compute_M(x)$, we define the
-  \textbf{halting sub-computation}
+  computation of $M$ on an input $x$.  Suppose now that
+  $\compute_M(x)$ contains at least one leaf vertex, and let $z$ be
+  such a vertex.  We define the \textbf{halting sub-computation}
+  $\subcompute_M(x, z)$ of $M$ on $x$ with respect to $z$ to be the
+  unique directed path in $\compute_M(x)$ from the root of
+  $\compute_M(x)$ to $z$.
+  
+  \todo{This notation is kind of ambiguous, since z can appear
+    multiple times.}
 
 \end{definition}
+
+\note{Each halting sub-computation of a machine $M$ is a finite
+  sequence of configurations $(z_1, z_2, \ldots, z_k)$ such that
+  $z_1$ is the initial configuration of $M$ for some input, $z_k$ is a
+  terminal configuration, and for all $i < k$, we have $z_i \yields
+  z_{i+1}$.  Thus the halting sub-computations have exactly the same
+  structure as the computations of BSS Machines, which means that all
+  the attributes and functions defined for BSS Machine computations
+  can be applied to \ndet Machine sub-computations.  In particular,
+  the cost of a sub-computation can be defined exactly as in
+  Definition \ref{def:cost}.}
 
 \begin{definition} \textbf{NDET-Machine Halting, Acceptance and Rejection}
 
   An \ndet Machine $M$ is said to \textbf{halt} on input $x$ if every
   directed path through $\compute_M(x)$ reaches a terminal
-  configuration of $M$.  We use the symbol $\halting_M$ to
-  denote the subset of $\inspace_M$ on which $M$ halts. \\
-
+  configuration of $M$.  We use the symbol $\halting_M$ to denote the
+  subset of $\inspace_M$ on which $M$ halts.\\
+  
   An \ndet Machine $M$ is said to \textbf{accept} an input $x$ if $M$
   halts on $x$ and at least one leaf of $\compute_M(x)$ is an
   accepting configuration of $M$. If $M$ halts on $x$ and no leaf is
-  labelled with an accepting configuration, we say that $M$ rejects
-  $x$.
+  labelled with an accepting configuration, we say that $M$
+  \textbf{rejects} $x$.
   
 \end{definition}
 
@@ -317,40 +331,33 @@ For each leaf of $\compute_M(x)$, we define the
 
   Let $M$ be an \ndet Machine over a ring $R$ with associated height
   function \functype{ht_R}{R}{\reals}.  Let $x \in \inspace_M$ be an
-  input such that $M$ halts on $x$.  
+  input such that $M$ halts on $x$, and let $\Psi$ be the set of all
+  halting subcomputations of $\compute_M(x)$.
 
-  The \textbf{cost} of $\compute_M(x)$ is given by:
+  The \textbf{cost} of $\compute_M(x)$ is given
+  by: $$\max\limits_{\psi \in \Psi}(\cost_M(\psi))$$ where
+  $\cost_M(\psi)$ is defined as in Definition \ref{def:cost}.
+
+\end{definition}
+
+\todo{Example.}
+
+\begin{definition}{$\ndettime_{f(x)}$}
+
+  A decision problem $S \subseteq R^\infty$ is said to belong to
+  $\ndettime_{f(x)}$ if there exists an NDET machine that decides $S$
+  with computation cost bounded by $f(\size(x))$ for all $x$ in
+  $S_{yes}$.
   
-
-  Let $M$ be an NDET-Machine over a ring $R$ with height function
-  $ht_R$, and let $M$ halt on input $x$.  The cost of the computation
-  of $M$ on $x$ is given by:
-  
-  $$\max_{\compute \in \allpaths}(\cost(\compute_M(x)))$$
-
 \end{definition}
 
 \begin{definition} $\ndetp$
   
-  A language, $S$ is in $\ndetp$ if there exists a machine $M$ and a
-  constant $p$ such that, $\forall w \in S$, $M$ accepts w with cost
-  $O(size(w)^p)$.
+  A language, $S$ is in $\ndetp$ if there exists a machine $M$ and
+  real constants constant $c$ and $q$ such that, $\forall x \in S$,
+  $M$ accepts $x$ with cost $c \dot size(x)^q)$.
   
 \end{definition}
-
-\begin{definition} $\dtime_{f(x)}$ and $\ndettime_{f(x)}$
-  A decision problem $S, S_{yes}$ is said to belong to
-  $\dtime_{f(x)}$ (deterministic time $f(x)$) if there exists a BSS
-  machine that decides $S$ with computation cost bounded by
-  $f(size(x))$ for all $x$ in $S_{yes}$.  \\n
-  
-  A decision problem $S, S_{yes}$ is said to belong to
-  $\ndettime_{f(x)}$ (deterministic time $f(x)$) if there exists an
-  NDET machine that decides $S$ with computation cost bounded by
-  $f(size(x))$ for all $x$ in $S_{yes}$.  \\
-\end{definition}
-
-\todo{Use DTIME and NDETTIME to define $\p$, $\np$, $\ndetp$, etc.}
 
 \section{$\ndetp$ and Deterministic Complexity}
 
@@ -368,24 +375,19 @@ every deterministic machine is also a valid nondeterministic machine
 that happens not to take advantage of the additional power afforded by
 nondeterminism.
 
-\todo{Is this even worth listing as a proposition, or should it just
-  be a note?  If we keep it as a proposition, should the proof be made
-  more formal (e.g. we could proceed by induction on the length of
-  $\gamma_x$), or is this acceptable?}
-
 \proposition{Let $R$ be a ring with any height function, and let $(S,
   S_{yes})$ be a decision problem over $R$. If $M$ is a BSS machine
   that decides $S$ in time $t(size(x))$, then $M$ also decides $S$ in
   time $t(size(x))$ when interpreted as an NDET machine.\\}
 
-\proof{ We first note that the only difference between the definitions
-  of NDET machines and standard BSS machines is that every branch node
+\proof{As noted above, the only difference between the definitions of
+  \ndet machines and standard BSS machines is that every branch node
   $\eta$ of BSS machine has a single $\beta_\eta^+$ and a single
   $\beta_{\eta}^-$, whereas each branch node of an NDET machine may
-  have multiple yes and no nodes. Thus we can regard standard BSS
+  have multiple Yes and No nodes. Thus we can regard standard BSS
   machines as a special case of NDET machines for which every node has
-  branching degree 1, and it makes sense to talk about interpreting
-  $M$ as an NDET machine.  \\
+  branching degree 1, and it makes sense to talk about
+  ``interpreting'' a BSS Machine $M$ as an NDET machine.\\
 
   Let $x$ be an element of $S$, and let $M$ be a BSS machine that
   decides $S$, now interpreted as an NDET machine. Since $M$ has
