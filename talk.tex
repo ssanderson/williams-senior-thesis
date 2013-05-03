@@ -42,7 +42,6 @@
   
 % \end{frame}
 
-
 % \begin{frame}{\subsum{}}
 
 %   \begin{definition}[\subsum{}]
@@ -89,89 +88,173 @@
 
 % \end{frame}
 
-\begin{frame}{Machine Models}
+% \begin{frame}{Machine Models}
   
-  \begin{itemize}
-  \item We formalize the notion of ``procedure for performing a task''
-    by developing models of computing machines.
-  \item In classical theory of computation, the de facto machine model
-    is the Turing Machine.\pause
-  \end{itemize}
+%   \begin{itemize}
+%   \item We formalize the notion of ``procedure for performing a task''
+%     by developing models of computing machines.\pause
+%   \item In classical theory of computation, the de facto machine model
+%     is the Turing Machine.
+%   \end{itemize}
 
-\end{frame}
+% \end{frame}
 
-\begin{frame}{Turing Machine (Formal Definition)}
+% \begin{frame}{Turing Machine (Formal Definition)}
 
-  \begin{definition}[Turing Machine (TM)]
+%   \begin{definition}[Turing Machine (TM)]
 
-    A \textbf{Turing Machine} is a 7-tuple, $(Q, \Sigma, \Gamma,
-    \delta, q_0, q_{accept}, q_{reject})$, where:
+%     A \textbf{Turing Machine} is a 7-tuple, $(Q, \Sigma, \Gamma,
+%     \delta, q_0, q_{accept}, q_{reject})$, where:
 
-    \begin{itemize}
-    \item $Q$ is a set of machine states.
-    \item $\Sigma$ is an alphabet of input characters, not containing
-      the blank symbol, $\blank$.
-    \item $\Gamma$ is the tape alphabet, with $\blank \in \Gamma$, and
-      $\Sigma \subset \Gamma$.
-    \item \functype{\delta}{(Q \times \Gamma)}{(Q \times \Gamma \times
-        \set{L, R})} is the machine's
-      \textbf{transition function}.
-    \item $q_0$ is the initial state of the machine.
-    \item $q_{accept}$ is the machine's accept state.
-    \item $q_{reject}$ is the machine's reject state.
-    \end{itemize}
-  \end{definition}
+%     \begin{itemize}
+%     \item $Q$ is a set of machine states.
+%     \item $\Sigma$ is an alphabet of input characters, not containing
+%       the blank symbol, $\blank$.
+%     \item $\Gamma$ is the tape alphabet, with $\blank \in \Gamma$, and
+%       $\Sigma \subset \Gamma$.
+%     \item \functype{\delta}{(Q \times \Gamma)}{(Q \times \Gamma \times
+%         \set{L, R})} is the machine's
+%       \textbf{transition function}.
+%     \item $q_0$ is the initial state of the machine.
+%     \item $q_{accept}$ is the machine's accept state.
+%     \item $q_{reject}$ is the machine's reject state.
+%     \end{itemize}
+%   \end{definition}
   
-\end{frame}
+% \end{frame}
 
-\begin{frame}[Turing Machine (Less Scary Definition)]
+\begin{frame}{Turing Machine (Less Scary Definition)}
   
   \begin{itemize}
   \item Essentially, a Turing Machine is an infinite, one-way tape
     divided into cells, along with a tape head that rests on a
-    single cell.  
+    single cell. \pause  
   \item The transition function $\delta$ encodes instructions
     which tell the tape head, at each step of the computation,
     write a symbol from $\Gamma$ to its current position, then
-    move either left or right.
+    move either left or right. \pause
   \item The specific instruction that gets executed depends on the
     state of the machine and the symbol currently under the tape
-    head.
+    head.\pause
+  \item The machine halts and either \textbf{accepts} or
+    \textbf{rejects} when it enters the special states $\qaccept$ or
+    $\qreject$.
+
   \end{itemize}
 \end{frame}
 
-\begin{frame}[An Example Turing Machine Computation]
-  \begin{columns}[c]
+% \begin{frame}[An Example Turing Machine Computation]
+%   \begin{columns}[c]
     
-    \small
+%     \small
 
-    \column{2in}
+%     \column{2in}
 
-    \begin{itemize}
-    \item $Q = \set{q_0, q_{accept}, q_{reject}}$
-    \item $\Gamma = \set{\blank, 0, 1}$
-    \item $\Sigma = \set{0,1}$
-    \item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
-    \item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
-    \item $\delta(q_0, \blank) = (q_{accept}, \blank, \leftarrow)$
-    \end{itemize}
+%     \begin{itemize}
+%     \item $Q = \set{q_0, q_{accept}, q_{reject}}$
+%     \item $\Gamma = \set{\blank, 0, 1}$
+%     \item $\Sigma = \set{0,1}$
+%     \item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
+%     \item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
+%     \item $\delta(q_0, \blank) = (q_{accept}, \blank, \leftarrow)$
+%     \end{itemize}
 
-    \column{2in}
+%     \column{2in}
     
-    \begin{figure}[p]
+%     \begin{figure}[p]
       
-      PLACEHOLDER
+%       PLACEHOLDER
       
-      %   \tape[1]{$q_0$}{{1,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}
-      %   \tape[2]{$q_0$}{{0,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}
-      %   \tape[3]{$q_0$}{{0,1,0,1,$\blank$,$\cdots$}} \vspace{1mm}
-      %   \tape[4]{$q_0$}{{0,1,1,1,$\blank$,$\cdots$}} \vspace{1mm}
-      %   \tape[5]{$q_0$}{{0,1,1,0,$\blank$,$\cdots$}} \vspace{1mm}
-      %   \tape[4]{$q_{accept}$}{{0,1,1,0,$\blank$, $\cdots$}} \vspace{1mm}
-      % \caption{An Example Turing Machine Computation}
-    \end{figure}
+%       %   \tape[1]{$q_0$}{{1,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}
+%       %   \tape[2]{$q_0$}{{0,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}
+%       %   \tape[3]{$q_0$}{{0,1,0,1,$\blank$,$\cdots$}} \vspace{1mm}
+%       %   \tape[4]{$q_0$}{{0,1,1,1,$\blank$,$\cdots$}} \vspace{1mm}
+%       %   \tape[5]{$q_0$}{{0,1,1,0,$\blank$,$\cdots$}} \vspace{1mm}
+%       %   \tape[4]{$q_{accept}$}{{0,1,1,0,$\blank$, $\cdots$}} \vspace{1mm}
+%       % \caption{An Example Turing Machine Computation}
+%     \end{figure}
     
-  \end{columns}
+%   \end{columns}
+% \end{frame}
+
+\begin{frame}{Limitations of Turing Machines}
+
+  \begin{itemize}
+  \item The computation of a Turing Machine only makes sense for
+    inputs that are representable by finite sequences of characters
+    drawn from finite alphabet. \pause
+  \item This means we can't talk about problems that are naturally
+    defined over uncountable sets, such as $\reals$ or $\complexes$.\pause
+  \item A natural example of such a problem is the Mandelbrot Set
+    $\mathcal{M}$
+  \end{itemize}
+  
 \end{frame}
+
+\begin{frame}{The Mandelbrot Set $\mathcal{M}$}
+  
+  \begin{definition}[Mandelbrot Set]
+
+    Let $c \in \complexes$, we define:
+    \begin{align*}
+      p_c(z) &= z^2 + c\\
+      p_c^n(z) &= p_c(\ldots(p_c(p_c(z)))) \text{ $n$ times }\\
+    \end{align*}
+    
+    \vspace{-\baselineskip}
+    
+    The Mandelbrot Set $\mathcal{M}$ is given by:
+    $$\set{c \in \complexes |p_c^n(0) \nrightarrow \infty \text{ as } n \rightarrow \infty}$$
+  \end{definition}
+
+\end{frame}
+
+\begin{frame}{The Mandelbrot Set $\mathcal{C}$}
+
+  PLACEHOLDER FOR IMAGE SLIDE
+  
+\end{frame}
+
+\begin{frame}{The Mandelbrot Set as Decision Problem}
+  
+  \begin{itemize}
+  \item In general it's easy to tell if some $c \in \complexes$ is
+    \textbf{not} in the Mandelbrot Set.\pause
+  \item If at any point in computing the sequence $p_c(0),
+    p_c(p_c(0)), \ldots$ we see a value greater than 2, it is
+    guaranteed to escape to infinity, so it can't be in
+    $\mathcal{M}$\pause
+  \item It seems harder to find a condition such that a complex number
+    $c$ is guaranteed \textbf{not} to escape to infinity.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{The Mandelbrot Set as Decision Problem}
+  
+  \textbf{Question}: Does there exist an algorithm for determining
+  whether an arbitrary complex number $c$ is a member of
+  $\mathcal{M}$?
+  
+\end{frame}
+
+\begin{frame}{Finite Dimensional BSS Machines}
+
+  PLACEHOLDER
+  
+\end{frame}
+
+\begin{frame}{Finite Dimensional BSS Machines}
+
+  PLACEHOLDER
+  
+\end{frame}
+
+\begin{frame}{Example FDM}
+   
+  PLACEHOLDER
+
+\end{frame}
+
+
 
 \end{document}
