@@ -32,7 +32,6 @@
 \newcommand{\set}[1]{\{#1\}}
 \newcommand{\functype}[3]{$#1:#2 \rightarrow #3$} 
 \newcommand{\mfunctype}[3]{#1:#2 \rightarrow #3} 
-\newcommand{\note}[1]{{\textbf{Note:} #1}}
 \newcommand{\len}[0]{\text{len}}
 \newcommand{\size}[0]{\text{size}}
 \newcommand{\cost}[0]{\text{cost}}
@@ -98,9 +97,9 @@
 \newcommand{\ndettimearg}[1]{\mathbf{NDETTIME_{#1}}}
 
 % % Problems
-\newcommand{\subsum}[0]{$\mathbf{SUBSETSUM}$ }
-\newcommand{\subsumI}[1]{$\mathbf{SUBSETSUM}_{#1}$ }
-\newcommand{\subsumII}[2]{$\mathbf{SUBSETSUM}_{(#1, #2)}$ }
+\newcommand{\subsum}[0]{$\mathbf{SUBSETSUM}$}
+\newcommand{\subsumI}[1]{$\mathbf{SUBSETSUM}_{#1}$}
+\newcommand{\subsumII}[2]{$\mathbf{SUBSETSUM}_{(#1, #2)}$}
 
 % Graphics
 
@@ -132,6 +131,7 @@
 
 \newcounter{tape_c}
 \newcommand{\tape}[3][-1]{
+
   \begin{tikzpicture}
 
     \node at (-0.5,0) [circle, draw, minimum width=1.3cm] {#2};
