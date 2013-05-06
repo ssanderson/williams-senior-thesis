@@ -43,29 +43,31 @@
 \newcommand{\mandelrecfull}[0]{
   \begin{tikzpicture}[node distance=4.5cm, >=stealth]
     \node (input) [input, draw, thick] 
-    {\makecell[l]{\textbf{Input:} $c \in \complexes$ \\
-        \textbf{Initialize:} $z = 0$}};
-    \node (branch) [branch, draw, thick, right of=input] {$|z| > 2$ ?};
-    \node (compute) [compute, draw, thick, above of=branch] {$z = z^2 + c$};
+    {\makecell[l]{\textbf{Input:} $(z_{Re}, z_{Im}) \in \reals^2$ \\
+        \textbf{Initialize:} $\bar{x} = (0, 0, z_{Re}, z_{Im})$}};
+    \node (branch) [branch, draw, thick, right of=input] {$h_{\eta_2}(\bar{x}) > 0$ ?};
+    \node (compute) [compute, draw, thick, above of=branch] {$\bar{x} = g_{\eta_3}(\bar{x})$};
     \node (accept) [accept, draw, thick, below of=branch] {\textbf{Accept}};
     \node (reject) [reject, draw, thick, left of=accept] {\textbf{Reject}};
     
     \draw [->, very thick] (input) -- (branch);
     \draw [->, very thick] (compute) -- (branch);
     \draw [->, very thick] (branch) to node [auto] {Yes} (accept);
-    \draw [->, very thick] (branch) to [out=0, in=0, swap] node [auto] {No} (compute);
-
-    \node (legend) [rectangle, draw, fill=black!10, below of=accept, node distance=3.0cm] {
-      \makecell[l]{
-        \textbf{Input:} $(Re, Im) \in \reals^2$\\
-        \textbf{Initialize:} $(x_1, x_2, x_3, x_4) = (0, 0, Re, Im)$\\
-        $\nodes = \set{\eta_1, \eta_2, \eta_3, \accept, \reject}$\\
-        $\statespace_M = \reals^4$\\
-        $g_{\eta_2}(x_1, x_2, x_3, x_4) = (x_1^2 - x_2^2 + x_3, 2x_1x_2 + x_4, x_3, x_4)$
-        $h_{\eta_3}(x_1, x_2) = (x_1^2 + x_2^2 -2)$
-      }
-    };
+    \draw [->, very thick] (branch) to [out=0, in=0, swap] node [auto] {No} (compute);    
     
+  \end{tikzpicture}
+}
+
+\newcommand{\mandlegend}[0]{
+  \begin{tikzpicture}
+    \node (legend) [rectangle, draw, fill=black!15, node distance=3.0cm]
+    { \makecell[l]{
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \accept, \reject}$\\
+        $\inspace_M = \reals^2$\\
+        $\statespace_M = \reals^4$\\
+        $h_{\eta_2}(x_1, x_2, x_3, x_4) = (x_1^2 + x_2^2 -2)$\\
+        $g_{\eta_3}(x_1, x_2, x_3, x_4) = (x_1^2 - x_2^2 + x_3,2x_1x_2 + x_4, x_3, x_4)$\\
+      } };
   \end{tikzpicture}
 }
 
@@ -114,3 +116,4 @@
                        fill=blue!100, 
                        inner sep=.3mm]
 
+                       
