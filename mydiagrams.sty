@@ -1,0 +1,45 @@
+\usepackage{makecell}
+\usepackage{setspace}
+\usepackage{mydiagrams}
+
+\newcommand{\algoyesno}[1]{
+  \centering
+  \Large
+  \begin{tikzpicture}[node distance=1.0in, #1]
+
+    \node (question)  [rectangle, draw, thick] {\textbf{Question}};
+    \node (algorithm) [ellipse, draw, below of=question, thick] 
+    {\textbf{Algorithm}};
+    \node (yes)       [ellipse, draw, fill=green!20,
+    below of=algorithm, left of=algorithm, thick] {\textbf{Yes}};
+    \node (no)        [ellipse, draw, fill=red!20,
+    below of=algorithm, right of=algorithm, thick] {\textbf{No}};
+
+    \draw [->, ultra thick]        (question) -- (algorithm);
+    \draw [->, ultra thick]        (algorithm) -- (yes);
+    \draw [->, ultra thick]        (algorithm) -- (no);
+
+  \end{tikzpicture}
+}
+
+\tikzstyle{mandpoint}=[circle, 
+                       draw,
+                       fill=blue!100, 
+                       inner sep=.3mm]
+
+\newcommand{\mandel}[1]{
+  \centering
+  
+  \begin{tikzpicture}[very thick, #1]
+    \draw (-10.0,0) -- (10.0,0);
+    \draw (0,-10.0) -- (0,10.0);
+    \draw (0,0) circle (2.0);
+  \end{tikzpicture}
+  
+}
+
+% Iteration 1: z = (0.5+0.5j)
+% Iteration 2: z = (0.5+1j)
+% Iteration 3: z = (-0.25+1.5j)
+% Iteration 4: z = (-1.6875-0.25j)
+% Iteration 5: z = (3.28515625+1.34375j)

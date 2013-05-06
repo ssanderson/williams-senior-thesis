@@ -129,12 +129,21 @@
                     minimum height=3cm, 
                     inner sep=2mm]
 
+\tikzstyle{tapehead}=[regular polygon, 
+                      regular polygon sides=3, 
+                      minimum size=1.3cm,
+                      inner sep =0mm,
+                      shape border rotate=180,
+                      thick, 
+                      fill=orange!25]
+
+\tikzstyle{every picture}+= [remember picture]                      
+
 \newcounter{tape_c}
 \newcommand{\tape}[3][-1]{
 
   \begin{tikzpicture}
 
-    \node at (-0.5,0) [circle, draw, minimum width=1.3cm] {#2};
     \setcounter{tape_c}{1}
 
     \foreach \symbol in #3
@@ -142,7 +151,8 @@
       \ifnumequal{#1}{\value{tape_c}}
       % Tape head.
       {
-        \node at (\value{tape_c},0) [cell, draw, fill=orange!25]{\symbol};
+        \node (headcell) at (\value{tape_c},0) [cell, draw]{\symbol};
+        \node (head) [tapehead, draw, above of=headcell, node distance=1cm] {\small #2};
       }
       % Regular cell.
       {
@@ -152,3 +162,5 @@
     }
   \end{tikzpicture}
 }
+\newcommand{\scaletopagewidth}[2][1.0]{\resizebox{#1\textwidth}{!}{#2}}
+

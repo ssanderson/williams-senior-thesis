@@ -265,9 +265,9 @@ No-Node of $\eta$.
     
   \item If $z$ is any vertex of $\compute_M$, and $z'$ is a
     configuration of $M$ such that $z \yields z'$, then $z'$ is a
-    child vertex of $z$.\footnote{It immediately follows from this
-      definition that a configuration appearing in $\compute_M(x)$ is
-      a leaf if and only if it is a terminal configuration.}
+    child vertex of $z$.\footnote{It immediately follows that a
+      configuration appearing in $\compute_M(x)$ is a leaf only if it
+      is a terminal configuration of $M$.}
   \end{itemize}
   
 \end{definition}
@@ -286,7 +286,7 @@ No-Node of $\eta$.
 
 \begin{definition}{\textbf{Halting Sub-Computation}}
   
-  Let $M$ be an \ndet Machine over $R$, let $\compute_M(x)$ be the
+  Let $M$ be an \ndet Machine over $R$, and let $\compute_M(x)$ be the
   computation of $M$ on an input $x$.  Suppose now that
   $\compute_M(x)$ contains at least one leaf vertex, and let $z$ be
   such a vertex.  We define the \textbf{halting sub-computation}
@@ -300,22 +300,23 @@ No-Node of $\eta$.
 \end{definition}
 
 \note{Each halting sub-computation of a machine $M$ is a finite
-  sequence of configurations $(z_1, z_2, \ldots, z_k)$ such that
-  $z_1$ is the initial configuration of $M$ for some input, $z_k$ is a
+  sequence of configurations $(z_1, z_2, \ldots, z_k)$ such that $z_1$
+  is the initial configuration of $M$ for some input $x$, $z_k$ is a
   terminal configuration, and for all $i < k$, we have $z_i \yields
   z_{i+1}$.  Thus the halting sub-computations have exactly the same
-  structure as the computations of BSS Machines, which means that all
-  the attributes and functions defined for BSS Machine computations
-  can be applied to \ndet Machine sub-computations.  In particular,
-  the cost of a sub-computation can be defined exactly as in
-  Definition \ref{def:cost}.}
+  structure as the computations of standard BSS Machines, which means
+  that all the attributes and functions defined for BSS Machine
+  computations can be applied to \ndet Machine sub-computations.  In
+  particular, the cost of a sub-computation can be defined exactly as
+  in Definition \ref{def:cost}.}
 
 \begin{definition} \textbf{NDET-Machine Halting, Acceptance and Rejection}
 
-  An \ndet Machine $M$ is said to \textbf{halt} on input $x$ if every
-  directed path through $\compute_M(x)$ reaches a terminal
-  configuration of $M$.  We use the symbol $\halting_M$ to denote the
-  subset of $\inspace_M$ on which $M$ halts.\\
+  An \ndet Machine $M$ is said to \textbf{halt} on input $x$ if it
+  contains finitely many vertices.  Equivalently, an \ndet Machine
+  halts on $x$ if every branch of $\compute_M(x)$ eventually reaches a
+  terminal configuration.  We use the symbol $\halting_M$ to
+  denote the subset of $\inspace_M$ on which $M$ halts.\\
   
   An \ndet Machine $M$ is said to \textbf{accept} an input $x$ if $M$
   halts on $x$ and at least one leaf of $\compute_M(x)$ is an
