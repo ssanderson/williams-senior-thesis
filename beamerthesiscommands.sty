@@ -98,6 +98,7 @@
 
 % % Problems
 \newcommand{\subsum}[0]{$\mathbf{SUBSETSUM}$}
+\newcommand{\hn}[0]{\mathbf{HN}}
 \newcommand{\subsumI}[1]{$\mathbf{SUBSETSUM}_{#1}$}
 \newcommand{\subsumII}[2]{$\mathbf{SUBSETSUM}_{(#1, #2)}$}
 
@@ -131,7 +132,7 @@
 
 \tikzstyle{tapehead}=[regular polygon, 
                       regular polygon sides=3, 
-                      minimum size=1.3cm,
+                      minimum size=1.4cm,
                       inner sep =0mm,
                       shape border rotate=180,
                       thick, 
@@ -152,7 +153,7 @@
       % Tape head.
       {
         \node (headcell) at (\value{tape_c},0) [cell, draw]{\symbol};
-        \node (head) [tapehead, draw, above of=headcell, node distance=1cm] {\small #2};
+        \node (head) [tapehead, draw, above of=headcell, node distance=.9cm] {\scriptsize #2};
       }
       % Regular cell.
       {
@@ -162,5 +163,5 @@
     }
   \end{tikzpicture}
 }
-\newcommand{\scaletopagewidth}[2][1.0]{\resizebox{#1\textwidth}{!}{#2}}
 
+\newcommand{\scaletopagewidth}[2][1.0]{\resizebox{#1\textwidth}{!}{#2}}
