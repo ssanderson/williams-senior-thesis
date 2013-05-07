@@ -112,6 +112,38 @@
   \end{tikzpicture}
 }
 
+\tikzstyle{extend}=[very thick, 
+                    >=triangle 45, 
+                    shorten >=1.5mm,
+                    shorten <=1.5mm, 
+                    dashed,
+                    color=blue]
+
+\tikzstyle{generalize}=[very thick]
+
+\newcommand{\outline}[0]{
+  \begin{tikzpicture}[minimum width = 3.5cm, minimum height = 1cm, inner sep = 0mm, >=latex]
+    
+    \node (TM) [ellipse, draw, thick] {Turing Machine};
+    \node (NTM) [ellipse, draw, thick, below right=4cm and -.25cm of TM] {NTM};
+    \node (verify) [ellipse, draw, thick, below left=4cm and -.25cm of TM] {Verifier};
+    
+    \node (BSS) [ellipse, draw, thick, right=5cm of TM] {BSS Machine};
+    \node (NDET) [ellipse, draw, thick, below right=4cm and -.25cm of BSS] {NDET Machine};
+    \node (bverify) [ellipse, draw, thick, below left=4cm and -.25cm of BSS] {BSS Verifier};
+
+    \draw [->, extend] (TM) -- (NTM);
+    \draw [->, extend] (TM) -- (verify);
+
+    \draw [->, extend] (BSS) -- (NDET);
+    \draw [->, extend] (BSS) -- (bverify);
+
+    \draw [->, generalize] (TM) to [out=15, in=165] (BSS);
+    \draw [->, generalize] (verify) to [out=345, in=195] (bverify);
+    \draw [->, generalize] (NTM) to [out=345, in=195]  (NDET);
+    
+  \end{tikzpicture}
+}
 
 \tikzstyle{mandpoint}=[circle, 
                        draw,

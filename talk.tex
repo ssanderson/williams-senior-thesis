@@ -22,11 +22,17 @@
 \newtheorem{proposition}{Proposition}
 \newtheorem{proofidea}{Proof Idea}
 
-% \begin{frame}
-%   \titlepage
-% \end{frame}
+\begin{frame}
+  \titlepage
+\end{frame}
 
-% \begin{frame}{Complexity Theory}
+\begin{frame}{Outline}
+  \begin{center}
+    \scaletopagewidth{\outline}
+  \end{center}
+\end{frame}
+
+% \begin{frame}{Computability and Complexity Theory}
   
 %   \begin{columns}
 %     \visible<1->{
@@ -592,7 +598,7 @@
 %     \end{center}
 %   \end{columns}
 
-%  \end{frame}
+% \end{frame}
 
 % \begin{frame}{Finite Dimensional BSS Machines}
   
@@ -615,167 +621,284 @@
   
 %  \end{frame}
 
-\begin{frame}{Formal FDM (Co-recognizer for $\mathcal{M})$}
+% \begin{frame}{Formal FDM (Co-recognizer for $\mathcal{M})$}
   
-  \begin{columns}
-    \column{0.5\textwidth}
-    \begin{center}
-      \scaletopagewidth[.9]{\mandlegend{}}
-    \end{center}
+%   \begin{columns}
+%     \column{0.5\textwidth}
+%     \begin{center}
+%       \scaletopagewidth[.9]{\mandlegend{}}
+%     \end{center}
     
-    \column{0.7\textwidth}
-    \begin{center}
-      \scaletopagewidth[.9]{\mandelrecfull{}}
-    \end{center}
-  \end{columns}
+%     \column{0.7\textwidth}
+%     \begin{center}
+%       \scaletopagewidth[.9]{\mandelrecfull{}}
+%     \end{center}
+%   \end{columns}
 
-\end{frame}
+% \end{frame}
 
-\begin{frame}{Defining Computation}
+% \begin{frame}{Defining Computation}
 
-  \begin{itemize}
-    \setlength{\itemsep}{3mm}
-  \item[] A \textbf{configuration} of an FDM $M$ is a pair $\eta, x \in
-    \nodes \times \statespace_M$.\pause
-  \item[] A configuration is \textbf{terminal} if $\eta \notin
-    \set{\accept, \reject}$.\pause
-  \item[] For any non-terminal configuration $z = (\eta, \bar{x})$, $M$
-    defines a unique \textbf{next configuration}, $z'$ as follows:\\
+%   \begin{itemize}
+%     \setlength{\itemsep}{3mm}
+%   \item[] A \textbf{configuration} of an FDM $M$ is a pair $\eta, x \in
+%     \nodes \times \statespace_M$.\pause
+%   \item[] A configuration is \textbf{terminal} if $\eta \notin
+%     \set{\accept, \reject}$.\pause
+%   \item[] For any non-terminal configuration $z = (\eta, \bar{x})$, $M$
+%     defines a unique \textbf{next configuration}, $z'$ as follows:\\
     
-    \begin{itemize}
-    \item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
-    \item If $\eta$ is a computation node, $z' = (\beta_{\eta}, g_\eta(x))$.
-    \item If $\eta$ is a branch node, $z' = \twopartdef
-      {(\beta_\eta^+,x)}  {h_\eta(x) \geq 0}
-      {(\beta_\eta^-, x)} {h_\eta(x) < 0}$.
-    \end{itemize}
-  \end{itemize}\pause
+%     \begin{itemize}
+%     \item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
+%     \item If $\eta$ is a computation node, $z' = (\beta_{\eta}, g_\eta(x))$.
+%     \item If $\eta$ is a branch node, $z' = \twopartdef
+%       {(\beta_\eta^+,x)}  {h_\eta(x) \geq 0}
+%       {(\beta_\eta^-, x)} {h_\eta(x) < 0}$.
+%     \end{itemize}
+%   \end{itemize}\pause
 
-  \vspace{\baselineskip}
+%   \vspace{\baselineskip}
 
-  If $z'$ is the next configuration of $z$, we write $z \yields z'$.
+%   If $z'$ is the next configuration of $z$, we write $z \yields z'$.
 
-\end{frame}
+% \end{frame}
 
-\begin{frame}{Defining Computation}
+% \begin{frame}{Defining Computation}
 
-  A \textbf{halting computation} performed by an FDM $M$ on input $x$
-  is a sequence of configurations: 
-  $$\compute_M(x) = (z_0, z_1, \ldots, z_t)$$ such that
-  \begin{align*}
-    z_0 &= (\eta_1, I(x))\\
-    z_t &\in \set{(\accept, x_t), (\reject, x_t)}\\
-    z_i &\yields z_{i+1} \text{ for } 0 \leq i < t
-  \end{align*}\pause
+%   A \textbf{halting computation} performed by an FDM $M$ on input $x$
+%   is a sequence of configurations: 
+%   $$\compute_M(x) = (z_0, z_1, \ldots, z_t)$$ such that
+%   \begin{align*}
+%     z_0 &= (\eta_1, I(x))\\
+%     z_t &\in \set{(\accept, x_t), (\reject, x_t)}\\
+%     z_i &\yields z_{i+1} \text{ for } 0 \leq i < t
+%   \end{align*}\pause
   
-  If $M$ halts on input $x$ after $t$ steps, we say that $x$ is in the
-  \textbf{time-t Halting Set} of $M$, which we denote by
-  $\halting_M(t)$.
+  
+%   We say that $x$ is in the \textbf{time-t Halting Set} of $M$,
+%   written $\halting_M(t)$.\pause  \\
 
-\end{frame}
+%   State space ``left behind'' is the \textbf{output} of $M$ on $x$.\\
 
-\begin{frame}{Characterization of Halting Sets for FDMs}
+%   Defines an output function denoted by $\computefn_M(x)$.
 
-  \begin{theorem}[\textbf{Path Decomposition Theorem}]
+% \end{frame}
+
+% \begin{frame}{Characterization of Halting Sets for FDMs}
+
+%   \begin{theorem}[\textbf{Path Decomposition Theorem}]
     
-    For any FDM $M$ over a ring $R$, we have the following:
+%     For any FDM $M$ over a ring $R$, we have the following:
 
-    \begin{enumerate}
-    \item For any $t > 0$, the time-T halting set $\halting_M(t)$ is a
-      semi-algebraic set if $M$ branches on $>$, and $\halting_M(t)$
-      is quasi-algebraic if $M$ branches on $=$.
+%     \begin{enumerate}
+%     \item For any $t > 0$, the time-T halting set $\halting_M(t)$ is a
+%       semi-algebraic set if $M$ branches on $>$, and $\halting_M(t)$
+%       is quasi-algebraic if $M$ branches on $=$.
 
-    \item The halting set $\halting_M$ is a countable union of
-      disjoint semi(quasi)-algebraic sets.
+%     \item The halting set $\halting_M$ is a countable union of
+%       disjoint semi(quasi)-algebraic sets.
 
-    \end{enumerate}
-  \end{theorem}
-\end{frame}
-
-\begin{frame}{Characterization of Halting Sets for FDMs}
-
-    \begin{columns}
-      \column{0.4\textwidth}
+%     \item For any halting computation path $\gamma$, the restriction
+%       of $\computefn_M$ to inputs traversing $\gamma$ is a polynomial
+%       map.
       
-      \textbf{Proof Idea:} Consider the possible ways that an FDM can
-      traverse the node set $\nodes$.
+%     \end{enumerate}
+%   \end{theorem}
+% \end{frame}
+
+% \begin{frame}{Proving Path Decomposition Thm.}
+
+%     \begin{columns}
+%       \column{0.4\textwidth}
       
-      \column{0.66\textwidth}
-      \scaletopagewidth[.9]{\mandelrecfull{}}
-    \end{columns}
+%       \textbf{Proof Idea:} Consider the possible ways that an FDM can
+%       traverse the node set $\nodes$.
+      
+%       \column{0.66\textwidth}
+%       \scaletopagewidth[.9]{\mandelrecfull{}}
+%     \end{columns}
     
-\end{frame}
+% \end{frame}
 
-\begin{frame}{Characterization of Halting Sets for FDMs}
+% \begin{frame}{Proving Path Decomposition Thm.}
 
-    \begin{columns}
-      \column{0.4\textwidth}
+%     \begin{columns}
+%       \column{0.4\textwidth}
       
-      On input $(x_1, x_2)$, if $n$ is the first natural number such that
-      $|p_c^n| > 2$, then we start at $\eta_1$ and then repeat the
-      pair $(\eta_2, \eta_3)$ n times.
+%       On input $(x_1, x_2)$, if $n$ is the first natural number such that
+%       $|p_c^n| > 2$, then we start at $\eta_1$ and then repeat the
+%       pair $(\eta_2, \eta_3)$ n times.
       
-      \column{0.66\textwidth}
-      \scaletopagewidth[.9]{\mandelrecfull{}}
-    \end{columns}
+%       \column{0.66\textwidth}
+%       \scaletopagewidth[.9]{\mandelrecfull{}}
+%     \end{columns}
     
-\end{frame}
+% \end{frame}
 
 
-\begin{frame}{Characterization of Halting Sets for FDMs}
+% \begin{frame}{Characterization of Halting Sets for FDMs}
 
-    \begin{columns}
-      \column{0.4\textwidth}
+%     \begin{columns}
+%       \column{0.4\textwidth}
       
-      For such $(x_1, x_2)$, we have:
+%       For such $(x_1, x_2)$, we have:
 
-      \begin{align*}
-        h_{\eta_2}(I(x_1, x_2)) &\leq 2 \\
-        h_{\eta_2}(g_{\eta_3}(I(x_1, x_2))) &\leq 2 \\
-        h_{\eta_2}(g^2_{\eta_3}(I(x_1, x_2))) &\leq 2 \\
-        &\vdots\\
-        h_{\eta_2}(g^{n-1}_{\eta_3}(I(x_1, x_2))) &\leq 2 \\
-        h_{\eta_2}(g^{n}_{\eta_3}(I(x_1, x_2))) &> 2 \\
-      \end{align*}
+%       \begin{align*}
+%         h_{\eta_2}(I(x_1, x_2)) &\leq 2 \\
+%         h_{\eta_2}(g_{\eta_3}(I(x_1, x_2))) &\leq 2 \\
+%         h_{\eta_2}(g^2_{\eta_3}(I(x_1, x_2))) &\leq 2 \\
+%         &\vdots\\
+%         h_{\eta_2}(g^{n-1}_{\eta_3}(I(x_1, x_2))) &\leq 2 \\
+%         h_{\eta_2}(g^{n}_{\eta_3}(I(x_1, x_2))) &> 2 \\
+%       \end{align*}
       
-      \column{0.66\textwidth}
-      \scaletopagewidth[.9]{\mandelrecfull{}}
-    \end{columns}    
-\end{frame}
+%       \column{0.66\textwidth}
+%       \scaletopagewidth[.9]{\mandelrecfull{}}
+%     \end{columns}    
+% \end{frame}
 
-\begin{frame}{Characterization of Halting Sets for FDMs}
+% \begin{frame}{Characterization of Halting Sets for FDMsn}
 
-  \begin{itemize}
-  \item[] Each halting path $\gamma$ corresponds to a system of
-    polynomial equalities/inequalities.  Input elements traversing
-    $\gamma$ form a semi/quasi-algebraic set.
-  \item[] Since there are only finitely many paths of length $t$,
-    $\halting_M(t)$ can be partitioned into semi-algebraic sets, one
-    for each halting path of length $t$.
-  \item[] The full halting set $\halting_M$ is just a countable union
-    over all $t > 1$ of $\halting_M(t)$.
-  \end{itemize}
-\end{frame}
+%   \begin{itemize}
+%   \item[] Each halting path $\gamma$ corresponds to a system of
+%     polynomial equalities/inequalities. Inputs traversing $\gamma$
+%     form a semi/quasi-algebraic set.\pause
+%   \item[] Since there are only finitely many paths of length $t$,
+%     $\halting_M(t)$ can be partitioned into semi-algebraic sets, one
+%     for each halting path of length $t$. (Gives us part 1).\pause
+%   \item[] The full halting set $\halting_M$ is just a countable union
+%     over all $t > 1$ of $\halting_M(t)$. (Gives us part 2.)\pause
+%   \item[] For each halting $\gamma$, we traverse a fixed sequence of
+%     computation nodes, $\eta_1, \eta_2, \eta_3, \ldots \eta_k$, so
+%     $\computefn_M(x)$ computes the composition of $g_{\eta_1},
+%     g_{\eta_2}, g_{\eta_3}, \ldots, g_{\eta_k}$. (Gives us part 3.)
+%   \end{itemize}
+% \end{frame}
 
-\begin{frame}{Characterization of Halting Sets for FDMs}
-  \begin{corollary}
-    The Mandelbrot Set is undecidable.
-  \end{corollary}
+% \begin{frame}{Characterization of Halting Sets for FDMs}
 
-  Can show that $D$ is decidable if and only if $D_{yes}$ and $D_{no}$
-  are the halting sets of some machine $M$.\pause
+%   \begin{corollary}
+%     The Mandelbrot Set is undecidable.
+%   \end{corollary}
+  
+%   \textbf{Proof:} \\
+  
+%   \begin{itemize}
+%   \item[] Can show that $D$ is decidable if and only if $D_{yes}$ and
+%     $D_{no}$ are the halting sets of some machine $M$.\pause
+%   \item[] By above, this means if $D$ is decidable, then $D_{yes}$ and
+%     $D_{no}$ are both countable unions of semi/quasi-algebraic
+%     sets.\pause
+%   \item[] Can be shown that $\mathcal{M}$ cannot be expressed as such
+%     a union.
+%   \end{itemize}
+% \end{frame}
 
-  By above, this means if $D$ is decidable, then $D_{yes}$ and
-  $D_{no}$ are both countable unions of semi/quasi-algebraic sets.\pause
+% \begin{frame}{``Full'' BSS Machines}
+  
+%   Recall $\hn_R$:\\
 
-  Can be shown that $\mathcal{M}$ cannot be expressed as such a union.
+%   \vspace{\baselineskip}
 
-\end{frame}
+%   Given $\set{p_1, p_2, \ldots, p_k} \subseteq \polyn{K}$, do $p_i$
+%   have a shared zero? in $K$\\
+  
+%   \vspace{\baselineskip}
 
-\begin{frame}{``Full'' BSS Machines}
+%   Hard to represent inputs from big polynomials in a finite state
+%   space?
+    
+% \end{frame}
 
-  PLACEHOLDER
+% \begin{frame}{``Full'' BSS Machines}
 
-\end{frame}
+%   \textbf{Solution:}
+
+%   Create an infinitely long ``tape'' by letting $\statespace_M =
+%   R_\infty$.\pause\\
+
+%   Elements of $R_\infty$ look like:
+%   $$\cdots, x_{-2}, x_{-1}, x_0 . x_1, x_2, \cdots$$\pause\\
+  
+%   Extend polynomial maps $g: R^m \rightarrow R^n$ to $\hat{g}:
+%   R_\infty \rightarrow R_\infty$.
+
+% \end{frame}
+
+% \begin{frame}{Measuring Input Size}
+
+%   PLACEHOLDER
+
+%   (Image of Turing Machine Tape, graphic highlighting length of tape,
+%   followed by highlighting single cell.  Note that the latter notion
+%   doesn't make sense for classical theory because all symbols are
+%   equal up to a constant.)
+  
+% \end{frame}
+
+% \begin{frame}{Measuring Computation Cost}
+
+%   PLACEHOLDER
+  
+% \end{frame}
+
+% \begin{frame}{The Class $\p$}
+
+%   PLACEHOLDER
+  
+% \end{frame}
+
+% \begin{frame}{The Class $\np$}
+  
+%   PLACEHOLDER
+
+% \end{frame}
+
+% \begin{frame}{$\np$-COMPLETE Problems}
+
+%   PLACEHOLDER
+
+%   (Define poly-time reduction, define NP-COMPLETE, state that $\hn$ is
+%   NP-COMPLETE for any ring.)
+
+% \end{frame}
+
+% \begin{frame}{Two Characterizations of Classical $\mathbf{NP}$}
+
+%     PLACEHOLDER
+
+%     (Define w/r/t verifiability, define w/r/t nondeterministic Turing Machine)
+  
+% \end{frame}
+
+% \begin{frame}{Classical Nondeterminism}
+
+%   PLACEHOLDER
+  
+%   (Two column slide, left side shows a straight-line sequence of
+%   configurations, right side shows a branching tree of
+%   configurations.  Explain rules for acceptance.)
+  
+% \end{frame}
+
+% \begin{frame}{Nondeterminism in BSS Framework}
+
+%   PLACEHOLDER
+
+%   (In classical Complexity, definitions of NP turn out equivalent.
+%   Here branching-style nondeterminism, doesn't seem as strong as
+%   pulling a witness from continuous space.)
+  
+% \end{frame}
+
+% \begin{frame}{\ndet Machines}
+
+%   \textbf{Idea:} Allow branch nodes to have multiple \textbf{Yes} and
+%   \textbf{No} nodes.\pause \\
+
+%   Halting computation becomes a tree of configurations rather than a
+%   straight-line path.
+  
+% \end{frame}
 
 \end{document}
