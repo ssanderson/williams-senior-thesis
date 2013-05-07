@@ -290,7 +290,7 @@
 %   \item[] Compute the sequence $p_c(0), p_c(p_c(0)), \ldots, p_c^n(0),
 %     \ldots$. If we ever see a value with magnitude greater than 2, $c
 %     \notin \mathcal{M}$.  This is \textbf{guaranteed} to happen for
-%     any $c \notin \mathcal{M}$ \pause
+%     any $c \notin \mathcal{M}$
 %   \end{itemize}
 % \end{frame}
 
@@ -424,7 +424,7 @@
 %   \begin{columns}
     
 %     \column{0.5\textwidth}
-%     Do there exist $x, y$ the following?
+%     Do there exist $x, y$ satisfying the following equations?
 %     \begin{align*}
 %       2x + 3y &= 5\\
 %       x + y &= 2
@@ -499,15 +499,14 @@
     
 %     Let $\set{p_1, p_2, \ldots p_m} \subseteq \polyn{K}$, with $K$ an
 %     algebraically closed field.  The polynomials $\set{p_1, p_2,
-%       \ldots, p_m}$ have no common zero if and only if there exist
-%     polynomials
+%       \ldots, p_m}$ have no common zero in $K$ if and only if there
+%     exist polynomials
 %     $$q_1, q_2, \ldots, q_m$$ such that
 %     $$\sum_{i=1}^m p_iq_i = 1$$
     
 %   \end{theorem}\pause
   
-%   Similar sufficient condition results exist for polynomials over
-%   $\reals$.
+%   Similar results exist for polynomials over $\reals$.
 
 % \end{frame}
 
@@ -526,15 +525,14 @@
 % \begin{frame}{BSS Machines}
 
 %   \begin{itemize}
-%   \item Introduced by Blum, Shub, and Smale in 1989 paper, ``On a
+%   \item[] Introduced by Blum, Shub, and Smale in 1989 paper, ``On a
 %     Theory of Computation and Complexity over the Real Numbers:
 %     NP-Completeness, Recursive Functions, and Universal Machines''
-%   \item Basic idea is to build a Turing Machine that can have
-%     arbitrary real numbers on its ``tape''.
-%   \item Extended by Blum, Shub, Smale and Cucker in 1998 book,
+%   \item[] Extended by Blum, Shub, Smale and Cucker in 1998 book,
 %     ``Complexity and Real Computation''.
+%   \item[] Basic idea is to build a Turing Machine that can have
+%     arbitrary real numbers on its ``tape''.
 %   \end{itemize}
-  
 % \end{frame}
 
 % \begin{frame}{An Algorithm for Eliminating Values from $\mathcal{M}$}
@@ -582,8 +580,9 @@
 %       \item \textbf{Accept Node}: $\accept$
 %       \item \textbf{Reject Node}: $\reject$
 %       \end{itemize}
-%     \item Input node reads the input and initializes finitely many
-%       values in $\statespace_M$.
+%     \item Input node reads the input and initializes values in
+%       $\statespace_M$ by computing a linear map
+%       \functype{I}{\inspace_M}{\statespace_M}.
 %     \item Accept and Reject nodes analogous to TM accept/reject
 %       states.
 %     \end{itemize}
@@ -593,7 +592,7 @@
 %     \end{center}
 %   \end{columns}
 
-% \end{frame}
+%  \end{frame}
 
 % \begin{frame}{Finite Dimensional BSS Machines}
   
@@ -614,7 +613,7 @@
     
 %   \end{columns}
   
-% \end{frame}
+%  \end{frame}
 
 \begin{frame}{Formal FDM (Co-recognizer for $\mathcal{M})$}
   
@@ -632,23 +631,145 @@
 
 \end{frame}
 
-\begin{frame}{Example FDM}
-  
-  PLACEHOLDER (Rational recognizer over R)
- 
+\begin{frame}{Defining Computation}
+
+  \begin{itemize}
+    \setlength{\itemsep}{3mm}
+  \item[] A \textbf{configuration} of an FDM $M$ is a pair $\eta, x \in
+    \nodes \times \statespace_M$.\pause
+  \item[] A configuration is \textbf{terminal} if $\eta \notin
+    \set{\accept, \reject}$.\pause
+  \item[] For any non-terminal configuration $z = (\eta, \bar{x})$, $M$
+    defines a unique \textbf{next configuration}, $z'$ as follows:\\
+    
+    \begin{itemize}
+    \item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
+    \item If $\eta$ is a computation node, $z' = (\beta_{\eta}, g_\eta(x))$.
+    \item If $\eta$ is a branch node, $z' = \twopartdef
+      {(\beta_\eta^+,x)}  {h_\eta(x) \geq 0}
+      {(\beta_\eta^-, x)} {h_\eta(x) < 0}$.
+    \end{itemize}
+  \end{itemize}\pause
+
+  \vspace{\baselineskip}
+
+  If $z'$ is the next configuration of $z$, we write $z \yields z'$.
+
 \end{frame}
 
-\begin{frame}{Path Decomposition Theorem}
+\begin{frame}{Defining Computation}
 
-  PLACEHOLDER (State, give proof idea, maybe talk about computation
-  paths/coincidence sets?)
+  A \textbf{halting computation} performed by an FDM $M$ on input $x$
+  is a sequence of configurations: 
+  $$\compute_M(x) = (z_0, z_1, \ldots, z_t)$$ such that
+  \begin{align*}
+    z_0 &= (\eta_1, I(x))\\
+    z_t &\in \set{(\accept, x_t), (\reject, x_t)}\\
+    z_i &\yields z_{i+1} \text{ for } 0 \leq i < t
+  \end{align*}\pause
   
+  If $M$ halts on input $x$ after $t$ steps, we say that $x$ is in the
+  \textbf{time-t Halting Set} of $M$, which we denote by
+  $\halting_M(t)$.
+
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Characterization of Halting Sets for FDMs}
+
+  \begin{theorem}[\textbf{Path Decomposition Theorem}]
+    
+    For any FDM $M$ over a ring $R$, we have the following:
+
+    \begin{enumerate}
+    \item For any $t > 0$, the time-T halting set $\halting_M(t)$ is a
+      semi-algebraic set if $M$ branches on $>$, and $\halting_M(t)$
+      is quasi-algebraic if $M$ branches on $=$.
+
+    \item The halting set $\halting_M$ is a countable union of
+      disjoint semi(quasi)-algebraic sets.
+
+    \end{enumerate}
+  \end{theorem}
+\end{frame}
+
+\begin{frame}{Characterization of Halting Sets for FDMs}
+
+    \begin{columns}
+      \column{0.4\textwidth}
+      
+      \textbf{Proof Idea:} Consider the possible ways that an FDM can
+      traverse the node set $\nodes$.
+      
+      \column{0.66\textwidth}
+      \scaletopagewidth[.9]{\mandelrecfull{}}
+    \end{columns}
+    
+\end{frame}
+
+\begin{frame}{Characterization of Halting Sets for FDMs}
+
+    \begin{columns}
+      \column{0.4\textwidth}
+      
+      On input $(x_1, x_2)$, if $n$ is the first natural number such that
+      $|p_c^n| > 2$, then we start at $\eta_1$ and then repeat the
+      pair $(\eta_2, \eta_3)$ n times.
+      
+      \column{0.66\textwidth}
+      \scaletopagewidth[.9]{\mandelrecfull{}}
+    \end{columns}
+    
+\end{frame}
+
+
+\begin{frame}{Characterization of Halting Sets for FDMs}
+
+    \begin{columns}
+      \column{0.4\textwidth}
+      
+      For such $(x_1, x_2)$, we have:
+
+      \begin{align*}
+        h_{\eta_2}(I(x_1, x_2)) &\leq 2 \\
+        h_{\eta_2}(g_{\eta_3}(I(x_1, x_2))) &\leq 2 \\
+        h_{\eta_2}(g^2_{\eta_3}(I(x_1, x_2))) &\leq 2 \\
+        &\vdots\\
+        h_{\eta_2}(g^{n-1}_{\eta_3}(I(x_1, x_2))) &\leq 2 \\
+        h_{\eta_2}(g^{n}_{\eta_3}(I(x_1, x_2))) &> 2 \\
+      \end{align*}
+      
+      \column{0.66\textwidth}
+      \scaletopagewidth[.9]{\mandelrecfull{}}
+    \end{columns}    
+\end{frame}
+
+\begin{frame}{Characterization of Halting Sets for FDMs}
+
+  \begin{itemize}
+  \item[] Each halting path $\gamma$ corresponds to a system of
+    polynomial equalities/inequalities.  Input elements traversing
+    $\gamma$ form a semi/quasi-algebraic set.
+  \item[] Since there are only finitely many paths of length $t$,
+    $\halting_M(t)$ can be partitioned into semi-algebraic sets, one
+    for each halting path of length $t$.
+  \item[] The full halting set $\halting_M$ is just a countable union
+    over all $t > 1$ of $\halting_M(t)$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Characterization of Halting Sets for FDMs}
   \begin{corollary}
     The Mandelbrot Set is undecidable.
   \end{corollary}
+
+  Can show that $D$ is decidable if and only if $D_{yes}$ and $D_{no}$
+  are the halting sets of some machine $M$.\pause
+
+  By above, this means if $D$ is decidable, then $D_{yes}$ and
+  $D_{no}$ are both countable unions of semi/quasi-algebraic sets.\pause
+
+  Can be shown that $\mathcal{M}$ cannot be expressed as such a union.
+
 \end{frame}
 
 \begin{frame}{``Full'' BSS Machines}

@@ -42,11 +42,11 @@
 
 \newcommand{\mandelrecfull}[0]{
   \begin{tikzpicture}[node distance=4.5cm, >=stealth]
-    \node (input) [input, draw, thick] 
-    {\makecell[l]{\textbf{Input:} $(z_{Re}, z_{Im}) \in \reals^2$ \\
-        \textbf{Initialize:} $\bar{x} = (0, 0, z_{Re}, z_{Im})$}};
-    \node (branch) [branch, draw, thick, right of=input] {$h_{\eta_2}(\bar{x}) > 0$ ?};
-    \node (compute) [compute, draw, thick, above of=branch] {$\bar{x} = g_{\eta_3}(\bar{x})$};
+    \node (input) [input, draw, thick, label=270:$\eta_1$] 
+    {\makecell[l]{\textbf{Input:} $(x_1, x_2) \in \reals^2$ \\
+        \textbf{Initialize:} $\bar{x} = I(x_1, x_2)$}};
+    \node (branch) [branch, draw, thick, right of=input, label=-45:{$\eta_2$}] {$h_{\eta_2}(\bar{x}) > 0$ ?};
+    \node (compute) [compute, draw, thick, above of=branch, label=180:{$\eta_3$}] {$\bar{x} = g_{\eta_3}(\bar{x})$};
     \node (accept) [accept, draw, thick, below of=branch] {\textbf{Accept}};
     \node (reject) [reject, draw, thick, left of=accept] {\textbf{Reject}};
     
@@ -65,9 +65,11 @@
         $\nodes = \set{\eta_1, \eta_2, \eta_3, \accept, \reject}$\\
         $\inspace_M = \reals^2$\\
         $\statespace_M = \reals^4$\\ \\
-        \textbf{Computation Functions:}\\
+        \textbf{Input Function:}\\
+        $I(x_1, x_2) = (0, 0, x_1, x_2)$ \\ \\
+        \textbf{Computation Function(s):}\\
         $g_{\eta_3}(x_1, x_2, x_3, x_4) = (x_1^2 - x_2^2 + x_3,2x_1x_2 + x_4, x_3, x_4)$\\ \\
-        \textbf{Branching Functions:}\\
+        \textbf{Branching Function(s):}\\
         $h_{\eta_2}(x_1, x_2, x_3, x_4) = (x_1^2 + x_2^2 -2)$\\
       } };
   \end{tikzpicture}
@@ -109,8 +111,6 @@
     \draw [->, very thick] (branch) to [out=0, in=0, swap] node [auto] {No} (compute);
   \end{tikzpicture}
 }
-
-
 
 
 \tikzstyle{mandpoint}=[circle, 
