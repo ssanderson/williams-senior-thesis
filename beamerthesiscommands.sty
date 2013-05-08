@@ -164,4 +164,27 @@
   \end{tikzpicture}
 }
 
+\newcommand{\oldheadtape}[3][-1]{
+
+  \begin{tikzpicture}
+
+    \setcounter{tape_c}{1}
+
+    \foreach \symbol in #3
+    {
+      \ifnumequal{#1}{\value{tape_c}}
+      % Tape head.
+      {
+        \node (headcell) at (\value{tape_c},0) [cell, draw, fill=red!30]{\symbol};
+      }
+      % Regular cell.
+      {
+        \node at (\value{tape_c},0) [cell, draw]{\symbol};
+      }
+      \addtocounter{tape_c}{1}
+    }
+  \end{tikzpicture}
+}
+
+
 \newcommand{\scaletopagewidth}[2][1.0]{\resizebox{#1\textwidth}{!}{#2}}

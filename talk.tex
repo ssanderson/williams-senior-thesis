@@ -1,7 +1,6 @@
 \documentclass[c]{beamer}
 \usetheme{default}
 \title{Generalizing Nondeterminism for Algebraic Computation Machines}
-\subtitle{Possible Subtitle}
 \author{Scott Sanderson}
 \institute{Department of Mathematics\\Williams College}
 \date{\today}
@@ -22,15 +21,9 @@
 \newtheorem{proposition}{Proposition}
 \newtheorem{proofidea}{Proof Idea}
 
-\begin{frame}
-  \titlepage
-\end{frame}
-
-\begin{frame}{Outline}
-  \begin{center}
-    \scaletopagewidth{\outline}
-  \end{center}
-\end{frame}
+% \begin{frame}
+%   \titlepage
+% \end{frame}
 
 % \begin{frame}{Computability and Complexity Theory}
   
@@ -47,6 +40,30 @@
 %     }
 %   \end{columns}
 
+% \end{frame}
+
+% \begin{frame}{Outline}
+%   \begin{center}
+%     \scaletopagewidth{\outlinenobss}
+%   \end{center}
+% \end{frame}
+
+% \begin{frame}{Outline}
+%   \begin{center}
+%     \scaletopagewidth{\outlinenondet}
+%   \end{center}
+% \end{frame}
+
+% \begin{frame}{Outline}
+%   \begin{center}
+%     \scaletopagewidth{\outlinealmostfinal}
+%   \end{center}
+% \end{frame}
+
+% \begin{frame}{Outline}
+%   \begin{center}
+%     \scaletopagewidth{\outlinefinal}
+%   \end{center}
 % \end{frame}
 
 % \begin{frame}{A Simple Puzzle}
@@ -74,7 +91,9 @@
 %     \vspace{\baselineskip}
 
 %     An instance of \subsum{} is a \textbf{Yes Instance} if
-%     there exists some $X \subseteq S$ such that $\sum_X = t$.\\
+%     there exists some $X \subseteq S$ such that $\sum_X = t$.
+
+%     \vspace{\baselineskip}
     
 %     Otherwise it is a \textbf{No Instance}.
 % \end{frame}
@@ -83,39 +102,42 @@
 
 %   \begin{itemize}
 %   \item[] \subsum{} is an example of a \textbf{Decision Problem}.\pause
-%   \item[] A Decision Problem $D$ is a set of strings,
-%     partitioned into Yes Instances and No Instances, $D_{yes}$ and
-%     $D_{no}$.\pause
-%   \item[] Computational Complexity Theory seeks to study the intrinsic
-%     \textbf{difficulty} of solving these tasks.
+
+%     \vspace{\baselineskip}
+
+%   \item[] A Decision Problem $D$ is a set of values, partitioned into
+%     Yes Instances and No Instances, $D_{yes}$ and $D_{no}$.
+
+%   \item[] Goal is to find an algorithm that ``accepts'' $D_{yes}$ and
+%     ``rejects'' $D_{no}$.  Such an algorithm \textbf{decides} $D$.
 %   \end{itemize}
 
 % \end{frame}
 
-% % \begin{frame}{Machine Models}
+% \begin{frame}{Machine Models}
   
-% %   \begin{itemize}
-% %   \item We formalize the notion of ``procedure for performing a task''
-% %     by developing models of computing machines.\pause
-% %   \item In classical theory of computation, the de facto machine model
-% %     is the Turing Machine.
-% %   \end{itemize}
+%   \begin{itemize}
+%   \item We formalize the notion of ``procedure for performing a task''
+%     by developing models of computing machines.\pause
+%   \item In classical theory of computation, the de facto machine model
+%     is the Turing Machine.
+%   \end{itemize}
 
-% % \end{frame}
+% \end{frame}
 
-% \begin{frame}{Turing Machines}
+% \begin{frame}{Classical Machine Model - Turing Machines}
 %   \begin{columns}
 
 %     \column{0.5\textwidth}
 %     \begin{itemize}
-%     \item[] Infinite one-dimensional tape, divided into cells.    
+%     \item[] Infinite one-way tape, divided into cells.    
 %     \end{itemize}
 %     \column{0.5\textwidth}
 %     \scaletopagewidth{\tape{$q$}{{1,0,1,0,0,$\blank$, $\blank$, $\cdots$}}}
 %   \end{columns}
 % \end{frame}
 
-% \begin{frame}{Turing Machines}
+% \begin{frame}{Classical Machine Model - Turing Machines}
 %   \begin{columns}
 
 %     \column{0.5\textwidth}
@@ -216,54 +238,52 @@
 %   \end{columns}
 % \end{frame}
 
-% \begin{frame}{Turing Machine Example - Even or Odd?}
-%   \begin{columns}[c]
+% % \begin{frame}{Turing Machine Example - Even or Odd?}
+% %   \begin{columns}[c]
     
-%     \small
+% %     \small
 
-%     \column{0.5\textwidth}
+% %     \column{0.5\textwidth}
 
-%     \begin{itemize}
-%     \item[] $Q = \set{q_0, q_1, q_{acc}, q_{rej}}$
-%     \item[] $\Gamma = \set{\blank, 0, 1}$
-%     \item[] $\Sigma = \set{0,1}$
-%     \item[] $\delta(q_0, 0) = (q_0, \blank, \rightarrow)$
-%     \item[] $\delta(q_0, 1) = (q_1, \blank, \rightarrow)$
-%     \item[] $\delta(q_0, \blank) = (q_{acc}, \blank, \leftarrow)$
-%     \item[] $\delta(q_1, 0) = (q_0, \blank, \rightarrow)$
-%     \item[] $\delta(q_1, 1) = (q_1, \blank, \rightarrow)$
-%     \item[] $\delta(q_1, \blank) = (q_{rej}, \blank, \leftarrow)$
-%     \end{itemize}
+% %     \begin{itemize}
+% %     \item[] $Q = \set{q_0, q_1, q_{acc}, q_{rej}}$
+% %     \item[] $\Gamma = \set{\blank, 0, 1}$
+% %     \item[] $\Sigma = \set{0,1}$
+% %     \item[] $\delta(q_0, 0) = (q_0, \blank, \rightarrow)$
+% %     \item[] $\delta(q_0, 1) = (q_1, \blank, \rightarrow)$
+% %     \item[] $\delta(q_0, \blank) = (q_{acc}, \blank, \leftarrow)$
+% %     \item[] $\delta(q_1, 0) = (q_0, \blank, \rightarrow)$
+% %     \item[] $\delta(q_1, 1) = (q_1, \blank, \rightarrow)$
+% %     \item[] $\delta(q_1, \blank) = (q_{rej}, \blank, \leftarrow)$
+% %     \end{itemize}
 
-%     \column{0.5\textwidth}
+% %     \column{0.5\textwidth}
     
-%       \scaletopagewidth[0.8]{\tape[1]{$q_0$}{{1,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}}
-%       \scaletopagewidth[0.8]{\tape[2]{$q_1$}{{$\blank$,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}}
-%       \scaletopagewidth[0.8]{\tape[3]{$q_0$}{{$\blank$,$\blank$,0,1,$\blank$,$\cdots$}} \vspace{1mm}}
-%       \scaletopagewidth[0.8]{\tape[4]{$q_0$}{{$\blank$,$\blank$,$\blank$,1,$\blank$,$\cdots$}} \vspace{1mm}}
-%       \scaletopagewidth[0.8]{\tape[5]{$q_1$}{{$\blank$,$\blank$,$\blank$,$\blank$,$\blank$,$\cdots$}} \vspace{1mm}}
-%       \scaletopagewidth[0.8]{\tape[4]{$q_{rej}$}{{$\blank$,$\blank$,$\blank$,$\blank$,$\blank$, $\cdots$}} \vspace{1mm}}
+% %       \scaletopagewidth[0.8]{\tape[1]{$q_0$}{{1,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}}
+% %       \scaletopagewidth[0.8]{\tape[2]{$q_1$}{{$\blank$,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}}
+% %       \scaletopagewidth[0.8]{\tape[3]{$q_0$}{{$\blank$,$\blank$,0,1,$\blank$,$\cdots$}} \vspace{1mm}}
+% %       \scaletopagewidth[0.8]{\tape[4]{$q_0$}{{$\blank$,$\blank$,$\blank$,1,$\blank$,$\cdots$}} \vspace{1mm}}
+% %       \scaletopagewidth[0.8]{\tape[5]{$q_1$}{{$\blank$,$\blank$,$\blank$,$\blank$,$\blank$,$\cdots$}} \vspace{1mm}}
+% %       \scaletopagewidth[0.8]{\tape[4]{$q_{rej}$}{{$\blank$,$\blank$,$\blank$,$\blank$,$\blank$, $\cdots$}} \vspace{1mm}}
       
-%   \end{columns}
-% \end{frame}
+% %   \end{columns}
+% % \end{frame}
 
-% \begin{frame}{Limitations of Turing Machines}
+% % \begin{frame}{Limitations of Turing Machines}
 
-%   \begin{itemize}
-%   \item[] Inputs must be symbolically representable.
-%   \item[] Can't talk about problems defined over $\reals$ or
-%     $\complexes$.
-%   \end{itemize}
+% %   \begin{itemize}
+% %   \item[] Inputs must be symbolically representable.
+% %   \item[] Can't talk about problems defined over $\reals$ or
+% %     $\complexes$.
+% %   \end{itemize}
   
-% \end{frame}
+% % \end{frame}
 
-% \begin{frame}{\subsum{} Version 2.0}
+% \begin{frame}{\subsum{} Generalized}
   
 %   \begin{itemize}
 %   \item[] Does the set $\set{1,\frac{3}{4},\sqrt{2},-5,-3,18,-6,12}$
-%     contain a subset adding up to $\pi$?\pause
-%   \item[] No. \textbf{Proof}: Set contains only algebraic numbers, but
-%     $\pi$ is transcendental.
+%     contain a subset adding up to $\pi$?
 %   \end{itemize}
 % \end{frame}
 
@@ -291,30 +311,59 @@
 % \begin{frame}{The Mandelbrot Set as Decision Problem}
   
 %   \begin{itemize}
-%   \item[] In general it's ``easy'' to tell if some $c \in \complexes$ is
-%     \textbf{not} in the Mandelbrot Set.\pause
-%   \item[] Compute the sequence $p_c(0), p_c(p_c(0)), \ldots, p_c^n(0),
-%     \ldots$. If we ever see a value with magnitude greater than 2, $c
-%     \notin \mathcal{M}$.  This is \textbf{guaranteed} to happen for
-%     any $c \notin \mathcal{M}$
+%   \item[] ``Easy'' to tell if $c \in \complexes$ is \textbf{not} in
+%     the Mandelbrot Set.\pause
+
+%     \vspace{\baselineskip}
+
+%   \item[] Compute $p_c(0), p_c(p_c(0)), \ldots, p_c^n(0), \ldots$. If
+%     we see a value with magnitude greater than 2, $c \notin
+%     \mathcal{M}$.  This is \textbf{guaranteed} to happen for any $c
+%     \notin \mathcal{M}$.
+
+%     \vspace{\baselineskip}
+
 %   \end{itemize}
 % \end{frame}
 
 % \begin{frame}{The Mandelbrot Set $\mathcal{M}$}
 %   \begin{columns}
 
-%     \column[c]{0.3\textwidth}
-%     {\scriptsize
-%       \textbf{Input:} $c = 0.5 + 0.5i$
-%     \begin{align*}
-%       p_c(0) &=& 0.5 + 0.5i\\
-%       p_c(p_c(0)) &=& 0.5 + i\\
-%       p_c(p_c(p_c(0))) &=& -.25 + 1.5i\\
-%       p_c^4(0) &=& -1.687 + -.25i\\
-%       p_c^5(0) &=& 3.285 + 1.34i\\
-%     \end{align*}
-%     }
-%     \column{0.7\textwidth}
+%     \column[c]{0.5\textwidth}
+%     % {\scriptsize
+%     %   \textbf{Input:} $c = 0.5 + 0.5i$
+%     % \begin{align*}
+%     %   p_c(0) &=& 0.5 + 0.5i\\
+%     %   p_c(p_c(0)) &=& 0.5 + i\\
+%     %   p_c(p_c(p_c(0))) &=& -.25 + 1.5i\\
+%     %   p_c^4(0) &=& -1.687 + -.25i\\
+%     %   p_c^5(0) &=& 3.285 + 1.34i\\
+%     % \end{align*}
+%     % }
+
+%     \textbf{Input:} $c = i$
+%     \begin{center}
+%       \scaletopagewidth{
+%         \begin{tikzpicture}[>=stealth]
+%           \draw [thick] (-3.0,0) -- (3.0,0); 
+%           \draw [thick](0,-3.0) --  (0,3.0); 
+%           \draw (0,0) circle (2.0cm); 
+%           \node (start) [mandpoint] at (0.0, 0.0) {};
+%           \node (p0) [mandpoint] at (0, 1) {};
+%           \node (p1) [mandpoint] at (-1, 1) {};
+%           \node (p2) [mandpoint] at (0, -1) {};
+%           \node (p3) [mandpoint] at (-1, 1) {};
+
+%           \draw [->] (start) edge[out=45, in=0] (p0) {};
+%           \draw [->] (p0) edge[out=135, in=90] (p1);
+%           \draw [->] (p1) edge[out=270, in=180] (p2);
+%           \draw [->] (p2) edge[out=135, in=0] (p3);
+
+%         \end{tikzpicture}
+%       }
+%     \end{center}
+%     \column{0.5\textwidth}
+%     \textbf{Input:} $c = .5 + .5i$
 %     \begin{center}
 %       \scaletopagewidth{
 %         \begin{tikzpicture}[>=stealth]
@@ -417,7 +466,7 @@
   
 % \end{frame}
 
-% \begin{frame}{The Mandelbrot Set as Decision Problem}
+% \begin{frame}{Mandelbrot Set as Decision Problem}
   
 %   \textbf{Question}: Does there exist an algorithm for determining
 %   whether an arbitrary complex number $c$ is a member of
@@ -499,31 +548,30 @@
   
 % \end{frame}
 
-% \begin{frame}{Hilbert's Nullstellensatz}
+% % \begin{frame}{Hilbert's Nullstellensatz}
   
-%   \begin{theorem}[Hilbert Nullstellensatz (Weak Form)]
+% %   \begin{theorem}[Hilbert Nullstellensatz (Weak Form)]
     
-%     Let $\set{p_1, p_2, \ldots p_m} \subseteq \polyn{K}$, with $K$ an
-%     algebraically closed field.  The polynomials $\set{p_1, p_2,
-%       \ldots, p_m}$ have no common zero in $K$ if and only if there
-%     exist polynomials
-%     $$q_1, q_2, \ldots, q_m$$ such that
-%     $$\sum_{i=1}^m p_iq_i = 1$$
+% %     Let $\set{p_1, p_2, \ldots p_m} \subseteq \polyn{K}$, with $K$ an
+% %     algebraically closed field.  The polynomials $\set{p_1, p_2,
+% %       \ldots, p_m}$ have no common zero in $K$ if and only if there
+% %     exist polynomials
+% %     $$q_1, q_2, \ldots, q_m$$ such that
+% %     $$\sum_{i=1}^m p_iq_i = 1.$$
     
-%   \end{theorem}\pause
+% %   \end{theorem}\pause
   
-%   Similar results exist for polynomials over $\reals$.
+% %   Similar results exist for polynomials over $\reals$.
 
-% \end{frame}
+% % \end{frame}
 
-% \begin{frame}{Hilbert's Nullstellensatz as Decision Problem}
+% \begin{frame}{Finding Shared Zeros as Decision Problem}
 
 %   An instance of $\hn_R$ is a set 
 %   $$S = \set{p_1, p_2, \ldots, p_m} \subseteq \polyn{R}$$ 
-%   Such a set is a Yes Instance if there exists
-%   a point $\bar{x} \in R^n$ such that $p_i(\bar{x}) = 0$ for $1 \leq i
-%   \leq m$.  \\
-
+%   Such a set is a Yes Instance if there exists a point $\bar{x} \in
+%   R^n$ such that $p_i(\bar{x}) = 0$ for $1 \leq i \leq m$.\\
+  
 %   If no such $\bar{x}$ exists, $S$ is a No Instance.
   
 % \end{frame}
@@ -531,11 +579,17 @@
 % \begin{frame}{BSS Machines}
 
 %   \begin{itemize}
-%   \item[] Introduced by Blum, Shub, and Smale in 1989 paper, ``On a
-%     Theory of Computation and Complexity over the Real Numbers:
-%     NP-Completeness, Recursive Functions, and Universal Machines''
+%   \item[] Introduced by Blum, Shub, and Smale in 1989 paper.
+%     % ``On a Theory of Computation and Complexity over the Real Numbers:
+%     % NP-Completeness, Recursive Functions, and Universal Machines''
+
+%     \vspace{\baselineskip}
+
 %   \item[] Extended by Blum, Shub, Smale and Cucker in 1998 book,
 %     ``Complexity and Real Computation''.
+
+%     \vspace{\baselineskip}
+
 %   \item[] Basic idea is to build a Turing Machine that can have
 %     arbitrary real numbers on its ``tape''.
 %   \end{itemize}
@@ -641,12 +695,12 @@
 
 %   \begin{itemize}
 %     \setlength{\itemsep}{3mm}
-%   \item[] A \textbf{configuration} of an FDM $M$ is a pair $\eta, x \in
+%   \item[] A \textbf{configuration} of an FDM $M$ is a pair $(\eta, x) \in
 %     \nodes \times \statespace_M$.\pause
 %   \item[] A configuration is \textbf{terminal} if $\eta \notin
 %     \set{\accept, \reject}$.\pause
 %   \item[] For any non-terminal configuration $z = (\eta, \bar{x})$, $M$
-%     defines a unique \textbf{next configuration}, $z'$ as follows:\\
+%     defines a unique \textbf{next configuration}, $z'$:\\
     
 %     \begin{itemize}
 %     \item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
@@ -671,7 +725,7 @@
 %   \begin{align*}
 %     z_0 &= (\eta_1, I(x))\\
 %     z_t &\in \set{(\accept, x_t), (\reject, x_t)}\\
-%     z_i &\yields z_{i+1} \text{ for } 0 \leq i < t
+%     z_i &\yields z_{i+1} \text{ for } 0 \leq i < t.
 %   \end{align*}\pause
   
   
@@ -686,7 +740,7 @@
 
 % \begin{frame}{Characterization of Halting Sets for FDMs}
 
-%   \begin{theorem}[\textbf{Path Decomposition Theorem}]
+%   \begin{theorem}[\textbf{Path Decomposition Theorem} - Blum et al. 1989]
     
 %     For any FDM $M$ over a ring $R$, we have the following:
 
@@ -725,9 +779,8 @@
 %     \begin{columns}
 %       \column{0.4\textwidth}
       
-%       On input $(x_1, x_2)$, if $n$ is the first natural number such that
-%       $|p_c^n| > 2$, then we start at $\eta_1$ and then repeat the
-%       pair $(\eta_2, \eta_3)$ n times.
+%       Each sequence of nodes, $\gamma$, corresponds to a set of
+%       choices made at all the branch nodes in $\gamma$.
       
 %       \column{0.66\textwidth}
 %       \scaletopagewidth[.9]{\mandelrecfull{}}
@@ -736,12 +789,12 @@
 % \end{frame}
 
 
-% \begin{frame}{Characterization of Halting Sets for FDMs}
+% \begin{frame}{Proving Path Decomposition Thm.}
 
 %     \begin{columns}
 %       \column{0.4\textwidth}
       
-%       For such $(x_1, x_2)$, we have:
+%       For such $(x_1, x_2)$, halting after $n$ loops:
 
 %       \begin{align*}
 %         h_{\eta_2}(I(x_1, x_2)) &\leq 2 \\
@@ -757,17 +810,26 @@
 %     \end{columns}    
 % \end{frame}
 
-% \begin{frame}{Characterization of Halting Sets for FDMsn}
+% \begin{frame}{Proving Path Decomposition Thm.}
 
 %   \begin{itemize}
 %   \item[] Each halting path $\gamma$ corresponds to a system of
 %     polynomial equalities/inequalities. Inputs traversing $\gamma$
 %     form a semi/quasi-algebraic set.\pause
+
+%     \vspace{\baselineskip}
+
 %   \item[] Since there are only finitely many paths of length $t$,
 %     $\halting_M(t)$ can be partitioned into semi-algebraic sets, one
 %     for each halting path of length $t$. (Gives us part 1).\pause
+
+%     \vspace{\baselineskip}
+
 %   \item[] The full halting set $\halting_M$ is just a countable union
 %     over all $t > 1$ of $\halting_M(t)$. (Gives us part 2.)\pause
+
+%     \vspace{\baselineskip}
+
 %   \item[] For each halting $\gamma$, we traverse a fixed sequence of
 %     computation nodes, $\eta_1, \eta_2, \eta_3, \ldots \eta_k$, so
 %     $\computefn_M(x)$ computes the composition of $g_{\eta_1},
@@ -775,23 +837,16 @@
 %   \end{itemize}
 % \end{frame}
 
-% \begin{frame}{Characterization of Halting Sets for FDMs}
+% \begin{frame}{$\mathcal{M}$ is Undecidable}
+  
+%   \begin{corollary}
+%     The Mandelbrot Set not the halting set of any FDM.
+%   \end{corollary}
 
 %   \begin{corollary}
-%     The Mandelbrot Set is undecidable.
+%     The Mandelbrot Set not decidable.
 %   \end{corollary}
   
-%   \textbf{Proof:} \\
-  
-%   \begin{itemize}
-%   \item[] Can show that $D$ is decidable if and only if $D_{yes}$ and
-%     $D_{no}$ are the halting sets of some machine $M$.\pause
-%   \item[] By above, this means if $D$ is decidable, then $D_{yes}$ and
-%     $D_{no}$ are both countable unions of semi/quasi-algebraic
-%     sets.\pause
-%   \item[] Can be shown that $\mathcal{M}$ cannot be expressed as such
-%     a union.
-%   \end{itemize}
 % \end{frame}
 
 % \begin{frame}{``Full'' BSS Machines}
@@ -801,56 +856,147 @@
 %   \vspace{\baselineskip}
 
 %   Given $\set{p_1, p_2, \ldots, p_k} \subseteq \polyn{K}$, do $p_i$
-%   have a shared zero? in $K$\\
+%   have a shared zero in $K$\\
   
 %   \vspace{\baselineskip}
 
-%   Hard to represent inputs from big polynomials in a finite state
-%   space?
-    
 % \end{frame}
 
 % \begin{frame}{``Full'' BSS Machines}
 
 %   \textbf{Solution:}
 
-%   Create an infinitely long ``tape'' by letting $\statespace_M =
-%   R_\infty$.\pause\\
+%   \begin{itemize}
+%   \item Allow inputs from $R^n$ for any $n \in \naturals$.
+%   \item Create infinitely long ``tape'' by letting $\statespace_M =
+%     R_\infty$.\pause
+%   \item Elements of $R_\infty$ look like:
 
-%   Elements of $R_\infty$ look like:
-%   $$\cdots, x_{-2}, x_{-1}, x_0 . x_1, x_2, \cdots$$\pause\\
+%     \vspace{-.8\baselineskip}
+
+%     $$\cdots, x_{-2}, x_{-1}, x_0 . x_1, x_2, \cdots.$$\pause
+
+%     \vspace{-\baselineskip}
+
+%   \item Extend polynomial maps $g: R^m \rightarrow R^n$ to $\hat{g}:
+%     R_\infty \rightarrow R_\infty$.
+% \end{itemize}
+% \end{frame}
+
+% \begin{frame}{Path Decomposition Thm. for Full BSS Machines}
+
+%   \begin{theorem}[\small \textbf{Path Decomposition Theorem} - Blum et al. 1998]
+%     $\halting_M$ is a countable union of semi(quasi)-algebraic sets.
+%   \end{theorem}
   
-%   Extend polynomial maps $g: R^m \rightarrow R^n$ to $\hat{g}:
-%   R_\infty \rightarrow R_\infty$.
+% \end{frame}
+
+% \begin{frame}{Measuring Input Size}
+
+%   \begin{center}
+%     \textbf{Input 1:}
+%     \tape{q}{{$\cdots$, $r_1$, $r_2$, $r_3$, $r_4$, $\cdots$}}
+%   \end{center}
+
+%   \begin{center}
+%     \textbf{Input 2:}
+%     \tape{q}{{$\cdots$, $r_1$, $r_2$, $r_3$, $r_4$, $r_5$, $r_6$,
+%         $r_7$, $r_8$, $r_9$, $\cdots$}}
+%   \end{center}
 
 % \end{frame}
 
 % \begin{frame}{Measuring Input Size}
 
-%   PLACEHOLDER
+%   \begin{center}
+%     \textbf{Input 1:}
+%     \tape{q}{{$\cdots$, $1$, $3$, $\pi$, $\sqrt{2}$, $\cdots$}}
+%   \end{center}
 
-%   (Image of Turing Machine Tape, graphic highlighting length of tape,
-%   followed by highlighting single cell.  Note that the latter notion
-%   doesn't make sense for classical theory because all symbols are
-%   equal up to a constant.)
+%   \begin{center}
+%     \textbf{Input 2:}
+%     \oldheadtape[2]{q}{{$\cdots$, $2^{99}$, $3$, $\pi$, $\sqrt{2}$, $\cdots$}}
+%   \end{center}\pause
+
+%   Define ``size'' of a cell element using height function
+%   \functype{ht_R}{R}{\reals}.
+  
+% \end{frame}
+
+% \begin{frame}{Measuring Input Size}
+  
+%   \begin{itemize}
+%   \item[] For $x \in R^n$, $\len(x) = n$.
+
+%     \vspace{\baselineskip}
+    
+%   \item[] The \textbf{size} of $x$ is $\size(x) = \len(x)\max_{1 \leq i \leq n}(ht_R(x_i))$.
+%   \end{itemize}
   
 % \end{frame}
 
 % \begin{frame}{Measuring Computation Cost}
+  
+%   Let $M$ be a BSS Machine over $R$, with height function $ht_R$.
 
-%   PLACEHOLDER
+%   \vspace{\baselineskip}
+
+%   If $\compute_M(x) = (z_0, z_1, z_2, \ldots, z_T)$, then:
+%   $$\cost(\compute_M(x)) = T\times ht_{max}(x).$$
   
 % \end{frame}
 
 % \begin{frame}{The Class $\p$}
-
-%   PLACEHOLDER
+  
+%   A decision problem $D$ is in class $\p$ if there exists a BSS
+%   Machine $M$ and constants $c, q \in \reals$ such that:
+%   \begin{itemize}
+%   \item $M$ decides $D$
+%   \item For every $x \in D$, $\cost(\compute_M(x) < c \size(x)^d$.
+%   \end{itemize}
   
 % \end{frame}
 
-% \begin{frame}{The Class $\np$}
-  
-%   PLACEHOLDER
+% \begin{frame}{Outline}
+%   \begin{center}
+%     \scaletopagewidth{\outlinefinal}
+%   \end{center}
+% \end{frame}
+
+% \begin{frame}{Verifiers}
+
+%   Recall our \subsum{} instance:
+
+%   \vspace{\baselineskip}
+
+%   $(\;\set{1,4,7,-5,-3,18,-6,12}\;, \;10\;)$\pause
+
+%   \vspace{\baselineskip}
+
+%   The subset $\set{18, -3, -6, 1}$ is a short ``proof'' that this is a
+%   Yes Instance.
+
+%   \vspace{\baselineskip}
+
+% \end{frame}
+
+% \begin{frame}{Verifiers}
+
+%   A machine $M$ taking inputs $(x, w)$ is a \textbf{verifier} for a decision
+%   problem $D$ if:
+
+%   \begin{itemize}
+%   \item For all $x \in D$, there exists a $w$ such that $M$ accepts
+%     $(x, w)$ if and only if $x \in D_{yes}$
+%   \end{itemize}\pause
+
+%   A verifier for a problem $D$ is a machine that can use proofs to
+%   check if some $x$ belongs to $D_{yes}$.\pause
+
+%   \vspace{\baselineskip}
+
+%   In our example: $x = (\;\set{1,4,7,-5,-3,18,-6,12}\;, \;10\;)$ and
+%   $\set{18, -3, -6, 1}$.
 
 % \end{frame}
 
@@ -863,23 +1009,41 @@
 
 % \end{frame}
 
-% \begin{frame}{Two Characterizations of Classical $\mathbf{NP}$}
+\begin{frame}{Nondeterministic Turing Machines}
 
-%     PLACEHOLDER
+  \begin{columns}
 
-%     (Define w/r/t verifiability, define w/r/t nondeterministic Turing Machine)
-  
-% \end{frame}
+    \column{0.5\textwidth}
+    Standard TM Transition:
+    \functype{\delta}{(Q \times \Gamma)}{(Q \times \Gamma \times
+      \set{\leftarrow, \rightarrow})}
+       
+    \column{0.5\textwidth}
 
-% \begin{frame}{Classical Nondeterminism}
+    \begin{center}
+      \detercomptm{}
+    \end{center}
+  \end{columns}
+\end{frame}
 
-%   PLACEHOLDER
-  
-%   (Two column slide, left side shows a straight-line sequence of
-%   configurations, right side shows a branching tree of
-%   configurations.  Explain rules for acceptance.)
-  
-% \end{frame}
+
+\begin{frame}{Nondeterministic Turing Machines}
+
+  \begin{columns}
+
+    \column{0.5\textwidth}
+    Nondeterministic TM Transition:
+    \functype{\delta}{(Q \times \Gamma)}{\power{Q \times \Gamma \times
+      \set{\leftarrow, \rightarrow}}}
+       
+    \column{0.5\textwidth}
+
+    \begin{center}
+      \scaletopagewidth{\ndetercomptm{}}
+    \end{center}
+  \end{columns}
+\end{frame}
+
 
 % \begin{frame}{Nondeterminism in BSS Framework}
 
