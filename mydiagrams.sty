@@ -201,6 +201,10 @@
     \draw [->, extend] (TM) to (NTM);
     \draw [->, extend] (TM) to (verify);
 
+    \draw [->, generalize, color=white] (TM) to [out=15, in=165] (BSS);
+    \draw [->, generalize, color=white] (verify) to [out=345, in=195] (bverify);
+    \draw [->, generalize, color=white] (NTM) to [out=345, in=195]  (NDET);
+
   \end{tikzpicture}
 }
 
