@@ -21,7 +21,6 @@
   \end{tikzpicture}
 }
 
-
 \newcommand{\mandelrecsimple}[0]{
   \begin{tikzpicture}[node distance=4.5cm, >=stealth]
     \node (input) [input, draw, thick] 
@@ -63,8 +62,6 @@
     \node (legend) [rectangle, draw, fill=black!15, node distance=3.0cm]
     { \makecell[l]{
         $\nodes = \set{\eta_1, \eta_2, \eta_3, \accept, \reject}$\\
-        $\inspace_M = \reals^2$\\
-        $\statespace_M = \reals^4$\\ \\
         \textbf{Input Function:}\\
         $I(x_1, x_2) = (0, 0, x_1, x_2)$ \\ \\
         \textbf{Computation Function(s):}\\
@@ -168,7 +165,7 @@
                      above of=BSS, node distance=2cm] {Algebraic Theory of Computation};
 
     \draw[color=white] (verify) to node[midway, color=black] {=} (NTM);
-    \draw[color=white] (bverify) to node[midway, color=black] {$\subseteq$} (NDET);
+    \draw[color=white] (bverify) to node[midway, color=black] {$\supseteq$} (NDET);
 
     \draw [->, extend] (TM) to (NTM);
     \draw [->, extend] (TM) to (verify);
@@ -259,7 +256,7 @@
     \node (z0) [circle, draw, thick] {$q_0,s_0$};
     \node (z1) [circle, draw, thick, below of=z0] {$q_1, s_1$};
     \node (z2) [circle, draw, thick, below of=z1] {$q_2, s_2$};
-    \node (z3) [circle, draw, thick, below of=z2] {$q_2, s_2$};
+    \node (z3) [circle, draw, thick, below of=z2] {$q_3, s_3$};
     \node (cont) [circle, draw, thick, below of=z3] {$\cdots$};
     \node (end) [circle, draw, thick, below of=cont] {$q_t, s_t$};
     
@@ -270,6 +267,25 @@
     \draw [->] (cont) -- (end);
   \end{tikzpicture}
 }
+
+\newcommand{\detercompbss}[0]{
+  \begin{tikzpicture}[font=\footnotesize, inner sep=0mm, minimum width=.75cm]
+    
+    \node (z0) [circle, draw, thick] {$q_0,s_0$};
+    \node (z1) [circle, draw, thick, below of=z0] {$q_1, s_1$};
+    \node (z2) [circle, draw, thick, below of=z1] {$q_2, s_2$};
+    \node (z3) [circle, draw, thick, below of=z2] {$q_3, s_3$};
+    \node (cont) [circle, draw, thick, below of=z3] {$\cdots$};
+    \node (end) [circle, draw, thick, below of=cont] {$q_t, s_t$};
+    
+    \draw [->] (z0) -- (z1);
+    \draw [->] (z1) -- (z2);
+    \draw [->] (z2) -- (z3);
+    \draw [->] (z3) -- (cont);
+    \draw [->] (cont) -- (end);
+  \end{tikzpicture}
+}
+
 
 \newcommand{\ndetercomptm}[0]{
   \begin{tikzpicture}[font=\footnotesize, inner sep=1mm, minimum width=1.5cm]
