@@ -345,6 +345,23 @@
   \end{tikzpicture}
 }
 
+\newcommand{\newtonhigh}[0]{
+  
+  \begin{tikzpicture}[node distance=4cm]
+
+    \node (init)   [input, draw] {Input: $p \in \reals[x]$, $z \in \reals$, $\epsilon \in \reals$};
+    \node (comp)   [compute, draw, below of=init]   {$z = z - \frac{p(z)}{p'(z)}$};
+    \node (check)  [branch, draw, below of=comp]    {$|p(x)| - \epsilon < 0$};
+    \node (accept) [accept, draw, below of=check]   {Output $z$};
+    
+    \draw [->, thick] (init) --                                      (comp);
+    \draw [->, thick] (comp) --                                      (check);
+    \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {No} (comp);
+    \draw [->, thick] (check) to node[auto] {Yes}                    (accept);
+
+  \end{tikzpicture}
+}
+
 
 
 

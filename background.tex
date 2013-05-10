@@ -199,26 +199,21 @@ $h(x) \neq 0$, respectively.\\
   5.  We will show later how we can modify our definitions to allow
   for uniform machines that can process inputs of arbitrary size.
 \end{example}
-\begin{figure}[p]
-  \centering
 
-  \begin{tikzpicture}[node distance=4cm]
-
-    \node (init)   [input, draw] {Input: $p \in \reals[x]$, $z \in \reals$, $\epsilon \in \reals$};
-    \node (comp)   [compute, draw, below of=init]   {$z = z - \frac{p(z)}{p'(z)}$};
-    \node (check)  [branch, draw, below of=comp]    {$|p(x)| - \epsilon < 0$};
-    \node (accept) [accept, draw, below of=check]   {Output $z$};
-    
-    \draw [->, thick] (init) --                                      (comp);
-    \draw [->, thick] (comp) --                                      (check);
-    \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {No} (comp);
-    \draw [->, thick] (check) to node[auto] {Yes}                    (accept);
-
-  \end{tikzpicture}
-
-  \caption{Newton Machine - High Level}
-  \label{fig:newton-high}
-\end{figure}
+\begin{minipage}{0.5\linewidth}
+  \begin{center}
+    \begin{algorithmic}
+      \Large \Require $c \in \complexes$ \State $z = 0$ \While{$|z|<
+        2$} \State $z = z^2 +c$
+      \EndWhile
+      \State \textbf{Accept}
+    \end{algorithmic}
+  \end{center}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+  \newtonhigh{}
+\end{minipage}
+\captionof{figure}{Newton Machine - High Level} \label{fig:newton-high}
 
 \begin{figure}[p]
   \centering
