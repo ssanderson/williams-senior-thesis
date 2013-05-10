@@ -377,6 +377,7 @@
 
   \begin{itemize}
   \item[] Introduced by Blum, Shub, and Smale in 1989 paper:
+    
     ``On a Theory of Computation and Complexity over the Real Numbers:
     NP-Completeness, Recursive Functions, and Universal Machines''
 
@@ -388,7 +389,7 @@
     \vspace{\baselineskip}
 
   \item[] Basic idea is to build a Turing Machine that can have
-    arbitrary real numbers on its ``tape''.
+    entries from some arbitrary ring on its ``tape''.
   \end{itemize}
 \end{frame}
 
@@ -406,7 +407,7 @@
     \vspace{-.8\baselineskip}
     
     $$\cdots, x_{-2}, x_{-1}, x_0 . x_1, x_2, \cdots.$$
-    
+    \pause
   \item[] $\nodes$ is analogous to Turing Machine's set of
     states.
   \item[] $\statespace_M$ is analogous to Turing Machine's tape.
@@ -464,11 +465,15 @@
   \begin{columns}
     
     \column{0.5\textwidth}
+
+    \scriptsize
+
     \begin{itemize}
+      \setlength{\itemsep}{2mm}
     \item Remaining nodes are either \textbf{computation},
       \textbf{branch}, or \textbf{shift} nodes.
     \item Computation nodes mutate the statespace by calculating some
-      polynomial map \functype{g}{R^n}{R^n}. They have unique next
+      polynomial map \functype{g}{R^m}{R^n}. They have unique next
       nodes.
     \item Branch nodes have two possible next nodes; they choose computing
       a nonzero polynomial map \functype{h}{R^n}{R} and performing
@@ -613,7 +618,7 @@
   Machine $M$ and constants $c, q \in \reals$ such that:
   \begin{itemize}
   \item $M$ decides $D$,
-  \item For every $x \in D$, $\cost(\compute_M(x) < c \times \size(x)^d$.
+  \item For every $x \in D$, $\cost(\compute_M(x)) < c \times \size(x)^d$.
   \end{itemize}
   
 \end{frame}
@@ -651,9 +656,8 @@
     $(x, w)$ if and only if $x \in D_{yes}$.
   \end{itemize}\pause
 
-  A verifier for a problem $D$ is a machine that can use ``proofs''
-  like our subset example to check if some input is a Yes
-  Instance.\pause
+  A verifier for a problem $D$ is a machine that can use ``proofs'' to
+  check if some input is a Yes Instance.\pause
 
   \vspace{\baselineskip}
 
@@ -672,7 +676,7 @@
   \begin{itemize}
     \item M is a verifier for $D$.
     \item If $x \in D_{yes}$, then there exists a $w$ such that $M$
-      accepts $(x, w)$ with $\cost(\compute_M(x, w)) \leq c
+      accepts $(x, w)$ with $\cost(\compute_M(x, w)) \leq c \times
       size(x)^d$.
     \end{itemize}
   
@@ -749,7 +753,7 @@
   \vspace{\baselineskip}
 
   An \ndet Machine's branch nodes are defined by a branching function,
-  plus two nonempty sets:
+  plus two nonempty \textbf{sets}:
 
   $$\beta^+_\eta = \set{\yesnode{1}, \yesnode{2}, \ldots, \yesnode{i}}$$
   $$\beta_\eta^- = \set{\nonode{1}, \nonode{2}, \ldots, \nonode{j}}$$
@@ -857,7 +861,7 @@
 
   \textbf{$\np$ Witness:}  $\set{18, -3, -6, 1}$
   
-  \textbf{$\mathbf{DNP}_R$ Witness:}  $\set{1,0,0,1,1,1,0}$
+  \textbf{$\mathbf{DNP}_R$ Witness:}  $\set{1,0,0,0,1,1,1,0}$
 \end{frame}
 
 \begin{frame}{$\ndetp$ and Binary Witnesses}
@@ -909,7 +913,7 @@
 
   \vspace{\baselineskip}
 
-  So $\np_\integers$ contains undecidable problems with respect to
+  So $\nparg{\integers}$ contains undecidable problems with respect to
   unit cost.
 
 \end{frame}
@@ -926,7 +930,7 @@
 
 \begin{frame}{Separation}
   \begin{corollary}
-    With respect to unit cost, $\ndetp_\integers \not\subset \np_\integers$.
+    With respect to unit cost, $\ndetparg{\integers} \subset \nparg{\integers}$.
   \end{corollary}
 \end{frame}
 
@@ -968,9 +972,14 @@
   \item Generalizing other characterizations of $\mathbf{NP}$ to BSS
     Framework. \pause
   \item[] and of course... 
-  \item settling $\mathbf{P}$ vs. $\mathbf{NP}$.
-
+  \item Settling $\mathbf{P}$ vs. $\mathbf{NP}$.
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+
+  Thanks!
+
 \end{frame}
 
 \end{document}
