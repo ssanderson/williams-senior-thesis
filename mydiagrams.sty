@@ -349,8 +349,8 @@
   
   \begin{tikzpicture}[node distance=4cm]
 
-    \node (init)   [input, draw] {Input: $p \in \reals[x]$, $z \in \reals$, $\epsilon \in \reals$};
-    \node (comp)   [compute, draw, below of=init]   {$z = z - \frac{p(z)}{p'(z)}$};
+    \node (init)   [input, draw] {Input: $p \in \reals[x]$, $x_0 \in \reals$, $\epsilon \in \reals$};
+    \node (comp)   [compute, draw, below of=init]   {$x = x - \frac{p(x)}{p'(x)}$};
     \node (check)  [branch, draw, below of=comp]    {$|p(x)| - \epsilon < 0$};
     \node (accept) [accept, draw, below of=check]   {Output $z$};
     
