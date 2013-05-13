@@ -1,12 +1,12 @@
- \chapter{NDET-Machines}
+\chapter{NDET-Machines}
 \label{chap:ndet}
 
 So far, we have focused our attention on presenting the BSS Machine
 model as it appears in \cite{B98} and \cite{B89}.  Where we have made
 modifications to the theory, our changes have been essentially
 cosmetic, and our original contributions have primarily taken the form
-of new examples and (hopefully) clear explanations of
-some of the more terse sections of the original material.\\
+of new examples and (hopefully) clear explanations of some of the more
+terse sections of the original material.\\
 
 In this chapter, we present an extension to the BSS Machine model that
 gives rise to an alternative generalization of the complexity class
@@ -609,7 +609,9 @@ binary witnesses.
   = t$.  Thus we can construct the necessary machine $M$ by simply
   taking the dot product of $w$ with the subset encoded by $x$,
   accepting if the result of this operation is $t$ and rejecting
-  otherwise.
+  otherwise.\footnote{In \cite{B98}, Chapter 3, Blum et al. explicitly
+    show how to construct a machine for computing dot products between
+    arbitrary-length vectors.}
   
 \end{example}
 
@@ -668,6 +670,7 @@ under what conditions the equality still holds.
 
 \theorem{When considered with unit cost, $\nparg{\integers}
   \not\subset \decarg{\integers}$}
+
 \proof{ It is easy to formulate Hilbert's Tenth Problem, which asks if
   an arbitrary diophantine equation has solutions over the integers,
   as a decision problem over $\integers$ It is also easy to show that
@@ -717,34 +720,6 @@ $M$ on some accepting path.
   string $w$ and decides which of the possible next nodes to
   transition into based on the value stored in the first coordinate of
   $w$.}
-
-Toward answering the second question, we show that a sufficient
-condition for $\ndetp = \np$ is that all values in $R^\infty$ of
-size $s$ or less be enumerable by an NDET machine in
-nondeterministic time $O(log s)$.  We conjecture that this condition
-is also sufficient.  
-
-\theorem{Let $R$ be a ring with associated height function
-  satisfying the property that there exists an NDET Machine that
-  enumerates every value in $R^\infty$ with size at most $s$ in
-  nondeterministic time $O(\log s)$.
-
-  \proof{
-    Let $S \in \np$.  Then there exists a machine $M$ such that for
-    every $x$ in $S$ there exists a $w$ such that $\computefn_M(x, w)
-    = 1$ and $cost_M(x, w) \leq p(size(x))$, where p is some
-    polynomial function.  It immediately follows that $w$ must have
-    size less than $p(size(x))$, or else computing a single step with
-    $w$ in a register of $\statespace_M$ would render the cost of
-    computing a single step to be greater than the given bound on the
-    runtime of $M$.  Thus we can construct an NDET-Machine which, on
-    input $x$, nondeterministically generates all possible witnesses
-    of length at most $p(size(x))$, and then for each possible witness
-    $w$ simulates $M$ on input $w$.
-  }
-
-\todo{Section on digital nondeterminism equivalence and DNP-Complete problems.}
-
 
 %%% Local Variables: 
 %%% mode: latex

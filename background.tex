@@ -188,40 +188,40 @@
 % the branching conditions $h(x) > 0$ and $h(x) < 0$ with $h(x) = 0$ and
 % $h(x) \neq 0$, respectively.\\}
 
-% \begin{example}
-%   Figures \ref{fig:newton-high} and \ref{fig:newton-low} show how one
-%   might implement an FDM to carry out Newton's Method for determining
-%   approximate zeros of a polynomial.  Figure \ref{fig:newton-high}
-%   gives a ``high-level'' view of what each node does logically, while
-%   Figure \ref{fig:newton-low} demonstrates the underlying
-%   implementation.  Because we are currently considering only finite
-%   dimensional machines, we restrict ourselves to polynomials of degree
-%   5.  We will show later how we can modify our definitions to allow
-%   for uniform machines that can process inputs of arbitrary size.
-% \end{example}
+\begin{example}
+  Figures \ref{fig:newton-high} and \ref{fig:newton-low} show how one
+  might implement an FDM to carry out Newton's Method for determining
+  approximate zeros of a polynomial.  Figure \ref{fig:newton-high}
+  gives a ``high-level'' view of what each node does logically, while
+  Figure \ref{fig:newton-low} demonstrates the underlying
+  implementation.  Because we are currently considering only finite
+  dimensional machines, we restrict ourselves to polynomials of degree
+  5.  We will show later how we can modify our definitions to allow
+  for uniform machines that can process inputs of arbitrary size.
+\end{example}
 
-% \bigskip
-% \begin{minipage}{0.5\linewidth}
-%   \begin{center}
-%     \begin{algorithmic}
-%       \Large
-%       \Require $\langle (p(x), x_0, \epsilon) \rangle$
-%       \State $x = x_0$
-%       \While{$p(x_0) > \epsilon$ }
-%       \State Compute $p(x_0)$ and $p'(x_0)$
-%       \State $x_0 = x - \frac{p(x)}{p'(x)}$
-%       \EndWhile
-%       \State \textbf{Accept}
-%     \end{algorithmic}
-%   \end{center}
-% \end{minipage}
-% \begin{minipage}{0.5\linewidth}
-%   \begin{center}
-%     \newtonhigh{}
-%   \end{center}
-% \end{minipage}
-% \captionof{figure}{Newton Machine - High Level} \label{fig:newton-high}
-% \bigskip
+\bigskip
+\begin{minipage}{0.5\linewidth}
+  \begin{center}
+    \begin{algorithmic}
+      \Large
+      \Require $\langle (p(x), x_0, \epsilon) \rangle$
+      \State $x = x_0$
+      \While{$p(x_0) > \epsilon$ }
+      \State Compute $p(x_0)$ and $p'(x_0)$
+      \State $x_0 = x - \frac{p(x)}{p'(x)}$
+      \EndWhile
+      \State \textbf{Accept}
+    \end{algorithmic}
+  \end{center}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+  \begin{center}
+    \newtonhigh{}
+  \end{center}
+\end{minipage}
+\captionof{figure}{Newton Machine - High Level} \label{fig:newton-high}
+\bigskip
 
 % \begin{figure}[p]
 %   \centering
