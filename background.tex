@@ -1,192 +1,192 @@
 \chapter{Background - Finite Dimensional Machines}
 \label{chap:background}
 
-% In this chapter, we introduce the reader to the basic concepts of an
-% algebraic model of computation due to Blum et al.  The material
-% presented here draws heavily from \cite{B89} and \cite{B98}.  Since
-% the computing machines developed by Blum et al. are essentially a
-% generalization of the classical Turing Machine, we begin with a brief
-% review of Turing Machines.  For a more thorough introductory reference
-% to Turing Machines, see \cite{S06}.  For Turing's original article
-% introducing the concept of a computing machine, see \cite{T36}.
+In this chapter, we introduce the reader to the basic concepts of an
+algebraic model of computation due to Blum et al.  The material
+presented here draws heavily from \cite{B89} and \cite{B98}.  Since
+the computing machines developed by Blum et al. are essentially a
+generalization of the classical Turing Machine, we begin with a brief
+review of Turing Machines.  For a more thorough introductory reference
+to Turing Machines, see \cite{S06}.  For Turing's original article
+introducing the concept of a computing machine, see \cite{T36}.
 
-% \section{Classical Turing Machines}
+\section{Classical Turing Machines}
 
-% A Turing Machine can be thought of as an infinitely long 1-way tape
-% divided into cells, on each of which can be written a single symbol.
-% Such a machine is outfitted with a tape head which can move left and
-% right as well as read and write symbols to and from the tape. A
-% machine's ``program'' consists of a set of states along with a
-% transition function that provides instructions for how the tape head
-% should behave given a symbol and a current machine state.  These ideas
-% are made precise as follows:
+A Turing Machine can be thought of as an infinitely long 1-way tape
+divided into cells, on each of which can be written a single symbol.
+Such a machine is outfitted with a tape head which can move left and
+right as well as read and write symbols to and from the tape. A
+machine's ``program'' consists of a set of states along with a
+transition function that provides instructions for how the tape head
+should behave given a symbol and a current machine state.  These ideas
+are made precise as follows:
 
-% \begin{definition}{\textbf{Turing Machine}}
+\begin{definition}{\textbf{Turing Machine}}
 
-%   A \textbf{Turing Machine} (TM) is a 7-tuple, $(Q, \Sigma, \Gamma,
-%   \delta, q_0, q_{accept}, q_{reject})$, where:
+  A \textbf{Turing Machine} (TM) is a 7-tuple, $(Q, \Sigma, \Gamma,
+  \delta, q_0, q_{accept}, q_{reject})$, where:
 
-%   \begin{itemize}
-%   \item $Q$ is a set of machine states.
-%   \item $\Sigma$ is an alphabet of input characters, not containing
-%     the blank symbol, $\blank$.
-%   \item $\Gamma$ is the tape alphabet, where $\blank \in \Gamma$, and
-%     $\Sigma \subset \Gamma$.
-%   \item \functype{\delta}{Q \times \Gamma}{Q \times \Gamma \times
-%       \set{\leftarrow, \rightarrow}} is the machine's
-%     \textbf{transition function}.
-%   \item $q_0$ is the initial state of the machine.
-%   \item $q_{accept}$ is the machine's accept state.
-%   \item $q_{reject}$ is the machine's reject state.
-%   \end{itemize}
+  \begin{itemize}
+  \item $Q$ is a set of machine states.
+  \item $\Sigma$ is an alphabet of input characters, not containing
+    the blank symbol, $\blank$.
+  \item $\Gamma$ is the tape alphabet, where $\blank \in \Gamma$, and
+    $\Sigma \subset \Gamma$.
+  \item \functype{\delta}{Q \times \Gamma}{Q \times \Gamma \times
+      \set{\leftarrow, \rightarrow}} is the machine's
+    \textbf{transition function}.
+  \item $q_0$ is the initial state of the machine.
+  \item $q_{accept}$ is the machine's accept state.
+  \item $q_{reject}$ is the machine's reject state.
+  \end{itemize}
 
-%   The transition function $\delta$ determines how the machine passes
-%   between \textbf{configurations}, which are triples in $\Sigma^*
-%   \times Q \times \naturals$ encoding the symbols currently written on
-%   the tape, the machine's current state, and the position of the tape
-%   head.  At each computation step, the machine reads the symbol
-%   $\sigma$ on the cell currently occupied by the tape head.  If the
-%   machine is in state $q$, it then calculates $\delta(q, \sigma)$ =
-%   $(q', \sigma', d \in \set{\leftarrow, \rightarrow})$, transitions
-%   into state $q'$, writes $\sigma'$ to the current cell, and
-%   increments or decrements the location of the tape head depending on
-%   the value of $d$.  In the case that the machine head would move left
-%   when on the leftmost cell, it stays in place.  Computation ends when
-%   a machine transitions into either $q_{accept}$ or $q_{reject}$, at
-%   which point the machine is said to either \textbf{accept} or
-%   \textbf{reject} its input, respectively.  A Turing Machine is said
-%   to \textbf{halt} on input $x$ if it either accepts or rejects $x$.
-%   Upon halting, the \textbf{output} of a machine is the string left
-%   behind on the machine's tape.
+  The transition function $\delta$ determines how the machine passes
+  between \textbf{configurations}, which are triples in $\Sigma^*
+  \times Q \times \naturals$ encoding the symbols currently written on
+  the tape, the machine's current state, and the position of the tape
+  head.  At each computation step, the machine reads the symbol
+  $\sigma$ on the cell currently occupied by the tape head.  If the
+  machine is in state $q$, it then calculates $\delta(q, \sigma)$ =
+  $(q', \sigma', d \in \set{\leftarrow, \rightarrow})$, transitions
+  into state $q'$, writes $\sigma'$ to the current cell, and
+  increments or decrements the location of the tape head depending on
+  the value of $d$.  In the case that the machine head would move left
+  when on the leftmost cell, it stays in place.  Computation ends when
+  a machine transitions into either $q_{accept}$ or $q_{reject}$, at
+  which point the machine is said to either \textbf{accept} or
+  \textbf{reject} its input, respectively.  A Turing Machine is said
+  to \textbf{halt} on input $x$ if it either accepts or rejects $x$.
+  Upon halting, the \textbf{output} of a machine is the string left
+  behind on the machine's tape.
   
-% \end{definition}
+\end{definition}
 
-% \begin{example}{}
+\begin{example}{}
 
-%   The following Turing Machine reads in a binary string $s$ and
-%   outputs the string given by replacing each $0$ in $s$ with a $1$ and
-%   each $1$ with a $0$.  It accepts on all inputs.
+  The following Turing Machine reads in a binary string $s$ and
+  outputs the string given by replacing each $0$ in $s$ with a $1$ and
+  each $1$ with a $0$.  It accepts on all inputs.
 
-%   \begin{itemize}
-%   \item $Q = \set{q_0, q_{accept}, q_{reject}}$
-%   \item $\Gamma = \set{\blank, 0, 1}$
-%   \item $\Sigma = \set{0,1}$
-%   \item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
-%   \item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
-%   \item $\delta(q_0, \blank) = (q_{accept}, \blank, \leftarrow)$
-%   \end{itemize}
+  \begin{itemize}
+  \item $Q = \set{q_0, q_{accept}, q_{reject}}$
+  \item $\Gamma = \set{\blank, 0, 1}$
+  \item $\Sigma = \set{0,1}$
+  \item $\delta(q_0, 0) = (q_0, 1, \rightarrow)$
+  \item $\delta(q_0, 1) = (q_0, 0, \rightarrow)$
+  \item $\delta(q_0, \blank) = (q_{accept}, \blank, \leftarrow)$
+  \end{itemize}
 
-%   Figure \ref{fig:turing-example} illustrates the computation of our
-%   example machine on the input $1001$. In each computation step but
-%   the last, the machine flips the parity of the symbol beneath the
-%   tape, then moves to the right and ``transitions'' from $q_0$ to
-%   $q_o$.  When the machine reads the blank symbol $\blank$, it leaves
-%   the same symbol on the tape, transitions to the accept state and
-%   moves the tape head to the left before exiting with output $0110$.
+  Figure \ref{fig:turing-example} illustrates the computation of our
+  example machine on the input $1001$. In each computation step but
+  the last, the machine flips the parity of the symbol beneath the
+  tape, then moves to the right and ``transitions'' from $q_0$ to
+  $q_o$.  When the machine reads the blank symbol $\blank$, it leaves
+  the same symbol on the tape, transitions to the accept state and
+  moves the tape head to the left before exiting with output $0110$.
 
-%   \begin{figure}[p]
-%     \begin{center}
-%       \tape[1]{$q_0$}{{1,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}
-%       \tape[2]{$q_0$}{{0,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}
-%       \tape[3]{$q_0$}{{0,1,0,1,$\blank$,$\cdots$}} \vspace{1mm}
-%       \tape[4]{$q_0$}{{0,1,1,1,$\blank$,$\cdots$}} \vspace{1mm}
-%       \tape[5]{$q_0$}{{0,1,1,0,$\blank$,$\cdots$}} \vspace{1mm}
-%       \tape[4]{$q_{accept}$}{{0,1,1,0,$\blank$, $\cdots$}} \vspace{1mm}
-%     \end{center}
-%     \caption{An Example Turing Machine Computation}
-%     \label{fig:turing-example}
-%   \end{figure}
-% \end{example}
+  \begin{figure}[p]
+    \begin{center}
+      \tape[1]{$q_0$}{{1,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}
+      \tape[2]{$q_0$}{{0,0,0,1,$\blank$,$\cdots$}} \vspace{1mm}
+      \tape[3]{$q_0$}{{0,1,0,1,$\blank$,$\cdots$}} \vspace{1mm}
+      \tape[4]{$q_0$}{{0,1,1,1,$\blank$,$\cdots$}} \vspace{1mm}
+      \tape[5]{$q_0$}{{0,1,1,0,$\blank$,$\cdots$}} \vspace{1mm}
+      \tape[4]{$q_{accept}$}{{0,1,1,0,$\blank$, $\cdots$}} \vspace{1mm}
+    \end{center}
+    \caption{An Example Turing Machine Computation}
+    \label{fig:turing-example}
+  \end{figure}
+\end{example}
 
-% \section{Finite Dimensional Machines}
+\section{Finite Dimensional Machines}
 
-% A BSS Machine is in essence a Turing Machine with several key features
-% abstracted to a more general setting. We replace the classical finite
-% tape alphabet with elements of a ring/field, and we replace the
-% classical operations of reading and writing to individual cells with
-% order/equality comparisons and computations of componentwise
-% polynomial/rational maps.
+A BSS Machine is in essence a Turing Machine with several key features
+abstracted to a more general setting. We replace the classical finite
+tape alphabet with elements of a ring/field, and we replace the
+classical operations of reading and writing to individual cells with
+order/equality comparisons and computations of componentwise
+polynomial/rational maps.
  
-% To build intuition about how BSS machines operate and how we can
-% analyze their properties, we first present Blum et al's definition of
-% a \emph{Finite Dimensional Machine}, which corresponds in the
-% classical theory to a Turing Machine with a tape of finite length.
-% Having built some intuition with the finite dimensional model, we then
-% show how we can generalize to the infinite dimensional case, allowing
-% us to consider machines that can process arbitrarily large inputs.
+To build intuition about how BSS machines operate and how we can
+analyze their properties, we first present Blum et al's definition of
+a \emph{Finite Dimensional Machine}, which corresponds in the
+classical theory to a Turing Machine with a tape of finite length.
+Having built some intuition with the finite dimensional model, we then
+show how we can generalize to the infinite dimensional case, allowing
+us to consider machines that can process arbitrarily large inputs.
 
-% In what follows, let $R$ be a commutative ring with unity, and let $l,
-% m$, and $n$ be positive integers.
+In what follows, let $R$ be a commutative ring with unity, and let $l,
+m$, and $n$ be positive integers.
 
-% \begin{definition}{\textbf{Finite Dimensional Machine} over a ring
-%     \textbf{R}}
+\begin{definition}{\textbf{Finite Dimensional Machine} over a ring
+    \textbf{R}}
   
-%   A \textbf{Finite Dimensional Machine} (FDM) $M$ over $R$ is a finite
-%   directed graph with node set $\nodes$.  The collection $\nodes$
-%   contains three distinguished elements: the \textbf{input node}
-%   $\eta_1$, the \textbf{accept node} $\eta_{accept}$, and then
-%   \textbf{reject node} $\eta_{reject}$. The input node has indegree 0
-%   and outdegree 1; the accept and reject nodes have outdegree 0.  The
-%   remaining elements of $\nodes$ are divided into two types:
-%   \emph{computation} and \emph{branch}. Computation nodes have
-%   outdegree 1; branch nodes have outdegree 2.  We use the expression
-%   ``next node(s)'' of a node $\eta$ to refer to the node(s) to which
-%   $\eta$ has outgoing edges.\footnote{The definition used here departs
-%     slightly from that used by Blum et al. in \cite{B98} and
-%     \cite{B89}.  The main difference is our replacement of a single
-%     output node with the pair of accept and reject nodes, which
-%     reflects our emphasis on decision problems instead of computable
-%     functions.}\\
+  A \textbf{Finite Dimensional Machine} (FDM) $M$ over $R$ is a finite
+  directed graph with node set $\nodes$.  The collection $\nodes$
+  contains three distinguished elements: the \textbf{input node}
+  $\eta_1$, the \textbf{accept node} $\eta_{accept}$, and then
+  \textbf{reject node} $\eta_{reject}$. The input node has indegree 0
+  and outdegree 1; the accept and reject nodes have outdegree 0.  The
+  remaining elements of $\nodes$ are divided into two types:
+  \emph{computation} and \emph{branch}. Computation nodes have
+  outdegree 1; branch nodes have outdegree 2.  We use the expression
+  ``next node(s)'' of a node $\eta$ to refer to the node(s) to which
+  $\eta$ has outgoing edges.\footnote{The definition used here departs
+    slightly from that used by Blum et al. in \cite{B98} and
+    \cite{B89}.  The main difference is our replacement of a single
+    output node with the pair of accept and reject nodes, which
+    reflects our emphasis on decision problems instead of computable
+    functions.}\\
   
-%   An FDM has three associated spaces: an input space $\inspace_M
-%   \subseteq R^n$, a state space $\statespace_M \subseteq R^m$, and an
-%   output space $\outspace_M \subseteq R^l$.  (Recall that $R^k$
-%   denotes the set of $k$-tuples containing elements in $R$).\\
+  An FDM has three associated spaces: an input space $\inspace_M
+  \subseteq R^n$, a state space $\statespace_M \subseteq R^m$, and an
+  output space $\outspace_M \subseteq R^l$.  (Recall that $R^k$
+  denotes the set of $k$-tuples containing elements in $R$).\\
 
-%   Each node has an associated map and a set of next nodes, which vary
-%   in structure in accordance with the node's type.
+  Each node has an associated map and a set of next nodes, which vary
+  in structure in accordance with the node's type.
 
-%   \begin{enumerate}
-%   \item Associated with the input node $\eta_1$ is a linear map
-%     \functype{I}{\inspace_M}{\statespace_M}. We denote the input node
-%     by $\eta_1$, and we denote the unique next node of $\eta_1$ by
-%     $\beta_{\eta_1}$ or just $\beta_1$.
+  \begin{enumerate}
+  \item Associated with the input node $\eta_1$ is a linear map
+    \functype{I}{\inspace_M}{\statespace_M}. We denote the input node
+    by $\eta_1$, and we denote the unique next node of $\eta_1$ by
+    $\beta_{\eta_1}$ or just $\beta_1$.
     
-%   \item Associated with each computation node $\eta$ is a
-%     componentwise polynomial map
-%     \functype{g_\eta}{\statespace_M}{\statespace_M}. We denote the
-%     unique next node of $\eta$ by $\beta_\eta$.
+  \item Associated with each computation node $\eta$ is a
+    componentwise polynomial map
+    \functype{g_\eta}{\statespace_M}{\statespace_M}. We denote the
+    unique next node of $\eta$ by $\beta_\eta$.
     
-%   \item Associated with each branch node $\eta$ is a nonzero
-%     polynomial function \functype{h_\eta}{\statespace_M}{R}.  We
-%     associate the condition $h_\eta(x) \geq 0$ with one of the next
-%     nodes of $\eta$, called the \textbf{Yes Node} of $\eta$.  We
-%     symbolically denote the Yes Node by $\beta_\eta^+$. We associate
-%     the condition $h_\eta(p) < 0$ with the other next node of $b$,
-%     which we call the \textbf{No Node} and denote $\beta_\eta^-$.
+  \item Associated with each branch node $\eta$ is a nonzero
+    polynomial function \functype{h_\eta}{\statespace_M}{R}.  We
+    associate the condition $h_\eta(x) \geq 0$ with one of the next
+    nodes of $\eta$, called the \textbf{Yes Node} of $\eta$.  We
+    symbolically denote the Yes Node by $\beta_\eta^+$. We associate
+    the condition $h_\eta(p) < 0$ with the other next node of $b$,
+    which we call the \textbf{No Node} and denote $\beta_\eta^-$.
     
-%   \item Associated with the accept and reject nodes is a linear map
-%     \functype{O}{\statespace_M}{\outspace_M}.
-%   \end{enumerate}
-% \end{definition}
+  \item Associated with the accept and reject nodes is a linear map
+    \functype{O}{\statespace_M}{\outspace_M}.
+  \end{enumerate}
+\end{definition}
 
-% \note{The above definition is subject to modification
-% depending on whether the ring $R$ is a field and whether it is endowed
-% with a natural order.
+\note{The above definition is subject to modification
+depending on whether the ring $R$ is a field and whether it is endowed
+with a natural order.
 
-% In the case that $R$ is a field, we may want to allow our machines to
-% take advantage of the natural division operation by allowing rational
-% maps rather than polynomial maps for $g_\eta$ and $h_\eta$.  In such a
-% case, care needs to be taken to ensure that division is always
-% well-defined by preventing divisions by $0$.  We do so by adopting the
-% convention that each node that computes a rational function is
-% preceded by a subroutine that computes all relevant denominators,
-% entering an infinite loop if any of them are zeros.  This allows us to
-% assume that computations are always well-defined.
+In the case that $R$ is a field, we may want to allow our machines to
+take advantage of the natural division operation by allowing rational
+maps rather than polynomial maps for $g_\eta$ and $h_\eta$.  In such a
+case, care needs to be taken to ensure that division is always
+well-defined by preventing divisions by $0$.  We do so by adopting the
+convention that each node that computes a rational function is
+preceded by a subroutine that computes all relevant denominators,
+entering an infinite loop if any of them are zeros.  This allows us to
+assume that computations are always well-defined.
 
-% When $R$ is unordered, when $R = \complexes$ for example, we replace
-% the branching conditions $h(x) > 0$ and $h(x) < 0$ with $h(x) = 0$ and
-% $h(x) \neq 0$, respectively.\\}
+When $R$ is unordered, when $R = \complexes$ for example, we replace
+the branching conditions $h(x) > 0$ and $h(x) < 0$ with $h(x) = 0$ and
+$h(x) \neq 0$, respectively.\\}
 
 \begin{example}
   Figures \ref{fig:newton-high} and \ref{fig:newton-low} show how one
@@ -223,1158 +223,1158 @@
 \captionof{figure}{Newton Machine - High Level} \label{fig:newton-high}
 \bigskip
 
-% \begin{figure}[p]
-%   \centering
+\begin{figure}[p]
+  \centering
   
-%   \begin{tikzpicture}[node distance=4cm, label distance=.3cm]
+  \begin{tikzpicture}[node distance=4cm, label distance=.3cm]
 
-%     \node(init) [input, draw, label=left:\Large $\eta_1$] 
-%     {Input: $x = (x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8)$;};
-%     \node(comp) [compute, draw, label=left:\Large $\eta_2$, below of=init] {
-%       $g(x) = (x_1 - 
-%       \frac{x_3x_1^5 + x_4x_1^4+ x_5x_1^3 + x_6x_1^2 + x_7x_1 + x_8}
-%       {5x_3x_1^4 + 4x_4x_1^3 + 3x_5x_1^2 + 2x_6x_1 + x_7}, 
-%       x_2, x_3, x_4, x_5, x_6, x_7, x_8)$};
-%     \node(check)[branch, draw, label=left:\Large $\eta_3$, below of=comp] {$h(x) = x_1^2 - x_2^2$};
-%     \node(accept)[accept, draw, label=left:\Large $\accept$,below of=check] {$O(x) = x_1$};
-%     \node(reject)[reject, draw, label=above:\Large $\reject$,left of=accept,
-%                   node distance= 6cm] 
-%     {$O(x) = x_1$};
+    \node(init) [input, draw, label=left:\Large $\eta_1$] 
+    {Input: $x = (x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8)$;};
+    \node(comp) [compute, draw, label=left:\Large $\eta_2$, below of=init] {
+      $g(x) = (x_1 - 
+      \frac{x_3x_1^5 + x_4x_1^4+ x_5x_1^3 + x_6x_1^2 + x_7x_1 + x_8}
+      {5x_3x_1^4 + 4x_4x_1^3 + 3x_5x_1^2 + 2x_6x_1 + x_7}, 
+      x_2, x_3, x_4, x_5, x_6, x_7, x_8)$};
+    \node(check)[branch, draw, label=left:\Large $\eta_3$, below of=comp] {$h(x) = x_1^2 - x_2^2$};
+    \node(accept)[accept, draw, label=left:\Large $\accept$,below of=check] {$O(x) = x_1$};
+    \node(reject)[reject, draw, label=above:\Large $\reject$,left of=accept,
+                  node distance= 6cm] 
+    {$O(x) = x_1$};
 
-%     \draw [->, thick] (init) --                                             (comp);
-%     \draw [->, thick] (comp) --                                            (check);
-%     \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {$h(x) > 0$}(comp);
-%     \draw [->, thick] (check) to node[auto] {$h(x) < 0$}                  (accept);
+    \draw [->, thick] (init) --                                             (comp);
+    \draw [->, thick] (comp) --                                            (check);
+    \draw [->, thick] (check) to [out=0, in=0] node[auto, swap] {$h(x) > 0$}(comp);
+    \draw [->, thick] (check) to node[auto] {$h(x) < 0$}                  (accept);
 
-%     \node (legend) [rectangle, draw, fill=black!10, right of=accept, node distance=6cm] {
-%       \makecell[l]{
-%         $\nodes = \set{\eta_1, \eta_2, \eta_3, \accept, \reject}$\\
-%         $\inspace_M = \statespace_M = \outspace_M = \reals^8$\\
-%         Computation Nodes: $\set{\eta_2}$\\
-%         Branch Nodes: $\set{\eta_3}$
-%       }
-%     };
+    \node (legend) [rectangle, draw, fill=black!10, right of=accept, node distance=6cm] {
+      \makecell[l]{
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \accept, \reject}$\\
+        $\inspace_M = \statespace_M = \outspace_M = \reals^8$\\
+        Computation Nodes: $\set{\eta_2}$\\
+        Branch Nodes: $\set{\eta_3}$
+      }
+    };
     
-%   \end{tikzpicture}
+  \end{tikzpicture}
 
-%   \caption{Newton Machine - Low Level}
-%   \label{fig:newton-low}
-% \end{figure}
+  \caption{Newton Machine - Low Level}
+  \label{fig:newton-low}
+\end{figure}
 
-% \begin{definition}{\textbf{Configuration}}  
-%   \label{def:configuration}
+\begin{definition}{\textbf{Configuration}}  
+  \label{def:configuration}
 
-%   A \textbf{configuration} of an FDM $M$ is a pair $(\eta, x) \in
-%   \nodes \times \statespace_M$. The set $\nodes \times \statespace_M$
-%   is called the \textbf{configuration space} of $M$.  A configuration
-%   is said to be \textbf{accepting} if $\eta = \accept$, and it is said
-%   to be \textbf{rejecting} if $\eta = \reject$.  A configuration is
-%   said to be \textbf{terminal} if it is either accepting or rejecting,
-%   and it is said to be \textbf{non-terminal} otherwise.
+  A \textbf{configuration} of an FDM $M$ is a pair $(\eta, x) \in
+  \nodes \times \statespace_M$. The set $\nodes \times \statespace_M$
+  is called the \textbf{configuration space} of $M$.  A configuration
+  is said to be \textbf{accepting} if $\eta = \accept$, and it is said
+  to be \textbf{rejecting} if $\eta = \reject$.  A configuration is
+  said to be \textbf{terminal} if it is either accepting or rejecting,
+  and it is said to be \textbf{non-terminal} otherwise.
 
-% \end{definition}
+\end{definition}
 
-% For each non-terminal configuration $z = (\eta, x)$, $M$ defines a
-% unique next configuration $z' = (\eta', x')$ as follows:
+For each non-terminal configuration $z = (\eta, x)$, $M$ defines a
+unique next configuration $z' = (\eta', x')$ as follows:
 
-% \begin{itemize}
-% \item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
-% \item If $\eta$ is a computation node, $z' = (\beta_{\eta}, g_\eta(x))$.
-% \item If $\eta$ is a branch node, $z' = \twopartdef
-%   {(\beta_\eta^+,x)}  {h_\eta(x) \geq 0}
-%   {(\beta_\eta^-, x)} {h_\eta(x) < 0.}$
-% \end{itemize}
+\begin{itemize}
+\item If $\eta$ is the input node, $z' = (\beta_{1}, x)$.
+\item If $\eta$ is a computation node, $z' = (\beta_{\eta}, g_\eta(x))$.
+\item If $\eta$ is a branch node, $z' = \twopartdef
+  {(\beta_\eta^+,x)}  {h_\eta(x) \geq 0}
+  {(\beta_\eta^-, x)} {h_\eta(x) < 0.}$
+\end{itemize}
 
-% It will occasionally be useful to us to have a compact notation for
-% writing ``$z'$ is the next configuration of $z$.''  We do so using the
-% expression $z \yields z'$, which we read as $z$ \textbf{yields} $z'$.\\
+It will occasionally be useful to us to have a compact notation for
+writing ``$z'$ is the next configuration of $z$.''  We do so using the
+expression $z \yields z'$, which we read as $z$ \textbf{yields} $z'$.\\
 
-% We are now in a position to define what it means for a machine $M$ to
-% perform a computation on some input, $x$.  The basic idea is that a
-% computation is a path through $\nodes \times \statespace$ that begins
-% with $(\eta_1, I_M(x))$ and proceeeds by following next
-% configurations, halting upon reaching either the accept or reject node
-% of $M$.  The output value of a computation is the result of $O_m$
-% applied to whatever is left in $\statespace_M$ when a terminal
-% configuration is reached.\\
+We are now in a position to define what it means for a machine $M$ to
+perform a computation on some input, $x$.  The basic idea is that a
+computation is a path through $\nodes \times \statespace$ that begins
+with $(\eta_1, I_M(x))$ and proceeeds by following next
+configurations, halting upon reaching either the accept or reject node
+of $M$.  The output value of a computation is the result of $O_m$
+applied to whatever is left in $\statespace_M$ when a terminal
+configuration is reached.\\
 
-% \begin{definition}{\textbf{Halting Computation and time-t Halting Set}}
+\begin{definition}{\textbf{Halting Computation and time-t Halting Set}}
 
-%   A \textbf{halting computation} performed by an FDM $M$ on input $x$
-%   is a sequence of configurations: 
-%   $$\compute_M(x) = (z_0, z_1, \ldots, z_t)$$ such that
-%   \begin{align*}
-%     &z_0 = (\eta_1, I(x))\\
-%     &\pathprojection(z_t) \in \set{(\accept, \reject)}\\
-%     &z_i \yields z_{i+1} \text{ for } 0 \leq i < t.
-%   \end{align*}
+  A \textbf{halting computation} performed by an FDM $M$ on input $x$
+  is a sequence of configurations: 
+  $$\compute_M(x) = (z_0, z_1, \ldots, z_t)$$ such that
+  \begin{align*}
+    &z_0 = (\eta_1, I(x))\\
+    &\pathprojection(z_t) \in \set{(\accept, \reject)}\\
+    &z_i \yields z_{i+1} \text{ for } 0 \leq i < t.
+  \end{align*}
   
-%   Here the function \functype{\pathprojection}{\nodes \times
-%     \statespace}{\nodes} denotes the projection onto the first
-%   coordinate of a configuration.  Thus $\pathprojection(z)$ is just
-%   the node occupied by a machine in configuration $z$, so the second
-%   condition above says that the final configuration of a
-%   halting computation must be terminal.\\
+  Here the function \functype{\pathprojection}{\nodes \times
+    \statespace}{\nodes} denotes the projection onto the first
+  coordinate of a configuration.  Thus $\pathprojection(z)$ is just
+  the node occupied by a machine in configuration $z$, so the second
+  condition above says that the final configuration of a
+  halting computation must be terminal.\\
 
-%   If a halting computation of length $t$ exists for an input $x$, we
-%   can write the following:
-%   \begin{align*}
-%     &x \in \halting_M(t)\\
-%     &T_M(x) = t\\
-%     &\computefn_M(x) = O(\stateprojection(z_t)).
-%   \end{align*}
+  If a halting computation of length $t$ exists for an input $x$, we
+  can write the following:
+  \begin{align*}
+    &x \in \halting_M(t)\\
+    &T_M(x) = t\\
+    &\computefn_M(x) = O(\stateprojection(z_t)).
+  \end{align*}
 
-%   In plain english, the above expressions say that:
-%   \begin{itemize}
-%   \item The input $x$ is in the \textbf{time-$t$ Halting Set} of $M$, $\halting_M(t)$.
-%   \item The \textbf{halting time} of $M$ on $x$, $T_M(x)$, is $t$.
-%   \item The \textbf{output} of $M$ on $x$ is
-%     $O(\stateprojection(z_t)$.
-%   \end{itemize}
+  In plain english, the above expressions say that:
+  \begin{itemize}
+  \item The input $x$ is in the \textbf{time-$t$ Halting Set} of $M$, $\halting_M(t)$.
+  \item The \textbf{halting time} of $M$ on $x$, $T_M(x)$, is $t$.
+  \item The \textbf{output} of $M$ on $x$ is
+    $O(\stateprojection(z_t)$.
+  \end{itemize}
 
-%   Here the function \functype{\stateprojection}{\nodes \times
-%     \statespace}{\statespace} denotes the projection onto the second
-%   coordinate of a configuration.  Thus the third statement above says
-%   that the output of $M$ on $x$ is the result of applying the output
-%   function $O$ to whatever is ``left behind'' in the statespace of $M$
-%   in the last configuration.
+  Here the function \functype{\stateprojection}{\nodes \times
+    \statespace}{\statespace} denotes the projection onto the second
+  coordinate of a configuration.  Thus the third statement above says
+  that the output of $M$ on $x$ is the result of applying the output
+  function $O$ to whatever is ``left behind'' in the statespace of $M$
+  in the last configuration.
   
-%   The \textbf{Halting Set} $\halting_M$ of a machine $M$ is the union
-%   over all $t > 0$ of $\halting_M(t)$.
+  The \textbf{Halting Set} $\halting_M$ of a machine $M$ is the union
+  over all $t > 0$ of $\halting_M(t)$.
 
-% \end{definition}
+\end{definition}
 
-% \note{Since each configuration of an FDM yields a unique next
-%   configuration, if a halting computation exists for a machine $M$ on
-%   input $x$, it is unique.  However, not every input defines a halting
-%   computation.  It is easy enough, for example, to construct machines
-%   which will enter infinite loops without ever reaching the output
-%   node.  In such a case, $T_M(x)$ and $\computefn_M(x)$ are undefined,
-%   and we define $\compute_M(x)$ to be the infinite sequence $$z_0,
-%   z_1, z_2, \ldots, $$ such that
+\note{Since each configuration of an FDM yields a unique next
+  configuration, if a halting computation exists for a machine $M$ on
+  input $x$, it is unique.  However, not every input defines a halting
+  computation.  It is easy enough, for example, to construct machines
+  which will enter infinite loops without ever reaching the output
+  node.  In such a case, $T_M(x)$ and $\computefn_M(x)$ are undefined,
+  and we define $\compute_M(x)$ to be the infinite sequence $$z_0,
+  z_1, z_2, \ldots, $$ such that
 
-%   \centerline{$z_0 = (\eta_1, I(x))$, and $z_i \yields z_{i+1}$ for $i \geq 0$}
-% }
+  \centerline{$z_0 = (\eta_1, I(x))$, and $z_i \yields z_{i+1}$ for $i \geq 0$}
+}
 
-% \vspace{\baselineskip}
+\vspace{\baselineskip}
 
-% Intuitively, we can think about the computation of an FDM, $M$ as the
-% sequence defined by ``following the flow'' of the node graph while
-% applying the appropriate transformations to $\statespace_M$ at
-% computation nodes. Given an input $x$, $M$ starts in configuration
-% $(\eta_1, I(x))$. At each computation node $\eta$, it computes
-% $g_\eta(x)$, where $x$ is the current value stored in the machine's
-% state space.  $g_\eta(x)$ then becomes the new value of the state
-% space, and the current node becomes $\beta_{\eta}$.  At each branch
-% node $\eta$, $M$ computes $h_\eta(x)$, where again $x$ is the
-% currently stored value.  If $h_\eta(x) \geq 0$, the new node is
-% $\beta_\eta+$.  Otherwise it is $\beta_\eta^-$.  The machine halts
-% when it eventually reaches the $\accept$ or $\reject$, at which point
-% it applies the function $O(x)$ to its stored value, which is
-% taken as the machine's output.\\
+Intuitively, we can think about the computation of an FDM, $M$ as the
+sequence defined by ``following the flow'' of the node graph while
+applying the appropriate transformations to $\statespace_M$ at
+computation nodes. Given an input $x$, $M$ starts in configuration
+$(\eta_1, I(x))$. At each computation node $\eta$, it computes
+$g_\eta(x)$, where $x$ is the current value stored in the machine's
+state space.  $g_\eta(x)$ then becomes the new value of the state
+space, and the current node becomes $\beta_{\eta}$.  At each branch
+node $\eta$, $M$ computes $h_\eta(x)$, where again $x$ is the
+currently stored value.  If $h_\eta(x) \geq 0$, the new node is
+$\beta_\eta+$.  Otherwise it is $\beta_\eta^-$.  The machine halts
+when it eventually reaches the $\accept$ or $\reject$, at which point
+it applies the function $O(x)$ to its stored value, which is
+taken as the machine's output.\\
 
-% \begin{example}
-%   Figure \ref{fig:q-recog} shows a machine over $\reals$ which, on
-%   input $x \in \rationals^+ $ returns the pair of relatively prime
-%   integers $(p,q)$ such that $x = \frac{p}{q}$.  If $x$ is not a
-%   positive rational, the machine does not halt.
-% \end{example}
+\begin{example}
+  Figure \ref{fig:q-recog} shows a machine over $\reals$ which, on
+  input $x \in \rationals^+ $ returns the pair of relatively prime
+  integers $(p,q)$ such that $x = \frac{p}{q}$.  If $x$ is not a
+  positive rational, the machine does not halt.
+\end{example}
 
-% \begin{figure}[p]
-%   \centering
-%   \begin{tikzpicture}[node distance=4.8cm]
+\begin{figure}[p]
+  \centering
+  \begin{tikzpicture}[node distance=4.8cm]
 
-%     \node(init) [input, draw, label=left:\Large $\eta_1$] 
-%     {$I(x) = (x, 0, 1)$};
-%     \node(test) [branch, draw, below of=init, label=45:\Large $\eta_2$] 
-%     {$h(x) = x_1 - \frac{x_2}{x_3}$};
-%     \node(flip) [compute, draw, left of=test, label=left:\Large $\eta_3$,]
-%     {$g(x)= (x_1, 1, x_2+1)$};
-%     \node(fliptest) [branch, draw, below of=flip, label=left:\Large $\eta_4$] 
-%     {$h(x) = x_3$};
-%     \node(inc)  [compute, draw, below of=fliptest, label=left:\Large $\eta_5$,] 
-%     {$g(x) = (x_1, x_2+1, x_3-1)$};
-%     \node(accept)   [accept, draw, below of=test, right of=test, label=left:\Large $\accept$] 
-%     {$O(x) = (x_2, x_3)$};
-%     \node(reject)   [reject, draw, below of=accept, label=left:\Large $\reject$, node distance=2.4cm] 
-%     {$O(x) = (x_2, x_3)$};
+    \node(init) [input, draw, label=left:\Large $\eta_1$] 
+    {$I(x) = (x, 0, 1)$};
+    \node(test) [branch, draw, below of=init, label=45:\Large $\eta_2$] 
+    {$h(x) = x_1 - \frac{x_2}{x_3}$};
+    \node(flip) [compute, draw, left of=test, label=left:\Large $\eta_3$,]
+    {$g(x)= (x_1, 1, x_2+1)$};
+    \node(fliptest) [branch, draw, below of=flip, label=left:\Large $\eta_4$] 
+    {$h(x) = x_3$};
+    \node(inc)  [compute, draw, below of=fliptest, label=left:\Large $\eta_5$,] 
+    {$g(x) = (x_1, x_2+1, x_3-1)$};
+    \node(accept)   [accept, draw, below of=test, right of=test, label=left:\Large $\accept$] 
+    {$O(x) = (x_2, x_3)$};
+    \node(reject)   [reject, draw, below of=accept, label=left:\Large $\reject$, node distance=2.4cm] 
+    {$O(x) = (x_2, x_3)$};
 
-%     \draw[->, thick] (init) -- (test);
-%     \draw[->, thick] (flip) -- (test);
-%     \draw[->, thick] (test) to [out=270, in=0] node [auto, swap] {$h(x) \neq 0$} (inc);
-%     \draw[->, thick] (test) to [out=0, in=90] node[auto] {$h(x)=0$} (accept);
-%     \draw[->, thick] (fliptest) to [out=0, in= 225] node[auto] {$h(x) = 0$} (test);
-%     \draw[->, thick] (fliptest) to [out=90, in= 270] node[auto] {$h(x) \neq 0$}(flip);
-%     \draw[->, thick] (inc) -- (fliptest);
+    \draw[->, thick] (init) -- (test);
+    \draw[->, thick] (flip) -- (test);
+    \draw[->, thick] (test) to [out=270, in=0] node [auto, swap] {$h(x) \neq 0$} (inc);
+    \draw[->, thick] (test) to [out=0, in=90] node[auto] {$h(x)=0$} (accept);
+    \draw[->, thick] (fliptest) to [out=0, in= 225] node[auto] {$h(x) = 0$} (test);
+    \draw[->, thick] (fliptest) to [out=90, in= 270] node[auto] {$h(x) \neq 0$}(flip);
+    \draw[->, thick] (inc) -- (fliptest);
 
-%     \node (legend) [rectangle, draw, fill=black!10, below of=reject, node distance=3.0cm] {
-%       \makecell[l]{
-%         $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \eta_5, \accept, \reject}$\\
-%         $\inspace_M = \reals, \statespace_M = \reals^3, \outspace_M = \reals^2$\\
-%         Computation Nodes: $\set{\eta_3, \eta_5}$\\
-%         Branch Nodes: $\set{\eta_2, \eta_4}$\\
-%         $\halting_M = \rationals^+$\\
-%         $\computefn_M(x) = (p,q) \mid x = \frac{p}{q}, \text{ gcd}(p,q) = \, 1$
-%       }
-%     };
+    \node (legend) [rectangle, draw, fill=black!10, below of=reject, node distance=3.0cm] {
+      \makecell[l]{
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \eta_5, \accept, \reject}$\\
+        $\inspace_M = \reals, \statespace_M = \reals^3, \outspace_M = \reals^2$\\
+        Computation Nodes: $\set{\eta_3, \eta_5}$\\
+        Branch Nodes: $\set{\eta_2, \eta_4}$\\
+        $\halting_M = \rationals^+$\\
+        $\computefn_M(x) = (p,q) \mid x = \frac{p}{q}, \text{ gcd}(p,q) = \, 1$
+      }
+    };
 
-%   \end{tikzpicture}
-%   \caption{Recognizer for $\rationals$ over $\reals$}
-%   \label{fig:q-recog}
-% \end{figure}
+  \end{tikzpicture}
+  \caption{Recognizer for $\rationals$ over $\reals$}
+  \label{fig:q-recog}
+\end{figure}
   
-% \begin{figure}[p]
-%   \centering
+\begin{figure}[p]
+  \centering
   
-%   \begin{tikzpicture}[node distance=4.8cm]
+  \begin{tikzpicture}[node distance=4.8cm]
 
-%     \node(init)     [input, draw, label=left:\Large $\eta_1$] {$I(x) = (x, 0)$};
-%     \node(magcheck) [branch, draw, below of=init, label=135:\Large $\eta_2$] {$h(x) = x_z - x_1$};
-%     \node(equal)    [branch, draw, right of= magcheck, node distance= 5.2cm, label=above:\Large $\eta_3$] {$h(x) = x_1 - x_2$};
-%     \node(inc)      [compute, draw, below of=magcheck, label=right:\Large $\eta_4$] {$g(x) = (x_1, x_2+1)$};
-%     \node(accept)   [accept, draw, below of=equal, right of=equal, label=left:\Large $\accept$] 
-%     {$O(x) = x_2$};
-%     \node(reject)   [reject, draw, above of=equal, right of=equal, label=left:\Large $\reject$] 
-%     {$O(x) = x_2$};
+    \node(init)     [input, draw, label=left:\Large $\eta_1$] {$I(x) = (x, 0)$};
+    \node(magcheck) [branch, draw, below of=init, label=135:\Large $\eta_2$] {$h(x) = x_z - x_1$};
+    \node(equal)    [branch, draw, right of= magcheck, node distance= 5.2cm, label=above:\Large $\eta_3$] {$h(x) = x_1 - x_2$};
+    \node(inc)      [compute, draw, below of=magcheck, label=right:\Large $\eta_4$] {$g(x) = (x_1, x_2+1)$};
+    \node(accept)   [accept, draw, below of=equal, right of=equal, label=left:\Large $\accept$] 
+    {$O(x) = x_2$};
+    \node(reject)   [reject, draw, above of=equal, right of=equal, label=left:\Large $\reject$] 
+    {$O(x) = x_2$};
 
-%     \draw[->, thick] (init) -- (magcheck);
-%     \draw[->, thick] (magcheck) to node[auto] {$h(x) < 0$} (inc);
-%     \draw[->, thick] (inc) to [out=180, in=180] (magcheck);
-%     \draw[->, thick] (magcheck) to node [auto] {$h(x) \geq 0$} (equal);
-%     \draw[->, thick] (equal) to [out=-45, in=90]  node  [auto] {$h(x) \geq 0$} (accept);
-%     \draw[->, thick] (equal) to [out=45, in=270] node  [auto, swap] {$h(x) < 0$} (reject);
+    \draw[->, thick] (init) -- (magcheck);
+    \draw[->, thick] (magcheck) to node[auto] {$h(x) < 0$} (inc);
+    \draw[->, thick] (inc) to [out=180, in=180] (magcheck);
+    \draw[->, thick] (magcheck) to node [auto] {$h(x) \geq 0$} (equal);
+    \draw[->, thick] (equal) to [out=-45, in=90]  node  [auto] {$h(x) \geq 0$} (accept);
+    \draw[->, thick] (equal) to [out=45, in=270] node  [auto, swap] {$h(x) < 0$} (reject);
 
-%     \node (legend) [rectangle, draw, fill=black!10, below of=accept, node distance=3.0cm] {
-%       \makecell[l]{
-%         $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \accept, \reject}$\\
-%         $\inspace_M = \reals, \statespace_M = \reals^2, \outspace_M = \reals$\\
-%         Computation Nodes: $\set{\eta_4}$\\
-%         Branch Nodes: $\set{\eta_2, \eta_3}$\\
-%         $\halting_M = \naturals$\\
-%         $\computefn_M(x) = \ceil{x}$
-%       }
-%     };
+    \node (legend) [rectangle, draw, fill=black!10, below of=accept, node distance=3.0cm] {
+      \makecell[l]{
+        $\nodes = \set{\eta_1, \eta_2, \eta_3, \eta_4, \accept, \reject}$\\
+        $\inspace_M = \reals, \statespace_M = \reals^2, \outspace_M = \reals$\\
+        Computation Nodes: $\set{\eta_4}$\\
+        Branch Nodes: $\set{\eta_2, \eta_3}$\\
+        $\halting_M = \naturals$\\
+        $\computefn_M(x) = \ceil{x}$
+      }
+    };
 
-%   \end{tikzpicture}
-%   \caption{Decision Machine for $\naturals$}
-%   \label{fig:z-decide}
-% \end{figure}
+  \end{tikzpicture}
+  \caption{Decision Machine for $\naturals$}
+  \label{fig:z-decide}
+\end{figure}
 
-% \begin{definition}{\textbf{Computation Path} and \textbf{State Trajectory}}
+\begin{definition}{\textbf{Computation Path} and \textbf{State Trajectory}}
   
-%   The \textbf{Computation Path} $\computepath_M(x)$ of $M$ on
-%   input $x$ is the image of $\compute_M(x)$ under the map:
-%   $$\mfunctype{\pathprojection}{\fullstate}{\nodes} \mid \pathprojection(\eta, x) = \eta.$$
+  The \textbf{Computation Path} $\computepath_M(x)$ of $M$ on
+  input $x$ is the image of $\compute_M(x)$ under the map:
+  $$\mfunctype{\pathprojection}{\fullstate}{\nodes} \mid \pathprojection(\eta, x) = \eta.$$
   
-%   The \textbf{state trajectory} of $M$ on input $x$ is the image
-%   of $\compute_M(x)$ under the map:
-%   $$\mfunctype{\stateprojection}{\fullstate}{\statespace} \mid \stateprojection(\eta, x) = x.$$
+  The \textbf{state trajectory} of $M$ on input $x$ is the image
+  of $\compute_M(x)$ under the map:
+  $$\mfunctype{\stateprojection}{\fullstate}{\statespace} \mid \stateprojection(\eta, x) = x.$$
 
-% \end{definition}
+\end{definition}
 
-% \note{The computation path and state trajectory of a machine encode,
-%   respectively, the sequence of nodes a machine traverses during a
-%   computation and the sequence of values stored in the machine's
-%   state space during a computation.  In Section \ref{sec:measuring} we
-%   will also want to have handy the \textbf{modified state trajectory}
-%   of dimension $k$, which encodes the sequence of values stored in the
-%   first $k$ coordinates of $\statespace_M$ by the sequence.  We denote
-%   this sequence by $\stateprojection^k$.}
+\note{The computation path and state trajectory of a machine encode,
+  respectively, the sequence of nodes a machine traverses during a
+  computation and the sequence of values stored in the machine's
+  state space during a computation.  In Section \ref{sec:measuring} we
+  will also want to have handy the \textbf{modified state trajectory}
+  of dimension $k$, which encodes the sequence of values stored in the
+  first $k$ coordinates of $\statespace_M$ by the sequence.  We denote
+  this sequence by $\stateprojection^k$.}
 
-% \begin{example}
-%   Let $M$ be the machine described in Figure \ref{fig:q-recog}. For
-%   the input $x = 2$, we have:
-%   \begin{eqnarray*}
-%     \phi_M(x) &=& (\eta_1, (2,0,1)), (\eta_2, (2,0,1)), (\eta_5, (2,0,1)), (\eta_4, (2,1,0)), (\eta_3, (2,1,0)),\\
-%     &&  (\eta_2, (2,1,2)), (\eta_5, (2,1,2)), (\eta_4, (2,2,1)), (\eta_2, (2,2,1)), (\accept, (2,2,1))\\
-%     && \\
-%     \computepath_M(x) &=& \eta_1,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_3,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_2,\, \accept.
-%   \end{eqnarray*}
+\begin{example}
+  Let $M$ be the machine described in Figure \ref{fig:q-recog}. For
+  the input $x = 2$, we have:
+  \begin{eqnarray*}
+    \phi_M(x) &=& (\eta_1, (2,0,1)), (\eta_2, (2,0,1)), (\eta_5, (2,0,1)), (\eta_4, (2,1,0)), (\eta_3, (2,1,0)),\\
+    &&  (\eta_2, (2,1,2)), (\eta_5, (2,1,2)), (\eta_4, (2,2,1)), (\eta_2, (2,2,1)), (\accept, (2,2,1))\\
+    && \\
+    \computepath_M(x) &=& \eta_1,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_3,\, \eta_2,\, \eta_5,\, \eta_4,\, \eta_2,\, \accept.
+  \end{eqnarray*}
 
-%   The state trajectory of $M$ on input $x$ is given by:
-%   $$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1), (2,2,1).$$
-% \end{example}
+  The state trajectory of $M$ on input $x$ is given by:
+  $$(2,0,1), (2,0,1), (2,0,1), (2,1,0), (2,1,0), (2,1,2), (2,1,2), (2,2,1), (2,2,1), (2,2,1).$$
+\end{example}
 
-% \begin{definition}{\textbf{Finite-Dimensionally Computable Function}}
+\begin{definition}{\textbf{Finite-Dimensionally Computable Function}}
   
-%   A function \functype{\varphi}{X}{R^m}, $X \subset R^n$ is
-%   \textbf{f.d. computable} over $R$ if there exists a
-%   finite-dimensional machine, $M$ over $R$ such that $\varphi(x) =
-%   \computefn_M(x) \mid \forall x \in X$.
+  A function \functype{\varphi}{X}{R^m}, $X \subset R^n$ is
+  \textbf{f.d. computable} over $R$ if there exists a
+  finite-dimensional machine, $M$ over $R$ such that $\varphi(x) =
+  \computefn_M(x) \mid \forall x \in X$.
   
-% \end{definition}
+\end{definition}
 
-% \begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets}}
+\begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets}}
   
-%   A set $S \subset R^n$ is \textbf{finite-dimensionally decidable} if
-%   there exists an FDM $M$ with $\inspace_M = R^n$ such that $M$
-%   accepts $x$ if and only if $s \in S$, and $M$ rejects $x$ if and
-%   only if $s \notin S$.  Such a machine $M$ is said to \textbf{decide}
-%   $S$.\\
+  A set $S \subset R^n$ is \textbf{finite-dimensionally decidable} if
+  there exists an FDM $M$ with $\inspace_M = R^n$ such that $M$
+  accepts $x$ if and only if $s \in S$, and $M$ rejects $x$ if and
+  only if $s \notin S$.  Such a machine $M$ is said to \textbf{decide}
+  $S$.\\
 
-%   A set $S \subset R^n$ is \textbf{finite-dimensionally recognizable}
-%   if there exists an FDM $M$ with $\inspace_M = R^n$ such that $M$
-%   accepts $x$ if and only if $x \in S$.  Such a machine is said to
-%   \textbf{recognize} $M$.\\
+  A set $S \subset R^n$ is \textbf{finite-dimensionally recognizable}
+  if there exists an FDM $M$ with $\inspace_M = R^n$ such that $M$
+  accepts $x$ if and only if $x \in S$.  Such a machine is said to
+  \textbf{recognize} $M$.\\
 
-%   A set $S \subset R^n$ is \textbf{finite-dimensionally
-%     co-recognizable} if there exists an FDM $M$ with $\inspace_M =
-%   R^n$ such that $M$ accepts $x$ if and only if $x \in S$.
-% \end{definition}
+  A set $S \subset R^n$ is \textbf{finite-dimensionally
+    co-recognizable} if there exists an FDM $M$ with $\inspace_M =
+  R^n$ such that $M$ accepts $x$ if and only if $x \in S$.
+\end{definition}
   
-% \textbf{Note:} Here we again depart slightly from the development in
-% \cite{B98} and \cite{B89}.  Blum et al. do not explicitly appeal to
-% notions of acceptance and rejection.  Instead they consider machines
-% that output $1$ on some inputs and $0$ on other inputs.  For
-% completeness, we also present the BSS characterization of
-% decidability.  It is straightforward to verify that thes classes of
-% decidable, recognizable, and co-recognizable languages are the same
-% under either set of definitions.
+\textbf{Note:} Here we again depart slightly from the development in
+\cite{B98} and \cite{B89}.  Blum et al. do not explicitly appeal to
+notions of acceptance and rejection.  Instead they consider machines
+that output $1$ on some inputs and $0$ on other inputs.  For
+completeness, we also present the BSS characterization of
+decidability.  It is straightforward to verify that thes classes of
+decidable, recognizable, and co-recognizable languages are the same
+under either set of definitions.
 
-% \begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets (BSS)}}
+\begin{definition}{\textbf{Decidable, Recognizable, and Co-Recognizable Sets (BSS)}}
 
-%   A set $S \subset R^n$ is \textbf{(f.d.) decidable} over $R$ if the
-%   function \functype{\chi_S}{R^n}{R} is (f.d) computable over $R$,
-%   where:
+  A set $S \subset R^n$ is \textbf{(f.d.) decidable} over $R$ if the
+  function \functype{\chi_S}{R^n}{R} is (f.d) computable over $R$,
+  where:
   
-%   $$\chi_S(x) =  \twopartdef{1}{x \in S}{0}{x \notin S.}$$
+  $$\chi_S(x) =  \twopartdef{1}{x \in S}{0}{x \notin S.}$$
   
-%   A set $S \subset R^n$ is \textbf{(f.d) recognizable} or
-%   \textbf{(f.d) semi-decidable} over $R$ if the function
-%   \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$, where:
+  A set $S \subset R^n$ is \textbf{(f.d) recognizable} or
+  \textbf{(f.d) semi-decidable} over $R$ if the function
+  \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$, where:
   
-%   $$\chi_S(x) = \twopartdef{1}{x \in S}{0 \text{\emph{ or undefined}}}{x \notin S.}$$
-%   \vspace{\baselineskip}
+  $$\chi_S(x) = \twopartdef{1}{x \in S}{0 \text{\emph{ or undefined}}}{x \notin S.}$$
+  \vspace{\baselineskip}
   
-%   A set $S \subset R^n$ is \textbf{(f.d.) co-recognizable} over $R$ if
-%   the function \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$,
-%   where:
+  A set $S \subset R^n$ is \textbf{(f.d.) co-recognizable} over $R$ if
+  the function \functype{\chi_S}{R^n}{R} is (f.d.) computable over $R$,
+  where:
   
-%   $$\chi_S(x) =  \twopartdef{1}{x \notin S}{0 \text{\emph{ or undefined}}}{x \in S.}$$
+  $$\chi_S(x) =  \twopartdef{1}{x \notin S}{0 \text{\emph{ or undefined}}}{x \in S.}$$
   
-% \end{definition}
+\end{definition}
 
-% \begin{example}
-%   The machine presented in Figure \ref{fig:q-recog} shows that
-%   $\rationals$ is finite-dimensionally recognizable over $\reals$.
-%   The machine presented in Figure \ref{fig:z-decide} shows that
-%   $\integers$ is finite-dimensionally decidable over $\reals$.
-% \end{example}
+\begin{example}
+  The machine presented in Figure \ref{fig:q-recog} shows that
+  $\rationals$ is finite-dimensionally recognizable over $\reals$.
+  The machine presented in Figure \ref{fig:z-decide} shows that
+  $\integers$ is finite-dimensionally decidable over $\reals$.
+\end{example}
 
-% It is fairly straightforward to see that the recognizable sets over
-% $R$ are precisely the halting sets over R and the co-recognizable sets
-% are those whose complements are recognizable. Less obviously, the
-% decidable sets are precisely those that are both recognizable and
-% co-recognizable.
+It is fairly straightforward to see that the recognizable sets over
+$R$ are precisely the halting sets over R and the co-recognizable sets
+are those whose complements are recognizable. Less obviously, the
+decidable sets are precisely those that are both recognizable and
+co-recognizable.
 
-% \begin{proposition}{A set $S \subset R^n$ is decidable if and only if it is
-%   both recognizable and co-recognizable.}
-% \label{prop:dec=rec+corec}
-% \end{proposition}
-% \begin{proofsketch}
+\begin{proposition}{A set $S \subset R^n$ is decidable if and only if it is
+  both recognizable and co-recognizable.}
+\label{prop:dec=rec+corec}
+\end{proposition}
+\begin{proofsketch}
   
-%   A machine that acts as a decider for a set $S$ is by definition a
-%   recognizer for both $S_{yes}$ and $S_{no}$ .  Conversely, if $M$
-%   and $M'$ are recognizers for $S$ and $R^n - S$, we can contruct a
-%   decision machine for $S$ by simulating $M$ and $M'$ in parallel,
-%   accepting if $M$ accepts and rejecting if $M'$ accepts.  Since one
-%   of $M$ and $M'$ must halt eventually, we are guaranteed that our
-%   new machine will halt for all possible inputs, and will accept an
-%   input if an only if it is in $S_{yes}$.
+  A machine that acts as a decider for a set $S$ is by definition a
+  recognizer for both $S_{yes}$ and $S_{no}$ .  Conversely, if $M$
+  and $M'$ are recognizers for $S$ and $R^n - S$, we can contruct a
+  decision machine for $S$ by simulating $M$ and $M'$ in parallel,
+  accepting if $M$ accepts and rejecting if $M'$ accepts.  Since one
+  of $M$ and $M'$ must halt eventually, we are guaranteed that our
+  new machine will halt for all possible inputs, and will accept an
+  input if an only if it is in $S_{yes}$.
   
-% \end{proofsketch}
+\end{proofsketch}
 
-% \section{Characterization of Finite-Dimensional Halting Sets}
+\section{Characterization of Finite-Dimensional Halting Sets}
 
-%   \begin{definition}{\textbf{Semi-algebraic} and \textbf{Quasi-algebraic Set}}
+  \begin{definition}{\textbf{Semi-algebraic} and \textbf{Quasi-algebraic Set}}
     
-%     A set $S \subset R$ is \textbf{basic semi-algebraic} over an
-%     ordered ring $R$ if $S$ is the set of elements in $R$ satisfying
-%     a finite system of polynomial equalities and inequalities. A set
-%     is \textbf{semi-algebraic} over $R$ if it is a finite union of basic
-%     semi-algebraic sets.
+    A set $S \subset R$ is \textbf{basic semi-algebraic} over an
+    ordered ring $R$ if $S$ is the set of elements in $R$ satisfying
+    a finite system of polynomial equalities and inequalities. A set
+    is \textbf{semi-algebraic} over $R$ if it is a finite union of basic
+    semi-algebraic sets.
     
-%     A set $S \subset R$ is \textbf{basic quasi-algebraic} over an
-%     unordered ring $R$ if $S$ is the set of elements in $R$ satisfying
-%     a finite system of polynomial equalities. A set is
-%     \textbf{quasi-algebraic} over $R$ if it is a finite union of basic
-%     quasi-algebraic sets.
+    A set $S \subset R$ is \textbf{basic quasi-algebraic} over an
+    unordered ring $R$ if $S$ is the set of elements in $R$ satisfying
+    a finite system of polynomial equalities. A set is
+    \textbf{quasi-algebraic} over $R$ if it is a finite union of basic
+    quasi-algebraic sets.
     
-%   \end{definition}
+  \end{definition}
 
-%   \begin{example}
-%     The upper half of the unit disc in $\reals^2$ is a basic
-%     semi-algebraic set defined by solutions to the equations:
-%     \begin{eqnarray*}
-%       x^2 + y^2 < 0\\
-%       y > 0.
-%     \end{eqnarray*}
+  \begin{example}
+    The upper half of the unit disc in $\reals^2$ is a basic
+    semi-algebraic set defined by solutions to the equations:
+    \begin{eqnarray*}
+      x^2 + y^2 < 0\\
+      y > 0.
+    \end{eqnarray*}
 
-%     In $\reals^3$, the surface of the unit sphere is a basic
-%     quasi-algebraic set defined by solutions to the equation:
-%     \begin{eqnarray*}
-%       x^2 + y^2 + z^2 = 1.
-%     \end{eqnarray*}
-%   \end{example}
+    In $\reals^3$, the surface of the unit sphere is a basic
+    quasi-algebraic set defined by solutions to the equation:
+    \begin{eqnarray*}
+      x^2 + y^2 + z^2 = 1.
+    \end{eqnarray*}
+  \end{example}
   
-%   \begin{definition}{\textbf{Initial computation path} and \textbf{time-t halting path set}}
+  \begin{definition}{\textbf{Initial computation path} and \textbf{time-t halting path set}}
 
-%     Let $M$ be a machine over $R$, and let $x$ be an element of
-%     $\inspace_M$, and let $\computepath_M(x) = (\eta_0, \eta_1, \ldots,
-%     \eta_k, \eta_{k+1}, \ldots)$ be the computation path of $M$ on
-%     $x$.\\
+    Let $M$ be a machine over $R$, and let $x$ be an element of
+    $\inspace_M$, and let $\computepath_M(x) = (\eta_0, \eta_1, \ldots,
+    \eta_k, \eta_{k+1}, \ldots)$ be the computation path of $M$ on
+    $x$.\\
 
-%     The \textbf{initial computation path} on $\computepath_M(x)$ of
-%     length $k$ is given by: 
-%     $$\computepath_M^k(x) = (\eta_0, \eta_1, \ldots,\eta_k).$$
+    The \textbf{initial computation path} on $\computepath_M(x)$ of
+    length $k$ is given by: 
+    $$\computepath_M^k(x) = (\eta_0, \eta_1, \ldots,\eta_k).$$
 
-%     The \textbf{time-t halting path set}, $\haltpaths_M(t)$, of $M$ is
-%     given by:
-%     $$\haltpaths_M(t) = \set{\computepath_M(x) \mid x \in \halting_M(t)}.$$
-%   \end{definition}
+    The \textbf{time-t halting path set}, $\haltpaths_M(t)$, of $M$ is
+    given by:
+    $$\haltpaths_M(t) = \set{\computepath_M(x) \mid x \in \halting_M(t)}.$$
+  \end{definition}
 
-%   Recall that $\computepath_M(x)$ encodes the sequence of nodes
-%   traversed by $M$ on input $x$, so $\computepath_M^k(x)$ encodes the
-%   first $k$ nodes traversed by $M$ on input $x$.  The collection
-%   $\haltpaths_M(t)$ is the set containing all halting paths of length
-%   $t$.\\
+  Recall that $\computepath_M(x)$ encodes the sequence of nodes
+  traversed by $M$ on input $x$, so $\computepath_M^k(x)$ encodes the
+  first $k$ nodes traversed by $M$ on input $x$.  The collection
+  $\haltpaths_M(t)$ is the set containing all halting paths of length
+  $t$.\\
 
-%   \begin{definition}{\textbf{Coincidence Set}}
+  \begin{definition}{\textbf{Coincidence Set}}
 
-%     Let $M$ be a machine over a ring $R$, and let $\computepath =
-%     \computepath_M^k(x)$ be the initial computation path of length $k$
-%     for some $x \in \inspace_M$. The \textbf{coincidence set}
-%     $\coincidence_M(\computepath)$ of $\computepath$ is the set of
-%     elements in $\inspace_M$ whose initial computation path of length
-%     $k$ is $\gamma$.  It is defined by:
-%     $$\coincidence_M(\computepath) = 
-%     \set{x' \in \inspace_M \mid \computepath_M^k(x') = \computepath}.$$
-%   \end{definition}
+    Let $M$ be a machine over a ring $R$, and let $\computepath =
+    \computepath_M^k(x)$ be the initial computation path of length $k$
+    for some $x \in \inspace_M$. The \textbf{coincidence set}
+    $\coincidence_M(\computepath)$ of $\computepath$ is the set of
+    elements in $\inspace_M$ whose initial computation path of length
+    $k$ is $\gamma$.  It is defined by:
+    $$\coincidence_M(\computepath) = 
+    \set{x' \in \inspace_M \mid \computepath_M^k(x') = \computepath}.$$
+  \end{definition}
     
-%   \note{For each $k > 0$, the coincidence sets on paths of length $k$
-%     partition $\inspace_M$ into sets of inputs that cause $M$ to
-%     traverse different sequences of nodes.  It is straightforward to
-%     show that belonging to the same coincidence set of length $k$
-%     defines an equivalence relation on elements of $\inspace_M$.
-%     Thus, for each $k > 0$, the coincidence sets of $M$ on paths of
-%     length $k$ partition $\inspace_M$ into equivalence classes.}
+  \note{For each $k > 0$, the coincidence sets on paths of length $k$
+    partition $\inspace_M$ into sets of inputs that cause $M$ to
+    traverse different sequences of nodes.  It is straightforward to
+    show that belonging to the same coincidence set of length $k$
+    defines an equivalence relation on elements of $\inspace_M$.
+    Thus, for each $k > 0$, the coincidence sets of $M$ on paths of
+    length $k$ partition $\inspace_M$ into equivalence classes.}
 
-%   \begin{theorem}{\textbf{Path Decomposition Theorem for FDMs}}
+  \begin{theorem}{\textbf{Path Decomposition Theorem for FDMs}}
     
-%     For any FDM $M$ over $R$ and any $t > 0$, we have the following:
+    For any FDM $M$ over $R$ and any $t > 0$, we have the following:
 
-%     \begin{enumerate}
-%     \item The time-t halting set $\halting_M(t)$ is a semi-algebraic
-%       set if $M$ branches on $>$, and a quasi-algebraic set if $M$
-%       branches on $=$.
+    \begin{enumerate}
+    \item The time-t halting set $\halting_M(t)$ is a semi-algebraic
+      set if $M$ branches on $>$, and a quasi-algebraic set if $M$
+      branches on $=$.
 
-%     \item The halting set $\halting_M$ is a countable union of
-%       disjoint semi(quasi)-algebraic sets.
+    \item The halting set $\halting_M$ is a countable union of
+      disjoint semi(quasi)-algebraic sets.
 
-%     \item For any $\computepath \in \haltpaths_M(t)$, $M$ computes a
-%       polynomial function when restricted to inputs drawn from
-%       $\coincidence_\computepath$.  In other words, for any halting
-%       path $\computepath$, $\computefn_M|\coincidence{\computepath}$
-%       is a polynomial map.
-%     \end{enumerate}
+    \item For any $\computepath \in \haltpaths_M(t)$, $M$ computes a
+      polynomial function when restricted to inputs drawn from
+      $\coincidence_\computepath$.  In other words, for any halting
+      path $\computepath$, $\computefn_M|\coincidence{\computepath}$
+      is a polynomial map.
+    \end{enumerate}
     
-%     \label{thm:pdt-finite}
-%   \end{theorem}
+    \label{thm:pdt-finite}
+  \end{theorem}
 
-%   \begin{proofsketch}
+  \begin{proofsketch}
     
-%     The main idea behind this result is that the coincidence set of
-%     any halting computation path is basic semi(quasi)-algebraic.  For
-%     each halting time $t > 0$, we can partition $\inspace_M$ into
-%     finitely many coincidence sets, corresponding to all halting paths
-%     of length $t$ or less.  We omit a full presentation of the system
-%     of equalities/inequality equations defining each
-%     $\coincidence(\computepath)$.  Such a presentation can be found in
-%     \cite{B98}, Section 2.3.
+    The main idea behind this result is that the coincidence set of
+    any halting computation path is basic semi(quasi)-algebraic.  For
+    each halting time $t > 0$, we can partition $\inspace_M$ into
+    finitely many coincidence sets, corresponding to all halting paths
+    of length $t$ or less.  We omit a full presentation of the system
+    of equalities/inequality equations defining each
+    $\coincidence(\computepath)$.  Such a presentation can be found in
+    \cite{B98}, Section 2.3.
 
-%     \begin{itemize}
-%     \item \textbf{(1)} follows from the fact that there are finitely
-%       many halting computation paths paths of length $t$.  The set of
-%       elements that traverse a particular halting computation path is
-%       determined by the outputs of the branching functions along the
-%       path, which define finite sets of polynomial equalities and
-%       inequalities.  It follows that coincidence sets of halting
-%       computation paths are basic semi(quasi)-algebraic. For any time
-%       $t$, there can only be finitely many halting computation paths
-%       of length $t$, and since membership in some
-%       $\coincidence_\computepath$ defines an equivalence relation, we
-%       can partition $\halting_M^t$ into finitely many coincidence
-%       sets, each of which is basic semi(quasi)-algebraic.
-%     \item \textbf{(2)} follows from the fact that $\halting_M$ is just
-%       the union over all $T \in \naturals$ of $\halting_M^T$.
-%     \item \textbf{(3)} follows from the fact that each halting
-%       computation path $\computepath$ corresponds to a specific
-%       sequence of computation nodes, so
-%       $\computefn_M|\coincidence{\computepath}$ computes the
-%       composition of $g_{\eta}$ for $\eta \in \computepath$.
-%     \end{itemize}
-%   \end{proofsketch}
+    \begin{itemize}
+    \item \textbf{(1)} follows from the fact that there are finitely
+      many halting computation paths paths of length $t$.  The set of
+      elements that traverse a particular halting computation path is
+      determined by the outputs of the branching functions along the
+      path, which define finite sets of polynomial equalities and
+      inequalities.  It follows that coincidence sets of halting
+      computation paths are basic semi(quasi)-algebraic. For any time
+      $t$, there can only be finitely many halting computation paths
+      of length $t$, and since membership in some
+      $\coincidence_\computepath$ defines an equivalence relation, we
+      can partition $\halting_M^t$ into finitely many coincidence
+      sets, each of which is basic semi(quasi)-algebraic.
+    \item \textbf{(2)} follows from the fact that $\halting_M$ is just
+      the union over all $T \in \naturals$ of $\halting_M^T$.
+    \item \textbf{(3)} follows from the fact that each halting
+      computation path $\computepath$ corresponds to a specific
+      sequence of computation nodes, so
+      $\computefn_M|\coincidence{\computepath}$ computes the
+      composition of $g_{\eta}$ for $\eta \in \computepath$.
+    \end{itemize}
+  \end{proofsketch}
 
-%   It is straightforward to show that every recognizable set must be
-%   exactly the halting set of some machine $M$.  Thus the Path
-%   Decomposition Theorem gives us the following:
+  It is straightforward to show that every recognizable set must be
+  exactly the halting set of some machine $M$.  Thus the Path
+  Decomposition Theorem gives us the following:
 
-%   \begin{corollary}
-%     Every finite-dimensionally recognizable set is a countable union
-%     of disjoint semi(quasi)-algebraic sets.
-%   \end{corollary}
+  \begin{corollary}
+    Every finite-dimensionally recognizable set is a countable union
+    of disjoint semi(quasi)-algebraic sets.
+  \end{corollary}
 
-%   We can use this corollary to prove the following:
+  We can use this corollary to prove the following:
 
-%   \begin{theorem}
-%     $\rationals$ is not finite-dimensionally decidable over $\reals$.
-%   \end{theorem}
+  \begin{theorem}
+    $\rationals$ is not finite-dimensionally decidable over $\reals$.
+  \end{theorem}
   
-%   \begin{proof}
-%     By Proposition \ref{prop:dec=rec+corec}, it suffices to show that
-%     the complement of the rationals in the reals is not recognizable.
-%     It is well-known that the semi-algebraic sets over $\reals$ are
-%     finite unions of either open, closed, or half-open intervals (note
-%     that closed intervals include single points).  Since $\reals -
-%     \rationals$ is totally disconnected, it contains no open
-%     intervals, so the only semi-algebraic subsets of
-%     $\reals-\rationals$ are finite sets of points. By Thereom
-%     \ref{thm:pdt-finite}, if $\reals-\rationals$ is decidable over
-%     $\reals$, then it can be expressed as a countable union of
-%     disjoint semi-algebraic sets.  But this would imply that
-%     $\reals-\rationals$ could be given by a countable union of sets of
-%     finite points, implying that $\reals-\rationals$ is countable, a
-%     contradiction.
-%   \end{proof}
+  \begin{proof}
+    By Proposition \ref{prop:dec=rec+corec}, it suffices to show that
+    the complement of the rationals in the reals is not recognizable.
+    It is well-known that the semi-algebraic sets over $\reals$ are
+    finite unions of either open, closed, or half-open intervals (note
+    that closed intervals include single points).  Since $\reals -
+    \rationals$ is totally disconnected, it contains no open
+    intervals, so the only semi-algebraic subsets of
+    $\reals-\rationals$ are finite sets of points. By Thereom
+    \ref{thm:pdt-finite}, if $\reals-\rationals$ is decidable over
+    $\reals$, then it can be expressed as a countable union of
+    disjoint semi-algebraic sets.  But this would imply that
+    $\reals-\rationals$ could be given by a countable union of sets of
+    finite points, implying that $\reals-\rationals$ is countable, a
+    contradiction.
+  \end{proof}
     
-% \chapter{Background - Uniform Machines over $R$}
+\chapter{Background - Uniform Machines over $R$}
 
-%   So far, the machines we have considered can only access a
-%   finite-length region of ``memory,'' which has size bounded by the
-%   dimension of $\statespace_M$.  We have seen that this restriction
-%   does not impede our ability to solve certain classes of problems,
-%   such as determining whether an arbitrary real number is an integer
-%   or a rational.  Some problems, however, are naturally understood as
-%   ranging over an input space of unbounded length.  For example, in
-%   the case of our Newton's Method machine (Figure
-%   \ref{fig:newton-low}), we might like to be able to take as input a
-%   polynomial of arbitrary degree, rather than have to define different
-%   machines for different-sized polynomials.  In other words, we would
-%   like to be able to define \textbf{uniform machines}, which can
-%   compute on inputs of arbitrary size.\\
+  So far, the machines we have considered can only access a
+  finite-length region of ``memory,'' which has size bounded by the
+  dimension of $\statespace_M$.  We have seen that this restriction
+  does not impede our ability to solve certain classes of problems,
+  such as determining whether an arbitrary real number is an integer
+  or a rational.  Some problems, however, are naturally understood as
+  ranging over an input space of unbounded length.  For example, in
+  the case of our Newton's Method machine (Figure
+  \ref{fig:newton-low}), we might like to be able to take as input a
+  polynomial of arbitrary degree, rather than have to define different
+  machines for different-sized polynomials.  In other words, we would
+  like to be able to define \textbf{uniform machines}, which can
+  compute on inputs of arbitrary size.\\
 
-%   Allowing for uniform machines requires two major changes to the
-%   finite-dimensional model.  First, we allow the input, state, and
-%   output spaces to have unbounded length.  Second, we introduce a new
-%   node type, which makes it possible for a machine to compute with
-%   values stored at high indices in the newly expanded state space.\\
+  Allowing for uniform machines requires two major changes to the
+  finite-dimensional model.  First, we allow the input, state, and
+  output spaces to have unbounded length.  Second, we introduce a new
+  node type, which makes it possible for a machine to compute with
+  values stored at high indices in the newly expanded state space.\\
   
-%   \section{Computing with Unbounded State}
+  \section{Computing with Unbounded State}
 
-%   \begin{definition}{\textbf{$R^\infty$ and $R_\infty$}}
+  \begin{definition}{\textbf{$R^\infty$ and $R_\infty$}}
 
-%     We denote by $R^\infty$ the union $\bigcup_{n \geq 0} R^n$. Note
-%     that although $R^\infty$ contains tuples of arbitrary dimension,
-%     any particular element of $R^\infty$ is an element of $R^n$ for
-%     some particular $n$.\\
+    We denote by $R^\infty$ the union $\bigcup_{n \geq 0} R^n$. Note
+    that although $R^\infty$ contains tuples of arbitrary dimension,
+    any particular element of $R^\infty$ is an element of $R^n$ for
+    some particular $n$.\\
 
-%     We denote by $R_\infty$ the \emph{bi-infinite direct sum} over
-%     $R$, which consists of elements of the form $$(\ldots x_{-2},
-%     x_{-1}, x_0.x_1, x_2, \ldots),$$ where the period is a
-%     distinguished marker between $x_0$ and $x_1$.  Often, when writing
-%     an element of $R_\infty$, we omit the commas and write simply
-%     $$\ldots x_{-2}x_{-1}x_0.x_1x_2 \ldots.$$
-%   \end{definition}
+    We denote by $R_\infty$ the \emph{bi-infinite direct sum} over
+    $R$, which consists of elements of the form $$(\ldots x_{-2},
+    x_{-1}, x_0.x_1, x_2, \ldots),$$ where the period is a
+    distinguished marker between $x_0$ and $x_1$.  Often, when writing
+    an element of $R_\infty$, we omit the commas and write simply
+    $$\ldots x_{-2}x_{-1}x_0.x_1x_2 \ldots.$$
+  \end{definition}
 
-%   \subsection{Maps on $R^\infty$ and $R_\infty$}
+  \subsection{Maps on $R^\infty$ and $R_\infty$}
     
-%   Our uniform machines will perform computations on inputs from
-%   $R^\infty$, using $R_\infty$ as a state space, but an essential
-%   feature of our model is that a machine over $R$ can be given a
-%   finite representation with respect to the elements of $R$.  This
-%   means that the computation and branching functions of our machines
-%   will still effectively be functions from $R^n \rightarrow R^m$,
-%   which we extend to operate on $R_\infty$.  The basic idea behind
-%   this extension is that branching functions $h: R^n \rightarrow R$
-%   compute by ``reading'' the first $n$ positive-indexed coordinates of
-%   $\statespace_M$, and computation functions $g: R^m \rightarrow R^n$
-%   ``read'' the first $m$ positive-indexed coordinates of
-%   $\statespace_M$ and ``write'' to the first $n$ such
-%   coordinates. \footnote{As was the case for finite-dimensional
-%     machines, ``polynomial'' can be replaced here with ``rational''
-%     whenever $R$ is a field.}
+  Our uniform machines will perform computations on inputs from
+  $R^\infty$, using $R_\infty$ as a state space, but an essential
+  feature of our model is that a machine over $R$ can be given a
+  finite representation with respect to the elements of $R$.  This
+  means that the computation and branching functions of our machines
+  will still effectively be functions from $R^n \rightarrow R^m$,
+  which we extend to operate on $R_\infty$.  The basic idea behind
+  this extension is that branching functions $h: R^n \rightarrow R$
+  compute by ``reading'' the first $n$ positive-indexed coordinates of
+  $\statespace_M$, and computation functions $g: R^m \rightarrow R^n$
+  ``read'' the first $m$ positive-indexed coordinates of
+  $\statespace_M$ and ``write'' to the first $n$ such
+  coordinates. \footnote{As was the case for finite-dimensional
+    machines, ``polynomial'' can be replaced here with ``rational''
+    whenever $R$ is a field.}
 
-%   We first consider the extension of functions suitable to serve as
-%   branching functions.  
+  We first consider the extension of functions suitable to serve as
+  branching functions.  
 
-%   \begin{definition}{\textbf{Polynomial Map: $R_\infty \rightarrow R$}}
+  \begin{definition}{\textbf{Polynomial Map: $R_\infty \rightarrow R$}}
     
-%     Let \functype{h}{R^m}{R} be a polynomial map of degree $d$.  Then
-%     $h$ defines a related polynomial map
-%     \functype{\widehat{h}}{R_\infty}{R} of \emph{dimension} $m$ and
-%     \emph{degree} $d$, which is given by:
-%     $$\widehat{h}(x) = h(x_1, \ldots, x_m),$$
-%   \end{definition}
+    Let \functype{h}{R^m}{R} be a polynomial map of degree $d$.  Then
+    $h$ defines a related polynomial map
+    \functype{\widehat{h}}{R_\infty}{R} of \emph{dimension} $m$ and
+    \emph{degree} $d$, which is given by:
+    $$\widehat{h}(x) = h(x_1, \ldots, x_m),$$
+  \end{definition}
 
-%   Functions suitable for use in computation nodes are only slightly
-%   trickier.  
+  Functions suitable for use in computation nodes are only slightly
+  trickier.  
   
-%   \begin{definition}{\textbf{Polynomial Map: $R_\infty \rightarrow R_\infty$}}
+  \begin{definition}{\textbf{Polynomial Map: $R_\infty \rightarrow R_\infty$}}
     
-%     Let \functype{g}{R^m}{R^n} be a function given by $$g(x) =
-%     (g_1(x), g_2(x), \ldots , g_n(x))$$ where each $g_i$ is a
-%     polynomial map of degree at most $d$ from $R_m$ to $R$.  Let $x
-%     \in R_\infty = \ldots x_{-2}x_{-1}x_0.x_1x_2 \ldots$. We say that
-%     $g$ defines an associated polynomial map
-%     \functype{\widehat{g}}{R_\infty}{R_\infty} of \emph{dimension} $m$
-%     and degree $d$ as follows:
-%     $$\widehat{g}(x) = 
-%     \ldots x_{-2}x_{-1}x_0.
-%     \widehat{g_1}(x)\widehat{g_2}(x)\ldots\widehat{g_n}(x)x_{n+1}x_{n+2}\ldots,$$
-%     where each $\widehat{g_i}(x)$ is defined in the manner of our
-%     definition of $\widehat{h}$ above.
-%   \end{definition}
+    Let \functype{g}{R^m}{R^n} be a function given by $$g(x) =
+    (g_1(x), g_2(x), \ldots , g_n(x))$$ where each $g_i$ is a
+    polynomial map of degree at most $d$ from $R_m$ to $R$.  Let $x
+    \in R_\infty = \ldots x_{-2}x_{-1}x_0.x_1x_2 \ldots$. We say that
+    $g$ defines an associated polynomial map
+    \functype{\widehat{g}}{R_\infty}{R_\infty} of \emph{dimension} $m$
+    and degree $d$ as follows:
+    $$\widehat{g}(x) = 
+    \ldots x_{-2}x_{-1}x_0.
+    \widehat{g_1}(x)\widehat{g_2}(x)\ldots\widehat{g_n}(x)x_{n+1}x_{n+2}\ldots,$$
+    where each $\widehat{g_i}(x)$ is defined in the manner of our
+    definition of $\widehat{h}$ above.
+  \end{definition}
   
-%   \begin{definition} \textbf{Input and Output Maps}
-%     \label{def:io-map}
+  \begin{definition} \textbf{Input and Output Maps}
+    \label{def:io-map}
     
-%     We define the input map, \functype{I_\infty}{R^\infty}{R_\infty}
-%     by:
-%     $$I_\infty(x) = 
-%     (\ldots, \widehat{n}.x_1,x_2,\ldots,x_n, 0,0,0,\ldots) \text{ for }
-%     x \in R^n$$ where $\widehat{n}$ denotes a sequence of $n$ $1$s.
+    We define the input map, \functype{I_\infty}{R^\infty}{R_\infty}
+    by:
+    $$I_\infty(x) = 
+    (\ldots, \widehat{n}.x_1,x_2,\ldots,x_n, 0,0,0,\ldots) \text{ for }
+    x \in R^n$$ where $\widehat{n}$ denotes a sequence of $n$ $1$s.
     
-%     Defining the output map, \functype{O_\infty}{R_\infty}{R^\infty},
-%     is more subtle than defining the input map, since we need some way
-%     of determining how many coordinates of the state space to output.
-%     We do so by scanning the negative-indexed coordinates of the state
-%     space until we find an entry equal to $0$, and we output the same
-%     number of positive-indexed entries.
-%     $$O_\infty(\ldots x_{-2}x_{-1}x_0.x_1x_2\ldots x_l \ldots ) = 
-%     \twopartdef{\mathbf{0}}{l = 0}{(x_1, \ldots, x_l)}{\text{otherwise},}
-%     $$
-%     where $l = \min_{i \geq 0} \suchthat x_{-i} = 0$.  
-%   \end{definition}
+    Defining the output map, \functype{O_\infty}{R_\infty}{R^\infty},
+    is more subtle than defining the input map, since we need some way
+    of determining how many coordinates of the state space to output.
+    We do so by scanning the negative-indexed coordinates of the state
+    space until we find an entry equal to $0$, and we output the same
+    number of positive-indexed entries.
+    $$O_\infty(\ldots x_{-2}x_{-1}x_0.x_1x_2\ldots x_l \ldots ) = 
+    \twopartdef{\mathbf{0}}{l = 0}{(x_1, \ldots, x_l)}{\text{otherwise},}
+    $$
+    where $l = \min_{i \geq 0} \suchthat x_{-i} = 0$.  
+  \end{definition}
 
-%   \section{BSS Machines}
+  \section{BSS Machines}
 
-%   \begin{definition}{\textbf{BSS Machine over R}}
+  \begin{definition}{\textbf{BSS Machine over R}}
 
-%     A machine $M$ over a ring $R$ is a finite directed graph with
-%     node set $\nodes$.  The collection $\nodes$ contains three
-%     distinguished elements: the \textbf{input node} $\eta_1$, the
-%     \textbf{accept node} $\accept$, and the \textbf{reject node}
-%     $\reject$.  The input node has indegree 0 and outdegree 1; the
-%     accept and reject nodes have outdegree 0.  The remaining
-%     elements of $\nodes$ are divided into three types:
-%     \emph{computation, branch,} and \emph{shift}.
+    A machine $M$ over a ring $R$ is a finite directed graph with
+    node set $\nodes$.  The collection $\nodes$ contains three
+    distinguished elements: the \textbf{input node} $\eta_1$, the
+    \textbf{accept node} $\accept$, and the \textbf{reject node}
+    $\reject$.  The input node has indegree 0 and outdegree 1; the
+    accept and reject nodes have outdegree 0.  The remaining
+    elements of $\nodes$ are divided into three types:
+    \emph{computation, branch,} and \emph{shift}.
 
-%     The inputs to $M$ are drawn from $R^\infty$.  The state space of
-%     $M$ is $R_\infty$.  Outputs from $M$ are mapped from the state
-%     space back to $R^\infty$.\footnote{In this respect, the
-%       description of a BSS Machine is simpler than that of a
-%       finite-dimensional machine, since every BSS Machine has the same
-%       input, output, and state spaces.  When we wish to emphasize the
-%       use of $R^\infty$ as the input or output space of $M$, we use
-%       the notation $\inspace_M$ and $\outspace_M$ as we did for FDMs.
-%       The same goes for referring to $R_\infty$ as $\statespace_M$.}
+    The inputs to $M$ are drawn from $R^\infty$.  The state space of
+    $M$ is $R_\infty$.  Outputs from $M$ are mapped from the state
+    space back to $R^\infty$.\footnote{In this respect, the
+      description of a BSS Machine is simpler than that of a
+      finite-dimensional machine, since every BSS Machine has the same
+      input, output, and state spaces.  When we wish to emphasize the
+      use of $R^\infty$ as the input or output space of $M$, we use
+      the notation $\inspace_M$ and $\outspace_M$ as we did for FDMs.
+      The same goes for referring to $R_\infty$ as $\statespace_M$.}
 
-%     As with FDMs, each node of a BSS Machine has an associated map and
-%     a set of next nodes.\footnote{As with finite dimensional machines,
-%       references to polynomial maps can be replaced with references to
-%       rational maps whenever $R$ is a field, and branching conditions
-%       that depend on order can be replaced with tests for equality
-%       with $0$ whenever $R$ is to be considered without order.}
+    As with FDMs, each node of a BSS Machine has an associated map and
+    a set of next nodes.\footnote{As with finite dimensional machines,
+      references to polynomial maps can be replaced with references to
+      rational maps whenever $R$ is a field, and branching conditions
+      that depend on order can be replaced with tests for equality
+      with $0$ whenever $R$ is to be considered without order.}
 
-%     \begin{enumerate}
-%     \item Associated with the input node $\eta_1$ is the input map
-%       \functype{I_\infty}{R^\infty}{R_\infty} given in Definition
-%       \ref{def:io-map}. We denote the unique next node of $\eta_1$ by
-%       $\beta_{\eta_1}$ or just $\beta_1$.
+    \begin{enumerate}
+    \item Associated with the input node $\eta_1$ is the input map
+      \functype{I_\infty}{R^\infty}{R_\infty} given in Definition
+      \ref{def:io-map}. We denote the unique next node of $\eta_1$ by
+      $\beta_{\eta_1}$ or just $\beta_1$.
 
-%     \item Associated with both the accept and reject nodes is the
-%       output map \functype{O_\infty}{R_\infty}{R^\infty} given in
-%       Definition \ref{def:io-map}.  The accept and reject nodes have
-%       no next node.
+    \item Associated with both the accept and reject nodes is the
+      output map \functype{O_\infty}{R_\infty}{R^\infty} given in
+      Definition \ref{def:io-map}.  The accept and reject nodes have
+      no next node.
 
-%     \item Associated with each computation node $\eta$ is a polynomial
-%       map \functype{\widehat{g}_\eta}{R_\infty}{R_\infty}. We denote
-%       the unique next node of $\eta$ by $\beta_\eta$.
+    \item Associated with each computation node $\eta$ is a polynomial
+      map \functype{\widehat{g}_\eta}{R_\infty}{R_\infty}. We denote
+      the unique next node of $\eta$ by $\beta_\eta$.
 
-%     \item Associated with each branch node $\eta$ is a polynomial map
-%       \functype{\widehat{h}_\eta}{R_\infty}{R}.  We associate the
-%       condition $\widehat{h}_\eta(x) \geq 0$ with the Yes Node of
-%       $\eta$, which we denote by $\beta_\eta^+$.  We associate the
-%       condition $\widehat{h}_\eta(x) < 0$ with the No Node
-%       $\beta_\eta^-$.
+    \item Associated with each branch node $\eta$ is a polynomial map
+      \functype{\widehat{h}_\eta}{R_\infty}{R}.  We associate the
+      condition $\widehat{h}_\eta(x) \geq 0$ with the Yes Node of
+      $\eta$, which we denote by $\beta_\eta^+$.  We associate the
+      condition $\widehat{h}_\eta(x) < 0$ with the No Node
+      $\beta_\eta^-$.
 
-%     \item Associated with each shift node $\eta$ is a map
-%       \functype{\sigma_\eta}{R_\infty}{R_\infty}, which is either the
-%       \textbf{shift left} map $\sigma_l$ or the \textbf{shift right}
-%       map $\sigma_r$.  The shift maps are given by:
-%       \begin{align*}
-%         \sigma_l(x)_i &= x_{i+1}\\
-%         \sigma_r(x)_i &= x_{i-1}.
-%       \end{align*}
-%       We denote the unique next node of $\sigma$ by
-%       $\beta_\sigma$. 
-%     \end{enumerate}
-%   \end{definition}
+    \item Associated with each shift node $\eta$ is a map
+      \functype{\sigma_\eta}{R_\infty}{R_\infty}, which is either the
+      \textbf{shift left} map $\sigma_l$ or the \textbf{shift right}
+      map $\sigma_r$.  The shift maps are given by:
+      \begin{align*}
+        \sigma_l(x)_i &= x_{i+1}\\
+        \sigma_r(x)_i &= x_{i-1}.
+      \end{align*}
+      We denote the unique next node of $\sigma$ by
+      $\beta_\sigma$. 
+    \end{enumerate}
+  \end{definition}
 
-%   \begin{definition}{\textbf{Degree and Dimension of a BSS Machine}}
+  \begin{definition}{\textbf{Degree and Dimension of a BSS Machine}}
     
-%     Let $M$ be a BSS Machine with node set $\nodes_M$.  We define the
-%     \textbf{dimension} $K_M$ of $M$ to be the maximum dimension of any
-%     polynomial map appearing in a computation or branch node of $M$.\\
+    Let $M$ be a BSS Machine with node set $\nodes_M$.  We define the
+    \textbf{dimension} $K_M$ of $M$ to be the maximum dimension of any
+    polynomial map appearing in a computation or branch node of $M$.\\
     
-%     Similarly, we define the \textbf{degree} of $M$ to be the maximum
-%     degree of any polynomial map appearing in a computation or branch
-%     node of $M$.
+    Similarly, we define the \textbf{degree} of $M$ to be the maximum
+    degree of any polynomial map appearing in a computation or branch
+    node of $M$.
     
-%   \end{definition}
+  \end{definition}
 
-%   ``Full'' BSS Machines have much in common with their
-%   finite-dimensional counterparts.  The principle differences between
-%   the two models come from the expansion of input, state and output
-%   spaces and the inclusion of shift nodes.  It is worth noting that
-%   without the latter inclusion our machines would still be, in
-%   essence, finite dimensional, since the computation and branch nodes
-%   only modify a finite region of $\statespace_M$ at any given
-%   computation step.  The shift nodes allow us to make use of the
-%   expanded state space by providing a mechanism for moving values at
-%   high indices into locations where they can be used for computation.
+  ``Full'' BSS Machines have much in common with their
+  finite-dimensional counterparts.  The principle differences between
+  the two models come from the expansion of input, state and output
+  spaces and the inclusion of shift nodes.  It is worth noting that
+  without the latter inclusion our machines would still be, in
+  essence, finite dimensional, since the computation and branch nodes
+  only modify a finite region of $\statespace_M$ at any given
+  computation step.  The shift nodes allow us to make use of the
+  expanded state space by providing a mechanism for moving values at
+  high indices into locations where they can be used for computation.
 
-%   \begin{example}
-%     In \cite{B98}, Blum et al. show how to construct a
-%     \texttt{Universal Polynomial Evaluator (UPE)}, a BSS Machine which
-%     takes as input an encoding of a polynomial $p(x) \in \poly{R}$ and
-%     an argument $x_0$, outputting the value $p(x_0)$.  Using this
-%     machine as a subroutine, we can construct an algorithm to run
-%     Newton's Method for arbitrary polynomial inputs.  Here and in what
-%     follows, we use the notation $\langle X \rangle$ to denote an
-%     \textbf{encoding} of some object $X$.
+  \begin{example}
+    In \cite{B98}, Blum et al. show how to construct a
+    \texttt{Universal Polynomial Evaluator (UPE)}, a BSS Machine which
+    takes as input an encoding of a polynomial $p(x) \in \poly{R}$ and
+    an argument $x_0$, outputting the value $p(x_0)$.  Using this
+    machine as a subroutine, we can construct an algorithm to run
+    Newton's Method for arbitrary polynomial inputs.  Here and in what
+    follows, we use the notation $\langle X \rangle$ to denote an
+    \textbf{encoding} of some object $X$.
 
-%     \begin{algorithm}
-%       \caption{Newton's Method} \label{alg:newton}
-%       \begin{algorithmic}
-%         \Require $\langle (p(x), x_0, \epsilon) \rangle \mid p(x) \in \poly{\reals}\,; x_0 \in \reals\,; \epsilon \in \reals$
-%         \State Compute and store $\langle p'(x) \rangle$
-%         \While{$p(x_0) > \epsilon$ }
-%         \State Compute, using \texttt{UPE} subroutine, the values $p(x_0)$ and $p'(x_0)$
-%         \State $x_0 = x - \frac{p(x)}{p'(x)}$
-%         \EndWhile
-%       \end{algorithmic}
-%     \end{algorithm}
-%   \end{example}
+    \begin{algorithm}
+      \caption{Newton's Method} \label{alg:newton}
+      \begin{algorithmic}
+        \Require $\langle (p(x), x_0, \epsilon) \rangle \mid p(x) \in \poly{\reals}\,; x_0 \in \reals\,; \epsilon \in \reals$
+        \State Compute and store $\langle p'(x) \rangle$
+        \While{$p(x_0) > \epsilon$ }
+        \State Compute, using \texttt{UPE} subroutine, the values $p(x_0)$ and $p'(x_0)$
+        \State $x_0 = x - \frac{p(x)}{p'(x)}$
+        \EndWhile
+      \end{algorithmic}
+    \end{algorithm}
+  \end{example}
 
-%   \note{It quickly becomes cumbersome to present a full formal
-%     construction of BSS Machines that solve even relatively simple
-%     problems.  This is true of Turing Machines in the classical model
-%     as well.  In keeping with the classical tradition, we prefer to
-%     present algorithms in high-level pseudocode in the manner shown
-%     above.  For a justification of this approach, see Sections 3.5 and
-%     4.4 of \cite{B98}.}
+  \note{It quickly becomes cumbersome to present a full formal
+    construction of BSS Machines that solve even relatively simple
+    problems.  This is true of Turing Machines in the classical model
+    as well.  In keeping with the classical tradition, we prefer to
+    present algorithms in high-level pseudocode in the manner shown
+    above.  For a justification of this approach, see Sections 3.5 and
+    4.4 of \cite{B98}.}
 
-%   \begin{theorem}{\textbf{Path Decomposition Theorem}}
+  \begin{theorem}{\textbf{Path Decomposition Theorem}}
     
-%     For any machine $M$ and positive integers $n$ and $t$, we write
-%     $\halting_M^n(t)$ do denote the $n$-dimensional component of
-%     time-$t$ Halting Set of $M$.  $\halting_M^n(t)$ is the set of
-%     values in $\inspace_M$ of length $n$ for which $M$ halts after $t$
-%     computation steps.  Similarly, we write $\halting_M^n(t)$ to
-%     denote the $n$-dimensional component of the full Halting Set of
-%     $M$.  We can say the following about these sets:
+    For any machine $M$ and positive integers $n$ and $t$, we write
+    $\halting_M^n(t)$ do denote the $n$-dimensional component of
+    time-$t$ Halting Set of $M$.  $\halting_M^n(t)$ is the set of
+    values in $\inspace_M$ of length $n$ for which $M$ halts after $t$
+    computation steps.  Similarly, we write $\halting_M^n(t)$ to
+    denote the $n$-dimensional component of the full Halting Set of
+    $M$.  We can say the following about these sets:
 
-%     \begin{enumerate}
-%     \item $\halting_M^n(T) = \bigcup_{\computepath \in \haltpaths_M(t)}
-%       \coincidence_\computepath^n.$ That is, the n-dimensional
-%       component of the time-T halting set M of is a finite disjoint union
-%       of basic semi-algebraic sets.
-%     \item $\halting_M^n = \bigcup_{\computepath \in \haltpaths_M(t)}
-%       \coincidence{\computepath}^n$.  That is, the n-dimensional
-%       component of the halting set of M is a countable disjoint union
-%       of basic semi-algebraic sets.
+    \begin{enumerate}
+    \item $\halting_M^n(T) = \bigcup_{\computepath \in \haltpaths_M(t)}
+      \coincidence_\computepath^n.$ That is, the n-dimensional
+      component of the time-T halting set M of is a finite disjoint union
+      of basic semi-algebraic sets.
+    \item $\halting_M^n = \bigcup_{\computepath \in \haltpaths_M(t)}
+      \coincidence{\computepath}^n$.  That is, the n-dimensional
+      component of the halting set of M is a countable disjoint union
+      of basic semi-algebraic sets.
       
-%     \end{enumerate}
-%   \end{theorem}
+    \end{enumerate}
+  \end{theorem}
 
-%   \begin{proofsketch}
+  \begin{proofsketch}
     
-%     The proof of the Path Decomposition Theorem proceeds by
-%     considering the computation of a BSS Machine $M$ on a
-%     finite-dimensional subset of $R^\infty$.  The essential idea is to
-%     show that the computation performed by $M$ in time $T$ inputs of
-%     size at most $n$ is equivalent from the computation performed by
-%     some finite-dimensional machine.  This follows from the fact that
-%     we can bound the number of registers used by $M$ under such
-%     restrictions, because it can perform at most $T$ shift operations,
-%     and because each computation map is the extension of some map
-%     \functype{g}{R^m}{R^n}, and therefore modifies only finitely many
-%     registers.\\
+    The proof of the Path Decomposition Theorem proceeds by
+    considering the computation of a BSS Machine $M$ on a
+    finite-dimensional subset of $R^\infty$.  The essential idea is to
+    show that the computation performed by $M$ in time $T$ inputs of
+    size at most $n$ is equivalent from the computation performed by
+    some finite-dimensional machine.  This follows from the fact that
+    we can bound the number of registers used by $M$ under such
+    restrictions, because it can perform at most $T$ shift operations,
+    and because each computation map is the extension of some map
+    \functype{g}{R^m}{R^n}, and therefore modifies only finitely many
+    registers.\\
     
-%     One cause for care is that the shift node maps are not
-%     polynomial when considered as maps from $R_\infty \rightarrow
-%     R_\infty$.  This difficulty is resolved by noting that the shift
-%     maps can be reconstructed as polynomial maps for any
-%     finite-dimensional subset, $R^n \subset R_\infty$, and by noting
-%     that in time $T$ the machine can only modify a finite number of
-%     registers.  This follows from the fact that all the computation
-%     maps are extensions of finite polynomial maps from $R^m
-%     \rightarrow R^n$, and from the fact that a given computation can
-%     traverse at most T shift nodes in time T.  Since we can bound
-%     the total number of coordinates in $\statespace_M$ accessible by
-%     a given machine in time $T$, the computation performed by $M$ in
-%     time $T$ on inputs of size at most $n$ is equivalent to the
-%     computation of some finite dimensional machine.  The theorem
-%     statements then follow from Theorem \ref{thm:pdt-finite}.
+    One cause for care is that the shift node maps are not
+    polynomial when considered as maps from $R_\infty \rightarrow
+    R_\infty$.  This difficulty is resolved by noting that the shift
+    maps can be reconstructed as polynomial maps for any
+    finite-dimensional subset, $R^n \subset R_\infty$, and by noting
+    that in time $T$ the machine can only modify a finite number of
+    registers.  This follows from the fact that all the computation
+    maps are extensions of finite polynomial maps from $R^m
+    \rightarrow R^n$, and from the fact that a given computation can
+    traverse at most T shift nodes in time T.  Since we can bound
+    the total number of coordinates in $\statespace_M$ accessible by
+    a given machine in time $T$, the computation performed by $M$ in
+    time $T$ on inputs of size at most $n$ is equivalent to the
+    computation of some finite dimensional machine.  The theorem
+    statements then follow from Theorem \ref{thm:pdt-finite}.
     
-%   \end{proofsketch}
+  \end{proofsketch}
 
-%   \section{Decision Problems}
+  \section{Decision Problems}
 
-%   The treatment of complexity questions in our model is much the same
-%   as in classical complexity theory.  We frame problems as languages,
-%   ie, as sequences of symbols drawn from some input domain.  In
-%   classical theory, this means binary encodings of strings -- for us,
-%   it means subsets of $R^\infty$.  The complexity/decidability of a
-%   problem then becomes a question about the complexity/decidability of
-%   testing an input for membership in a language.
+  The treatment of complexity questions in our model is much the same
+  as in classical complexity theory.  We frame problems as languages,
+  ie, as sequences of symbols drawn from some input domain.  In
+  classical theory, this means binary encodings of strings -- for us,
+  it means subsets of $R^\infty$.  The complexity/decidability of a
+  problem then becomes a question about the complexity/decidability of
+  testing an input for membership in a language.
 
-%   \begin{definition}{\textbf{Decision Problem}}
+  \begin{definition}{\textbf{Decision Problem}}
       
-%     A \textbf{Decision Problem} over a ring $R$ is a set, $S
-%     \subseteq R^\infty$, partitioned into subsets, $S_{yes}$ and
-%     $S_{no}$, respectively called the \textbf{Yes Instances} and
-%     \textbf{No Instances} of $S$.
+    A \textbf{Decision Problem} over a ring $R$ is a set, $S
+    \subseteq R^\infty$, partitioned into subsets, $S_{yes}$ and
+    $S_{no}$, respectively called the \textbf{Yes Instances} and
+    \textbf{No Instances} of $S$.
  
-%   \end{definition}
+  \end{definition}
 
-%   \subsection{Notable Decision Problems}
+  \subsection{Notable Decision Problems}
   
-%   \todo{Figure out what to do with this.}
+  \todo{Figure out what to do with this.}
 
-%   \begin{itemize}
-%     \subsubsection{Decision Problems over Arbitrary Rings}
-%     \bolditem{HN} - (Hilbert Nullstellensatz) Does some finite system
-%     of polynomial equations have a shared solution?  
-%     \bolditem{QUAD} - Does a finite system of quadratic equations have a solution?
-%     \bolditem{4-FEAS} - Does a finite system of degree-4 polynomials have a solution?  
-%     \bolditem{QA-FEAS} - Does a set of quasi-algebraic equations describe the empty set?  
-%     \bolditem{KP} - Knapsack Problem
+  \begin{itemize}
+    \subsubsection{Decision Problems over Arbitrary Rings}
+    \bolditem{HN} - (Hilbert Nullstellensatz) Does some finite system
+    of polynomial equations have a shared solution?  
+    \bolditem{QUAD} - Does a finite system of quadratic equations have a solution?
+    \bolditem{4-FEAS} - Does a finite system of degree-4 polynomials have a solution?  
+    \bolditem{QA-FEAS} - Does a set of quasi-algebraic equations describe the empty set?  
+    \bolditem{KP} - Knapsack Problem
     
-%     \subsubsection{Decision Problems over Ordered Rings}
-%     \bolditem{SA-FEAS} - Does a set of semi-algebraic equations describe the empty set?
-%     \bolditem{LPF} - Feasibility of Linear Programming
-%     \bolditem{TSP} - Travelling Salesman Problem
+    \subsubsection{Decision Problems over Ordered Rings}
+    \bolditem{SA-FEAS} - Does a set of semi-algebraic equations describe the empty set?
+    \bolditem{LPF} - Feasibility of Linear Programming
+    \bolditem{TSP} - Travelling Salesman Problem
     
-%     \subsubsection{Decision Problems over $\integers$}
-%     \bolditem{IPF} - Feasibility of Integer Programming Problems
+    \subsubsection{Decision Problems over $\integers$}
+    \bolditem{IPF} - Feasibility of Integer Programming Problems
 
-%     \subsubsection{Decision Problems over $\integers_2$}
-%     \bolditem{SAT} - Boolean formula satisfiability
+    \subsubsection{Decision Problems over $\integers_2$}
+    \bolditem{SAT} - Boolean formula satisfiability
 
-%   \end{itemize}
+  \end{itemize}
 
-%   \subsection{Known Decidability Results}
+  \subsection{Known Decidability Results}
 
-%   All of the above are known to be decidable (when well-defined) over
-%   $\complexes$, $\reals$, and $\integers_2$.  Over $\integers$,
-%   \textbf{IPF}, \textbf{TSP}, and \textbf{KP} are decidable, but
-%   \textbf{4-FEAS}, \textbf{QUAD}, \textbf{HN}, \textbf{QA-FEAS}, and
-%   \textbf{SA-FEAS} are not.  Over $\rationals$, \textbf{LPF},
-%   \textbf{TSP}, and \textbf{KP} are decidable.  It is an open problem
-%   whether \textbf{QUAD} and \textbf{HN} are decidable over
-%   $\rationals$.
+  All of the above are known to be decidable (when well-defined) over
+  $\complexes$, $\reals$, and $\integers_2$.  Over $\integers$,
+  \textbf{IPF}, \textbf{TSP}, and \textbf{KP} are decidable, but
+  \textbf{4-FEAS}, \textbf{QUAD}, \textbf{HN}, \textbf{QA-FEAS}, and
+  \textbf{SA-FEAS} are not.  Over $\rationals$, \textbf{LPF},
+  \textbf{TSP}, and \textbf{KP} are decidable.  It is an open problem
+  whether \textbf{QUAD} and \textbf{HN} are decidable over
+  $\rationals$.
 
-% \section{Measuring the Cost of Computation}
-% \label{sec:measuring}
-% One of the major goals of classical theory of computation is to
-% provide a framework for analyzing the \emph{difficulty} of solving
-% problems.  Very generally, providing such a complexity analysis
-% involves characterizing the resources necessary for an algorithm to
-% compute a function $f$ or decide a set $S$.  Consideration of
-% different resources gives rise to different notions of complexity, but
-% a historically important case has been the notion of \textbf{time
-%   complexity}.  In the Turing Machine model of computation, analyzing
-% time complexity means analyzing the number of steps taken by a TM on
-% input $x$ as a function of length of $x$.  It is easily shown, for
-% example, that on input $x$, the machine exhibited in
-% \ref{fig:turing-example} performs exactly $\len(x) + 1$ steps before
-% halting, where $\len(x)$ is the number of $0$s and $1$s in $x$.\\
+\section{Measuring the Cost of Computation}
+\label{sec:measuring}
+One of the major goals of classical theory of computation is to
+provide a framework for analyzing the \emph{difficulty} of solving
+problems.  Very generally, providing such a complexity analysis
+involves characterizing the resources necessary for an algorithm to
+compute a function $f$ or decide a set $S$.  Consideration of
+different resources gives rise to different notions of complexity, but
+a historically important case has been the notion of \textbf{time
+  complexity}.  In the Turing Machine model of computation, analyzing
+time complexity means analyzing the number of steps taken by a TM on
+input $x$ as a function of length of $x$.  It is easily shown, for
+example, that on input $x$, the machine exhibited in
+\ref{fig:turing-example} performs exactly $\len(x) + 1$ steps before
+halting, where $\len(x)$ is the number of $0$s and $1$s in $x$.\\
 
-% Measuring the size of an input string $x$ is simple in the Turing
-% Machine model; is it always simply the number symbols in $x$.  For
-% Blum et al., however, input size is slightly more complicated.
-% Consider for example, the FDM $M$ presented in Figure
-% \ref{fig:z-decide}.  Every input to $M$ is a single real number.  If
-% we consider the size of inputs $M$ to be the number of registers used
-% to store an input (ie, the dimension of the input space,
-% $\inspace_M$), then every input to $M$ has the same size.  On the
-% other hand, it is easy to show that the length of any computation
-% performed by $M$ on input $x \in \reals$ is bounded by $\floor{x}$.
-% This leads us naturally to consider two distinct notions of size
-% within the BSS model: the size associated with the dimensionality of
-% an input, which we call the \textbf{length} of the input, and the size
-% associated with the ``magnitude'' of entries in $\inspace_M$ or
-% $\statespace_M$.  Drawing on terminology from algebraic number theory,
-% we refer to this latter notion as the \textbf{height} of an entry.  We
-% then define the overall \textbf{size} of an input in terms of both its
-% length and the heights of its entries.
+Measuring the size of an input string $x$ is simple in the Turing
+Machine model; is it always simply the number symbols in $x$.  For
+Blum et al., however, input size is slightly more complicated.
+Consider for example, the FDM $M$ presented in Figure
+\ref{fig:z-decide}.  Every input to $M$ is a single real number.  If
+we consider the size of inputs $M$ to be the number of registers used
+to store an input (ie, the dimension of the input space,
+$\inspace_M$), then every input to $M$ has the same size.  On the
+other hand, it is easy to show that the length of any computation
+performed by $M$ on input $x \in \reals$ is bounded by $\floor{x}$.
+This leads us naturally to consider two distinct notions of size
+within the BSS model: the size associated with the dimensionality of
+an input, which we call the \textbf{length} of the input, and the size
+associated with the ``magnitude'' of entries in $\inspace_M$ or
+$\statespace_M$.  Drawing on terminology from algebraic number theory,
+we refer to this latter notion as the \textbf{height} of an entry.  We
+then define the overall \textbf{size} of an input in terms of both its
+length and the heights of its entries.
 
-% \begin{definition}{\textbf{Height Function} over $R$}
+\begin{definition}{\textbf{Height Function} over $R$}
 
-%   A \textbf{Height Function} on a ring $R$ is a map:
-%   $$\mfunctype{ht_R}{R}{\reals}$$
-% \end{definition}
+  A \textbf{Height Function} on a ring $R$ is a map:
+  $$\mfunctype{ht_R}{R}{\reals}$$
+\end{definition}
 
-% \note{Common height functions include the \emph{unit height} function,
-%   $ht_R(x) = 1$, and the \emph{bit height} function, $ht_R(x) =
-%   \log(|x| + 1)$.  We use the unit height function in cases where we
-%   are concerned with the algebraic complexity of an algorithm (ie, the
-%   number of algebraic operations required to compute the algorithm,
-%   independent of the values on which the operations are performed).
-%   We most often use the bit height function when working with
-%   $\integers$ when we want to capture the classical cost of computing
-%   with the binary representation of an integer. Similarly, when
-%   working with $\rationals$, we give an alternative definition of bit
-%   height, $ht_\rationals(x) = (max(ht_\integers(p), ht_\integers(q))$,
-%   where $x = \frac{p}{q}$, $p$ and $q$ relatively prime.  This
-%   captures the cost of representing a rational $x$ as a pair of binary
-%   integers.}
+\note{Common height functions include the \emph{unit height} function,
+  $ht_R(x) = 1$, and the \emph{bit height} function, $ht_R(x) =
+  \log(|x| + 1)$.  We use the unit height function in cases where we
+  are concerned with the algebraic complexity of an algorithm (ie, the
+  number of algebraic operations required to compute the algorithm,
+  independent of the values on which the operations are performed).
+  We most often use the bit height function when working with
+  $\integers$ when we want to capture the classical cost of computing
+  with the binary representation of an integer. Similarly, when
+  working with $\rationals$, we give an alternative definition of bit
+  height, $ht_\rationals(x) = (max(ht_\integers(p), ht_\integers(q))$,
+  where $x = \frac{p}{q}$, $p$ and $q$ relatively prime.  This
+  captures the cost of representing a rational $x$ as a pair of binary
+  integers.}
 
-% \begin{definition}{\textbf{Input Length}}
+\begin{definition}{\textbf{Input Length}}
   
-%   The \textbf{length} of an input $x \in R^n$ to a machine over $R$ is
-%   given by: $$\len(x) = n$$
-% \end{definition}
+  The \textbf{length} of an input $x \in R^n$ to a machine over $R$ is
+  given by: $$\len(x) = n$$
+\end{definition}
 
-% \begin{definition}{\textbf{Size}}
+\begin{definition}{\textbf{Size}}
   
-%   Let $R$ be a ring with height function $ht_R$.  The \textbf{size} of
-%   an element $x \in R^n$ is given by:
-%   $$\size(x) = \len(x)\max_{1 \leq i \leq n}(ht_R(x_i))$$
-%   \note{In the case that $ht_R$ is the unit height function, the size of
-%   the input to a machine reduces to just the length of the input.}
-% \end{definition}
+  Let $R$ be a ring with height function $ht_R$.  The \textbf{size} of
+  an element $x \in R^n$ is given by:
+  $$\size(x) = \len(x)\max_{1 \leq i \leq n}(ht_R(x_i))$$
+  \note{In the case that $ht_R$ is the unit height function, the size of
+  the input to a machine reduces to just the length of the input.}
+\end{definition}
 
-% Now that we have a definition of input size, we want to consider the
-% \textbf{cost} of performing a computation for a given machine on a
-% given input.  We define this quantity to be the number of steps the
-% machine takes before halting \emph{times} the maximum height of any
-% value stored in the machine's state space during computation.
+Now that we have a definition of input size, we want to consider the
+\textbf{cost} of performing a computation for a given machine on a
+given input.  We define this quantity to be the number of steps the
+machine takes before halting \emph{times} the maximum height of any
+value stored in the machine's state space during computation.
 
-% \begin{definition}{\textbf{Computation Cost}}
-%   \label{def:cost}
+\begin{definition}{\textbf{Computation Cost}}
+  \label{def:cost}
   
-%   Let $M$ be a BSS Machine over $R$ with height function $ht_R$, and
-%   let $x \in \halting_M$, such that 
-%   $$\compute_M(x) = (z_0, z_1,z_2, \ldots, z_T)$$ 
+  Let $M$ be a BSS Machine over $R$ with height function $ht_R$, and
+  let $x \in \halting_M$, such that 
+  $$\compute_M(x) = (z_0, z_1,z_2, \ldots, z_T)$$ 
   
-%   The \textbf{cost} of $\compute_M(x)$ is given by:
-%   $$\cost_M(\compute_M(x)) = T*ht_{max}(x)$$
-%   where $ht_{max}(x)$ is the maximum height of any element occurring
-%   in the computation of $M$ on input $x$.  More specifically, if the
-%   state trajectory of $M$ on input $x$ is given by:
-%   \begin{eqnarray*}
-%     \ldots x_{(-2,0)}x_{(-1,0)}x_{(0,0)}.x_{(1,0)}x_{(2,0)} \ldots \\ 
-%     \ldots x_{(-2,1)}x_{(-1,1)}x_{(0,1)}.x_{(1,1)}x_{(2,1)} \ldots \\ 
-%     \ldots x_{(-2,2)}x_{(-1,2)}x_{(0,2)}.x_{(1,2)}x_{(2,2)} \ldots, \\
-%   \end{eqnarray*}
+  The \textbf{cost} of $\compute_M(x)$ is given by:
+  $$\cost_M(\compute_M(x)) = T*ht_{max}(x)$$
+  where $ht_{max}(x)$ is the maximum height of any element occurring
+  in the computation of $M$ on input $x$.  More specifically, if the
+  state trajectory of $M$ on input $x$ is given by:
+  \begin{eqnarray*}
+    \ldots x_{(-2,0)}x_{(-1,0)}x_{(0,0)}.x_{(1,0)}x_{(2,0)} \ldots \\ 
+    \ldots x_{(-2,1)}x_{(-1,1)}x_{(0,1)}.x_{(1,1)}x_{(2,1)} \ldots \\ 
+    \ldots x_{(-2,2)}x_{(-1,2)}x_{(0,2)}.x_{(1,2)}x_{(2,2)} \ldots, \\
+  \end{eqnarray*}
   
-%   \vspace{-\baselineskip}
-%   \centerline{$\vdots$}
+  \vspace{-\baselineskip}
+  \centerline{$\vdots$}
 
-%   then $$ht_{max}(x) = \max_{i \in \integers, \; \j \leq T(x)}ht(x_{(i,j)})$$
-%   In the case that $M$ does not halt on $x$ (i.e., $x \notin
-%   \halting_M$, we adopt the convention that $\cost_M(x) = \infty$.
-% \end{definition}
+  then $$ht_{max}(x) = \max_{i \in \integers, \; \j \leq T(x)}ht(x_{(i,j)})$$
+  In the case that $M$ does not halt on $x$ (i.e., $x \notin
+  \halting_M$, we adopt the convention that $\cost_M(x) = \infty$.
+\end{definition}
 
-% \note{The above definition departs slightly from the one given in
-%   Chapter 4 of \cite{B98}.  Blum et al. use the notation $\cost_M(x)$,
-%   rather than $\cost(\compute_M(x))$.  Our change reflects our desire
-%   to emphasize that cost is determined by a height function combined
-%   with a particular path through the configuration space of $M$.  This
-%   will be important for us in Chapter \ref{chap:ndet} when we consider
-%   machines that traverse multiple paths on a single input.}
+\note{The above definition departs slightly from the one given in
+  Chapter 4 of \cite{B98}.  Blum et al. use the notation $\cost_M(x)$,
+  rather than $\cost(\compute_M(x))$.  Our change reflects our desire
+  to emphasize that cost is determined by a height function combined
+  with a particular path through the configuration space of $M$.  This
+  will be important for us in Chapter \ref{chap:ndet} when we consider
+  machines that traverse multiple paths on a single input.}
 
-% \section{The Complexity Class $\p$}
+\section{The Complexity Class $\p$}
 
-% \begin{definition}\textbf{$\dtime(O(f(x)))$}
+\begin{definition}\textbf{$\dtime(O(f(x)))$}
 
-%   Let $f(x)$ be a function $\reals \rightarrow \reals$.  A decision
-%   problem $S$ is said to be a member of the complexity class
-%   $\dtime(O(f(x)))$ (deterministic time $O(f(x))$) if there exists a
-%   machine $M$ and a constant $c \in \reals$ such that $M$ decides $S$
-%   and for all $x \in \inspace_M$ we have:
-%   $$\cost_M(\compute_M(x)) \leq cf(x).$$
-% \end{definition}
+  Let $f(x)$ be a function $\reals \rightarrow \reals$.  A decision
+  problem $S$ is said to be a member of the complexity class
+  $\dtime(O(f(x)))$ (deterministic time $O(f(x))$) if there exists a
+  machine $M$ and a constant $c \in \reals$ such that $M$ decides $S$
+  and for all $x \in \inspace_M$ we have:
+  $$\cost_M(\compute_M(x)) \leq cf(x).$$
+\end{definition}
 
-% \begin{definition}{$\p$}
+\begin{definition}{$\p$}
 
-%   We define the complexity class $\p$ to be the union:
+  We define the complexity class $\p$ to be the union:
 
-%   $$\bigcup_{p(x) \in \poly{R}}\dtime(O(p(x)))$$
+  $$\bigcup_{p(x) \in \poly{R}}\dtime(O(p(x)))$$
 
-% \end{definition}
+\end{definition}
 
-% \begin{example}
-%   \todo{Nonlinear example for this.}
-% \end{example}
+\begin{example}
+  \todo{Nonlinear example for this.}
+\end{example}
 
-% \begin{definition}{\textbf{Polynomial Time Machine}}
+\begin{definition}{\textbf{Polynomial Time Machine}}
 
-%   A machine $M$ over $R$ is a \textbf{polynomial time} machine on
-%   inputs $X \subset \inspace_M$ if there exist positive integers $c$
-%   and $q$ such that for all $x \in X$:
-%   $$cost_M(x) \leq c(size(x))^q.$$
-% \end{definition}
+  A machine $M$ over $R$ is a \textbf{polynomial time} machine on
+  inputs $X \subset \inspace_M$ if there exist positive integers $c$
+  and $q$ such that for all $x \in X$:
+  $$cost_M(x) \leq c(size(x))^q.$$
+\end{definition}
 
-% \begin{definition}{\textbf{p-morphism}}
+\begin{definition}{\textbf{p-morphism}}
   
-%   A function, \functype{\varphi}{X}{Y \subset R^\infty} is called
-%   \textbf{polynomial-time computable} over $R$, or a
-%   \textbf{p-morphism} over $R$ if there exists a polynomial time
-%   machine over $R$ that computes $\varphi$.
-% \end{definition}
+  A function, \functype{\varphi}{X}{Y \subset R^\infty} is called
+  \textbf{polynomial-time computable} over $R$, or a
+  \textbf{p-morphism} over $R$ if there exists a polynomial time
+  machine over $R$ that computes $\varphi$.
+\end{definition}
 
-% \begin{definition}{\textbf{Polynomial-Time Reduction}}
+\begin{definition}{\textbf{Polynomial-Time Reduction}}
 
-%   A decision problem $S$ is \textbf{p-reducible} to a decision problem
-%   $S'$ if there exists a p-morphism,
-%   \functype{\varphi}{R^\infty}{R^\infty} such that $\varphi(S_{yes})
-%   \subseteq S'_{yes}$ and $\varphi(S_{no}) \subseteq S'_{no}$.  The
-%   map $\varphi$ is called a \textbf{polynomial-time reduction} from
-%   $S$ to $S'$.
+  A decision problem $S$ is \textbf{p-reducible} to a decision problem
+  $S'$ if there exists a p-morphism,
+  \functype{\varphi}{R^\infty}{R^\infty} such that $\varphi(S_{yes})
+  \subseteq S'_{yes}$ and $\varphi(S_{no}) \subseteq S'_{no}$.  The
+  map $\varphi$ is called a \textbf{polynomial-time reduction} from
+  $S$ to $S'$.
 
-%   We abbreviate the sentence \emph{$S$ is p-reducible to $S'$} by writing:
+  We abbreviate the sentence \emph{$S$ is p-reducible to $S'$} by writing:
 
-%   $$S \preduce S'$$
-%   \end{definition}
+  $$S \preduce S'$$
+  \end{definition}
 
-%   \note{Since compositions of polynomials are still polynomials, it
-%     immediately follows that if $S \in \p$, and $S \preduce S'$, then
-%     $S' \in \p$, so $\p$ is closed under the relation of
-%     p-reducibility. It is similarly easy to show that if $X \preduce
-%     Y$ and $Y \preduce Z$, then $X \preduce Z$ so the relation of
-%     p-reducibility is transitive.}
+  \note{Since compositions of polynomials are still polynomials, it
+    immediately follows that if $S \in \p$, and $S \preduce S'$, then
+    $S' \in \p$, so $\p$ is closed under the relation of
+    p-reducibility. It is similarly easy to show that if $X \preduce
+    Y$ and $Y \preduce Z$, then $X \preduce Z$ so the relation of
+    p-reducibility is transitive.}
 
-% \section{Notable Prior Results in Reducibility}
+\section{Notable Prior Results in Reducibility}
 
-% \begin{theorem}{\textbf{Known Reductions}}
-%   \begin{enumerate}
-%   \item Over any ring or field $R$, $HN \preduce QUAD$.
-%   \item Over any ordered ring or field $R$, $HN \preduce 4-FEAS$.
-%   \item Over $(\integers_2, >)$, 
-%     \begin{enumerate}
-%     \item $HN \preduce QUAD \preduce 4FEAS$
-%     \item $QUAD \preduce IP \preduce IPF$
-%     \end{enumerate}
-%   \end{enumerate}
-%   References for all of the above results can be found in \cite{B98}.
-% \end{theorem}
+\begin{theorem}{\textbf{Known Reductions}}
+  \begin{enumerate}
+  \item Over any ring or field $R$, $HN \preduce QUAD$.
+  \item Over any ordered ring or field $R$, $HN \preduce 4-FEAS$.
+  \item Over $(\integers_2, >)$, 
+    \begin{enumerate}
+    \item $HN \preduce QUAD \preduce 4FEAS$
+    \item $QUAD \preduce IP \preduce IPF$
+    \end{enumerate}
+  \end{enumerate}
+  References for all of the above results can be found in \cite{B98}.
+\end{theorem}
 
-% \section{The Class $\np$}
+\section{The Class $\np$}
 
-% The definition of $\np$ given by Blum et al is a generalization of the
-% classical characterization of $\mathbf{NP}$ as the class of decision
-% problems which are verifiable in polynomial time.  The idea of
-% verifiability is roughly the following: for many decision problems
-% $S$, it seems difficult to determine whether an arbitrary input $s$ is
-% a member of $S$.  For some of these problems, however, there exist
-% ``short'' proofs of the fact that $s \in S$.\\
+The definition of $\np$ given by Blum et al is a generalization of the
+classical characterization of $\mathbf{NP}$ as the class of decision
+problems which are verifiable in polynomial time.  The idea of
+verifiability is roughly the following: for many decision problems
+$S$, it seems difficult to determine whether an arbitrary input $s$ is
+a member of $S$.  For some of these problems, however, there exist
+``short'' proofs of the fact that $s \in S$.\\
 
-% A classic example of such a problem is \subsum{}, which asks, given a
-% set of numbers $X = \set{x_1, x_2, \ldots x_k}$ and a target $t$, is
-% there some subset $X_t \subseteq X$ such that $\sum_{x \in X_t} = t$.
-% This problem is clearly decidable, since there are only finitely many
-% possible subsets to check, but it is unclear how we might go about
-% finding such a subset (or proving one does not exist) in a way that is
-% more efficient than checking all the subsets.  On the other hand, it
-% is easy to convince someone that a particular instance of \subsum
-% is, in fact, a Yes-Instance once we know the correct subset.  For
-% example, given a problem instance 
-% $$X = (\set{1, 15, 7, 44, 3, 9, -4, 5, -3, 2, 8}, 31)$$
-% we can determine immediately that $X$ is a Yes-Instance if we are
-% given the set $S = \set{1,15,-4,5, -3, 8, 9}$, because we can verify
-% that $S$ is a subset of the problem instance set that adds up to the
-% problem instance target.  Thus, while it's unclear if \subsum is
-% efficiently (i.e., polynomial time) decidable, the above
-% considerations lead us to say that \subsum is \textbf{efficiently
-%   verifiable}.  The complexity class $\np$ represents the class of
-% problems that share this feature of efficient verifiability.
+A classic example of such a problem is \subsum{}, which asks, given a
+set of numbers $X = \set{x_1, x_2, \ldots x_k}$ and a target $t$, is
+there some subset $X_t \subseteq X$ such that $\sum_{x \in X_t} = t$.
+This problem is clearly decidable, since there are only finitely many
+possible subsets to check, but it is unclear how we might go about
+finding such a subset (or proving one does not exist) in a way that is
+more efficient than checking all the subsets.  On the other hand, it
+is easy to convince someone that a particular instance of \subsum
+is, in fact, a Yes-Instance once we know the correct subset.  For
+example, given a problem instance 
+$$X = (\set{1, 15, 7, 44, 3, 9, -4, 5, -3, 2, 8}, 31)$$
+we can determine immediately that $X$ is a Yes-Instance if we are
+given the set $S = \set{1,15,-4,5, -3, 8, 9}$, because we can verify
+that $S$ is a subset of the problem instance set that adds up to the
+problem instance target.  Thus, while it's unclear if \subsum is
+efficiently (i.e., polynomial time) decidable, the above
+considerations lead us to say that \subsum is \textbf{efficiently
+  verifiable}.  The complexity class $\np$ represents the class of
+problems that share this feature of efficient verifiability.
 
-% \begin{definition}{\textbf{Class NP} over $R$}
-%   \label{def:np}
+\begin{definition}{\textbf{Class NP} over $R$}
+  \label{def:np}
   
-%   A decision problem $S \subseteq R^\infty$ over a ring $R$ is in the
-%   class $\np$ if there exist positive integers $c$ and $q$ and a BSS
-%   Machine $M$ over R with $\inspace_M = R^\infty \times R^\infty$ such
-%   that:
+  A decision problem $S \subseteq R^\infty$ over a ring $R$ is in the
+  class $\np$ if there exist positive integers $c$ and $q$ and a BSS
+  Machine $M$ over R with $\inspace_M = R^\infty \times R^\infty$ such
+  that:
 
-%   \begin{enumerate}
-%   \item If $x \in S$ then there exists a $w \in R^\infty$, such that
-%     $M$ accepts $(w, x)$ and $cost_M(w,x) \leq c(size(x))^q$.
-%   \item If $x \notin S$, then there is no such $w$ such that $M$
-%     accepts $(w, x)$.
-%   \end{enumerate}
-% \end{definition}
+  \begin{enumerate}
+  \item If $x \in S$ then there exists a $w \in R^\infty$, such that
+    $M$ accepts $(w, x)$ and $cost_M(w,x) \leq c(size(x))^q$.
+  \item If $x \notin S$, then there is no such $w$ such that $M$
+    accepts $(w, x)$.
+  \end{enumerate}
+\end{definition}
 
-% \begin{example}
+\begin{example}
 
-%   The decision problem $\hn$ is a member of $\np$ for $R = \reals$, $R
-%   = \complexes$, and $R = \integers$ with unit cost.  Recall that an
-%   instance of $\hn$ is an encoding of some of polynomials $S =
-%   \set{p_1, p_2, \ldots, p_k} \subset \polyn{R}$, and that an instance
-%   is a Yes Instance if there exists some $x \in R^n$ such that for
-%   each $p_i \in S$, $p_i(x) = 0$.  To show that $\hn \in \np$, we must
-%   exhibit a machine which takes as inputs pairs $(w, x)$, and for each $x$
+  The decision problem $\hn$ is a member of $\np$ for $R = \reals$, $R
+  = \complexes$, and $R = \integers$ with unit cost.  Recall that an
+  instance of $\hn$ is an encoding of some of polynomials $S =
+  \set{p_1, p_2, \ldots, p_k} \subset \polyn{R}$, and that an instance
+  is a Yes Instance if there exists some $x \in R^n$ such that for
+  each $p_i \in S$, $p_i(x) = 0$.  To show that $\hn \in \np$, we must
+  exhibit a machine which takes as inputs pairs $(w, x)$, and for each $x$
 
-%   \todo{here}
+  \todo{here}
 
-%   $(w, x)$, $w \in R^n$ and $x =
-%   \langle \set{p_1, p_2, \ldots, p_m} \subseteq \polyn{R} \rangle$ and
-%   evaluates each $p_i$ encoded by $x$ at the point $w$.  Our machine
-%   accepts if all the $p_i$ evaluate to $0$, and rejects
-%   otherwise. \footnote{In the case that $x$ encodes a system of
-%     polynomials defined over $k < n$ variables, we can simply evaluate
-%     each polynomial over the first $k$ coordinates of $w$.  If $x$
-%     encodes polynomials of dimension greater than $n$, we simply
-%     reject.}
+  $(w, x)$, $w \in R^n$ and $x =
+  \langle \set{p_1, p_2, \ldots, p_m} \subseteq \polyn{R} \rangle$ and
+  evaluates each $p_i$ encoded by $x$ at the point $w$.  Our machine
+  accepts if all the $p_i$ evaluate to $0$, and rejects
+  otherwise. \footnote{In the case that $x$ encodes a system of
+    polynomials defined over $k < n$ variables, we can simply evaluate
+    each polynomial over the first $k$ coordinates of $w$.  If $x$
+    encodes polynomials of dimension greater than $n$, we simply
+    reject.}
   
-% \end{example}
+\end{example}
 
-% An important feature of the class $\mathbf{NP}$ in the classical
-% theory is the existence of \textbf{NP Complete} problems, which are in
-% a sense the ``hardest'' problems in $NP$.  More precisely, NP Complete
-% problems are those problems which lie in $NP$, and to which every
-% problem in $NP$ is reducible in polynomial time.  These problems can
-% be shown to exist in the generalized algebraic theory as well.
+An important feature of the class $\mathbf{NP}$ in the classical
+theory is the existence of \textbf{NP Complete} problems, which are in
+a sense the ``hardest'' problems in $NP$.  More precisely, NP Complete
+problems are those problems which lie in $NP$, and to which every
+problem in $NP$ is reducible in polynomial time.  These problems can
+be shown to exist in the generalized algebraic theory as well.
 
-% \begin{definition}{\textbf{NP Hard over R}}
-%   A decision problem $S$ is said to be \textbf{NP Hard} over R if
-%   every $S' \in NP_R$ is p-reducible to $S$.
-% \end{definition}
+\begin{definition}{\textbf{NP Hard over R}}
+  A decision problem $S$ is said to be \textbf{NP Hard} over R if
+  every $S' \in NP_R$ is p-reducible to $S$.
+\end{definition}
 
-% \begin{definition}{\textbf{NP Complete over R}}
-%   A decision problem $S$ is said to be \textbf{NP Complete} over R it
-%   is both NP Hard and in NP.
-% \end{definition}
+\begin{definition}{\textbf{NP Complete over R}}
+  A decision problem $S$ is said to be \textbf{NP Complete} over R it
+  is both NP Hard and in NP.
+\end{definition}
 
-% \section{Known NP-Complete Problems}
+\section{Known NP-Complete Problems}
 
-% The following results hold with respect to either unit or bit cost.
-% See \cite{B98} for details.  
+The following results hold with respect to either unit or bit cost.
+See \cite{B98} for details.  
 
-% \todo{Figure out what to do with this and the section on decision
-%   problems.}
+\todo{Figure out what to do with this and the section on decision
+  problems.}
 
-% \begin{itemize}
-% \item QA-FEAS is NP-Complete over any unordered ring or field R.
-% \item HN and QUAD are NP-Complete over (F, =) for any field F.
-% \item SA-FEAS is NP-Complete over any ordered ring or field R.
-% \item HN, QUAD, and 4-FEAS are NP-Complete over $\integers$,
-%   $\rationals$ and $\reals$, all considered with order.
-% \end{itemize}
+\begin{itemize}
+\item QA-FEAS is NP-Complete over any unordered ring or field R.
+\item HN and QUAD are NP-Complete over (F, =) for any field F.
+\item SA-FEAS is NP-Complete over any ordered ring or field R.
+\item HN, QUAD, and 4-FEAS are NP-Complete over $\integers$,
+  $\rationals$ and $\reals$, all considered with order.
+\end{itemize}
 
 %%% Local Variables: 
 %%% mode: latex
